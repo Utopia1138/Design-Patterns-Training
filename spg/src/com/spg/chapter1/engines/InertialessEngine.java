@@ -6,7 +6,7 @@ public class InertialessEngine implements Engine {
 	@Override
 	public int getSpeed() {
 		// If we're breaking physics anyway...
-		return 280000000;
+		return 270000000;
 	}
 
 }

@@ -10,7 +10,7 @@ public class RailgunWeapon implements Weapon {
 		// Railgun does less damage but has more ammo than missile
 		if ( ammo > 0 ) {
 			ammo--;
-			return 50;
+			return 500;
 		}
 
 		return 0;
