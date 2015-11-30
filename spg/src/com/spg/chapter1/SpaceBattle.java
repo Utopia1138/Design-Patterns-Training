@@ -18,7 +18,6 @@ public class SpaceBattle {
 		ships.get( 0 ).setTarget( ships.get( 1 ) );
 		ships.get( 1 ).setTarget( ships.get( 0 ) );
 		
-		LOOP:
 		while ( true ) {
 			
 			for (Spaceship ship: ships) {
@@ -26,7 +25,7 @@ public class SpaceBattle {
 					
 					if ( ship.getTarget().getHealth() < 0 ) {
 						ship.getTarget().explode();
-						break LOOP;
+						return;
 					}
 			}
 			
