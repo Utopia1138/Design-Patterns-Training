@@ -28,20 +28,15 @@ public abstract class Spaceship {
 	public void setShield( Shield shield ) {
 		this.shield = shield;
 	}
-	
-	public int dodge() {
-		// Dodge chance (in percent) based on engines		
-		return (int) Math.ceil( ( engine.getSpeed() / 300000000.0 ) * 100 );
-	}
-	
-	public void damage( int incoming ) {
+
+	public void damage( Weapon damager ) {
 		// Ship damage based on dodge chance and shield strength
 		
 		int damage = 0;
 		
 		// See if we were hit
-		if ( (int) Math.ceil( Math.random() * 100 ) > dodge() )  {
-			damage = (int) Math.floor( incoming * shield.getStrength() );
+		if ( (int) Math.ceil( Math.random() * 100 ) > engine.dodge() )  {
+			damage = (int) Math.floor( shield.mitigate( damager ) );
 
 			setHealth( getHealth() - damage );
 
@@ -74,7 +69,7 @@ public abstract class Spaceship {
 		this.target = target;
 	}
 	
-	public int shoot() {
-		return weapon.shoot();
+	public Weapon shoot() {
+		return weapon;
 	}
 }

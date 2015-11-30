@@ -4,9 +4,9 @@ package com.spg.chapter1.engines;
 public class IonEngine implements Engine {
 
 	@Override
-	public int getSpeed() {
-		// Slow but steady
-		return 300;
+	public int dodge() {
+		// Slow but steady, but struggles to dodge anything
+		return 5;
 	}
 
 }

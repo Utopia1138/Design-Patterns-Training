@@ -3,5 +3,5 @@ package com.spg.chapter1.engines;
 
 public interface Engine {
 	
-	public int getSpeed();
+	public int dodge();
 }
