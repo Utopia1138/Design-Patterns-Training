@@ -12,8 +12,11 @@ use Payment::Transaction;
 my @requests;
 my @responses;
 
-my $merchant = Payment::Merchant->new();
+my $merchant = Payment::Merchant->new(
+  name => 'Test Merchant',
+);
 
+# Create a fake communication strategy
 my $comms = consumer_of('Payment::Comms::CommunicationStrategy',
   send_request => sub {
     my $self = shift;
@@ -23,7 +26,7 @@ my $comms = consumer_of('Payment::Comms::CommunicationStrategy',
   }
 );
 
-
+# Create a fake message strategy
 my $message_strategy = consumer_of('Payment::Message::Strategy',
   construct_message => sub {
     my $self = shift;
@@ -41,13 +44,14 @@ my $message_strategy = consumer_of('Payment::Message::Strategy',
   }
 );
 
-
+# Here's our terminal
 my $terminal = Payment::BankTerminal::FooBankTerminal->new(
   merchant => $merchant,
   message_strategy => $message_strategy,
   comms => $comms,
 );
 
+# Here's the payment
 my $transaction = Payment::Transaction->new(
   transaction_type => 'purchase',
   amount => '100.00',
@@ -58,6 +62,7 @@ my $transaction = Payment::Transaction->new(
   ),
 );
 
+# Submit the authorisation and make sure we got the correct data back
 my $response = $terminal->authorisation( $transaction );
 ok( defined($response), 'Response received' );
 is( $response->{response}, '00', 'Correct response code' );
