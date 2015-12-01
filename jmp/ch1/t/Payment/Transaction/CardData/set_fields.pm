@@ -1,5 +1,8 @@
 package t::Payment::Transaction::CardData::set_fields;
-
+##########################################
+# Simple testing for setters on CardData just because
+# I wasn't sure I was using subtypes properly.
+#########################################
 use strict;
 use warnings;
 use Test::More;

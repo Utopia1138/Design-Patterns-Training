@@ -1,10 +1,15 @@
 package Payment::Transaction;
-
+##########################################
+# A representation of an authorisation message
+# that would be sent to an acquirer.
+############################################
 use strict;
 use warnings;
 use Moose;
 use Moose::Util::TypeConstraints;
 
+# What operation is being performed by this transaction?
+# Currently, we only support purchases and refunds.
 has 'transaction_type' => (
   is => 'rw',
   isa => enum([qw[ purchase refund ]]),

@@ -1,5 +1,8 @@
 package Payment::Loggable;
-
+#######################################
+# A simple role that allows easy integration
+# of Log4Perl into any Moose object.
+#######################################
 use strict;
 use warnings;
 

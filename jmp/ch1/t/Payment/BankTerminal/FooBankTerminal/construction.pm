@@ -1,4 +1,9 @@
 package t::Payment::BankTerminal::FooBankTerminal::construction;
+#####################################
+# Simple tests of the FooBankTerminal constructor
+# just because I wasn't sure I was using inherited
+# role attributes correctly.
+######################################
 use strict;
 use warnings;
 use Test::More;

@@ -1,4 +1,8 @@
 package t::Payment::Terminal::authorisation;
+###########################################
+# A test of the authorisation process performed
+# by a BankTerminal.
+############################################
 use Test::Mock::Class ':all';
 use Test::More;
 use MooseX::Test::Role;

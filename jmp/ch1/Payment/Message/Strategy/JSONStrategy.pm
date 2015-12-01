@@ -1,4 +1,7 @@
 package Payment::Message::Strategy::JSONStrategy;
+###########################################
+# A simple JSON message strategy.
+###############################################
 use strict;
 use warnings;
 use Moose;
@@ -19,6 +22,7 @@ has 'transformer' => (
 sub construct_message {
   my ( $self, $terminal, $transaction ) = @_;
 
+  # build up the message and encode it
   return $self->{transformer}->encode(
     {
       transaction_type => $transaction->{transaction_type},
@@ -28,6 +32,9 @@ sub construct_message {
       },
       amount => $transaction->{amount},
       currency => $transaction->{currency},
+      # might as well include information from the terminal
+      # just because we can. Otherwise how will the bank know
+      # who sent the request?
       merchant => $terminal->{merchant}->{name},
     }
   );

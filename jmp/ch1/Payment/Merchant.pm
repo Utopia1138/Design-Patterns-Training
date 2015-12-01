@@ -1,5 +1,8 @@
 package Payment::Merchant;
-
+######################################
+# A simple representation of a merchant.
+# So far, a merchant only has a name.
+#######################################
 use strict;
 use warnings;
 

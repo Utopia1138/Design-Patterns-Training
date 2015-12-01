@@ -1,5 +1,7 @@
 package Payment::Transaction::CardData;
-
+###################################
+# Encapsulates payment details
+####################################
 use strict;
 use warnings;
 

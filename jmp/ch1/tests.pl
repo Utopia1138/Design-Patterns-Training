@@ -1,5 +1,8 @@
 #!perl
-
+###########################
+# Simple test harness. Looks for all *.t and *.pm
+# files under t/ and adds them to the TAP::Harness
+############################
 use strict;
 use warnings;
 

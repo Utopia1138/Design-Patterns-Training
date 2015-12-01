@@ -8,6 +8,13 @@ use Payment::Transaction;
 use Payment::Transaction::CardData;
 use Data::Dumper;
 
+#####################################
+# A simple example script. This creates
+# a test merchant, configures a terminal
+# for them, then  sends a transaction
+# through it and dumps out the response.
+#####################################
+
 use Log::Log4perl qw(:easy);
 Log::Log4perl->easy_init( {
   level => $DEBUG,
