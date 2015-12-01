@@ -11,7 +11,7 @@ has 'PAN' => (
   isa => subtype(
     as 'Str',
     where { /^\d{16,19}$/ },
-    message { "Invalid PAN" },
+    message { "PAN must be 16-19 digits" },
   ),
 );
 
@@ -20,7 +20,7 @@ has 'expiry' => (
   isa => subtype(
     as 'Str',
     where { /^\d\d\/\d\d$/ },
-    message { "Invalid expiry" },
+    message { "Expiry must be in the format MM/YY" },
   ),
 );
 
