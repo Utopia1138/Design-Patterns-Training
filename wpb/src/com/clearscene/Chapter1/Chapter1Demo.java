@@ -23,8 +23,12 @@ public class Chapter1Demo {
 		
 		System.out.println("==========");
 
-		Building flat2 = new Flat( 1, "" );
+		Building flat2 = new Flat( 1, "Nothing" );
 		flat2.describe();
+		flat2.HeatingOn();
+		flat2.HeatingOff();
+		flat2.installHeating("Oil");
+		flat2.HeatingType();
 		flat2.HeatingOn();
 		flat2.HeatingOff();
 		

@@ -13,6 +13,10 @@ public abstract class Building {
 	
 	public Building ( int f, String h ) {
 		setFloors( f );
+		installHeating( h );
+	}
+	
+	public void installHeating( String h ) {
 		if( h.matches( "Gas" ) ) {
 			heating = new GasCentral();
 		}
@@ -43,8 +47,12 @@ public abstract class Building {
 		heating.HeatingOff();
 	}
 	
+	public void HeatingType() {
+		System.out.println( "The building has " + heating.HeatingType() + " installed." );
+	}
+	
 	public void describe() {
 		System.out.println( "Ww have " + floors + " floors." );
-		System.out.println( "The building has " + heating.HeatingType() + " installed." );
+		HeatingType();
 	}
 }
