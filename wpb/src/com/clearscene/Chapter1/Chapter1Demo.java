@@ -3,6 +3,7 @@ package com.clearscene.Chapter1;
 import com.clearscene.Chapter1.Buildings.Building;
 import com.clearscene.Chapter1.Buildings.Flat;
 import com.clearscene.Chapter1.Buildings.House;
+import com.clearscene.Chapter1.Buildings.Office;
 
 public class Chapter1Demo {
 
@@ -33,6 +34,13 @@ public class Chapter1Demo {
 		house2.describe();
 		house2.HeatingOn();
 		house2.HeatingOff();
+		
+		System.out.println("==========");
+
+		Building office1 = new Office( 2, 15, "Oil" );
+		office1.describe();
+		office1.HeatingOn();
+		office1.HeatingOff();
 	}
 
 }

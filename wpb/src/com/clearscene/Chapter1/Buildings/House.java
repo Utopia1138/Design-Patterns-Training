@@ -1,24 +1,13 @@
 package com.clearscene.Chapter1.Buildings;
 
-public class House extends Building{
-
-	private int bedrooms;
+public class House extends Residential{
 
 	public House( int floors, int bedrooms, String heatingType ) {
-		super( floors, heatingType );
-		setBedrooms( bedrooms );
-	}
-
-	public int getBedrooms() {
-		return bedrooms;
-	}
-
-	public void setBedrooms(int badrooms) {
-		this.bedrooms = badrooms;
+		super( floors, bedrooms, heatingType );
 	}
 	
 	public void describe() {
-		System.out.println( "This is a House with " + bedrooms + " bedrooms" );
+		System.out.println( "This is a House" );
 		super.describe();
 	}
 }
