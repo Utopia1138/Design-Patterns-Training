@@ -1,5 +1,5 @@
-# Try me with ./test.pl '{"amount":"ONE HUNDRED MILLION","currency":"DOLLARS"}'
 #!/usr/bin/perl
+# Try me with ./test.pl '{"amount":"ONE HUNDRED MILLION","currency":"DOLLARS"}'
 use strict;
 use warnings;
 use bytes;
