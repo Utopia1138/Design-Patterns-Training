@@ -1,9 +1,10 @@
-package com.clearscene.Chapter1.Atributes.Heating;
+package com.clearscene.Strategy.Atributes.Heating;
 
-public class GasCentral implements Heating {
+public class OilFired implements Heating {
 
 	@Override
 	public void HeatingOn() {
+		System.out.println("Lighting the boiler");
 		System.out.println("Heating is ON");
 	}
 
@@ -14,7 +15,6 @@ public class GasCentral implements Heating {
 
 	@Override
 	public String HeatingType() {
-		return "GasCentral";
+		return "OilFired";
 	}
-	
 }

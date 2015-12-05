@@ -1,4 +1,4 @@
-package com.clearscene.Chapter1.Atributes.Heating;
+package com.clearscene.Strategy.Atributes.Heating;
 
 public class OpenCoal implements Heating {
 

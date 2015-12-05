@@ -1,11 +1,11 @@
-package com.clearscene.Chapter1;
+package com.clearscene.Strategy;
 
-import com.clearscene.Chapter1.Buildings.Building;
-import com.clearscene.Chapter1.Buildings.Flat;
-import com.clearscene.Chapter1.Buildings.House;
-import com.clearscene.Chapter1.Buildings.Office;
+import com.clearscene.Strategy.Buildings.Building;
+import com.clearscene.Strategy.Buildings.Flat;
+import com.clearscene.Strategy.Buildings.House;
+import com.clearscene.Strategy.Buildings.Office;
 
-public class Chapter1Demo {
+public class StrategyDemo {
 
 	public static void main(String[] args) {
 

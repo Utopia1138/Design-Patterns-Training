@@ -1,10 +1,10 @@
-package com.clearscene.Chapter1.Buildings;
+package com.clearscene.Strategy.Buildings;
 
-import com.clearscene.Chapter1.Atributes.Heating.GasCentral;
-import com.clearscene.Chapter1.Atributes.Heating.Heating;
-import com.clearscene.Chapter1.Atributes.Heating.NoHeating;
-import com.clearscene.Chapter1.Atributes.Heating.OilFired;
-import com.clearscene.Chapter1.Atributes.Heating.OpenCoal;
+import com.clearscene.Strategy.Atributes.Heating.GasCentral;
+import com.clearscene.Strategy.Atributes.Heating.Heating;
+import com.clearscene.Strategy.Atributes.Heating.NoHeating;
+import com.clearscene.Strategy.Atributes.Heating.OilFired;
+import com.clearscene.Strategy.Atributes.Heating.OpenCoal;
 
 public abstract class Building {
 

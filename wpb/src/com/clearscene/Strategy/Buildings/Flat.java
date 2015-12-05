@@ -1,4 +1,4 @@
-package com.clearscene.Chapter1.Buildings;
+package com.clearscene.Strategy.Buildings;
 
 public class Flat extends Residential {
 
