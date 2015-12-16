@@ -1,7 +1,8 @@
-package org.jmp.observer;
+package org.jmp.observer.listener;
 
 import java.util.logging.Logger;
 
+import org.jmp.observer.RollingMarbles;
 import org.jmp.observer.RollingMarbles.CameraMode;
 
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
@@ -103,6 +104,7 @@ public class MarbleDropper implements ActionListener {
 
 			app.getRootNode().attachChild(marble);
 			app.getBulletAppState().getPhysicsSpace().add(marble);
+			app.getMarbles().add(marble);
 			logger.info("Marble dropped!");
 		} else {
 			logger.info("Can not drop marble outside of the terrain");

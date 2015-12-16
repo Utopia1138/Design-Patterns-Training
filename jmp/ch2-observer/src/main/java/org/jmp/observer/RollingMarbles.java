@@ -2,15 +2,15 @@ package org.jmp.observer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.jmp.observer.listener.CameraSwitchListener;
+import org.jmp.observer.listener.MarbleDropper;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -25,17 +25,29 @@ import com.jme3.terrain.heightmap.HillHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 
+
+
+/**
+ * This application generates a random terrain. The user can 
+ * press SPACE to drop a marble at whatever the camera is pointing
+ * at, or they can press TAB to follow individual marbles around.
+ * 
+ * @author Jacob Pappe
+ *
+ */
 public class RollingMarbles extends SimpleApplication {
 
-	private static final Logger logger = Logger.getLogger(RollingMarbles.class
-			.getName());
-
+	
 	// some constants for input events
 	public static final String SWITCH_CAMERA_MODE = "SWITCH_CAMERA_MODE";
 	public static final String DROP_MARBLE = "DROP_MARBLE";
 
+	/**
+	 * The usual main method
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		SimpleApplication app = new RollingMarbles();
+		RollingMarbles app = new RollingMarbles();
 		app.start();
 	}
 
@@ -49,6 +61,10 @@ public class RollingMarbles extends SimpleApplication {
 		FLY, CHASE
 	};
 
+	/**
+	 * These keep track of what camera mode we're in
+	 * and what marble we're following.
+	 **/
 	private CameraMode currentMode;
 	private int cameraChaseMarbleIndex = 0;
 
@@ -67,6 +83,11 @@ public class RollingMarbles extends SimpleApplication {
 	 */
 	private List<Geometry> marbles = new ArrayList<Geometry>();
 
+	/**
+	 * The standard initialization method. This constructs
+	 * most of the game objects and generally wires everything
+	 * together.
+	 */
 	@Override
 	public void simpleInitApp() {
 
@@ -126,14 +147,18 @@ public class RollingMarbles extends SimpleApplication {
 
 		inputManager.addMapping(SWITCH_CAMERA_MODE, new KeyTrigger(
 				KeyInput.KEY_TAB));
-		inputManager.addMapping(DROP_MARBLE, new MouseButtonTrigger(
-				MouseInput.BUTTON_LEFT));
+		inputManager.addMapping(DROP_MARBLE, new KeyTrigger(
+				KeyInput.KEY_SPACE));
 
 		inputManager.addListener(new CameraSwitchListener(this),
 				SWITCH_CAMERA_MODE);
 		inputManager.addListener(new MarbleDropper(this), DROP_MARBLE);
 	}
 
+	/**
+	 * Build a random terrain
+	 * @return
+	 */
 	private TerrainQuad buildTerrain() {
 		HillHeightMap heightmap = null;
 		HillHeightMap.NORMALIZE_RANGE = 100;
@@ -147,6 +172,11 @@ public class RollingMarbles extends SimpleApplication {
 		return terrain;
 	}
 
+	/**
+	 * Construct the material that's used to make the
+	 * terrain look OK
+	 * @return
+	 */
 	private Material buildTerrainMaterial() {
 		Material matRock = new Material(assetManager,
 				"Common/MatDefs/Terrain/Terrain.j3md");
@@ -170,12 +200,18 @@ public class RollingMarbles extends SimpleApplication {
 		return matRock;
 	}
 
+	/**
+	 * Instantiate the physics engine
+	 * @return
+	 */
 	private BulletAppState buildPhysics() {
 		bulletAppState = new BulletAppState();
 		bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
 		return bulletAppState;
 	}
 
+	// --- some getters and setters used by the Observers
+	
 	public List<Geometry> getMarbles() {
 		if (marbles == null) {
 			marbles = new ArrayList<Geometry>();
@@ -199,11 +235,6 @@ public class RollingMarbles extends SimpleApplication {
 		this.cameraChaseMarbleIndex = cameraChaseMarbleIndex;
 	}
 
-	/**
-	 * Expose the app settings so our listeners can use it
-	 * 
-	 * @return
-	 */
 	public AppSettings getSettings() {
 		return settings;
 	}
