@@ -36,11 +36,4 @@ public abstract class MessageFormat {
 	 * @return a request string to the acquirer
 	 */
 	public abstract String buildMessage( Map<MessageField, String> fields );
-	
-	/**
-	 * Does this message format support the given message field?
-	 * @param field a possible message field
-	 * @return true iff this message format supports it
-	 */
-	public abstract boolean supportsMessageField( MessageField field );
 }

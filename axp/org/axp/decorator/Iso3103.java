@@ -23,23 +23,23 @@ public class Iso3103 extends MessageFormat {
 	public Map<MessageField, String> encodeFields( Transaction txn ) {
 		Map<MessageField, String> fields = new HashMap<MessageField, String>();
 		
-		if ( supportsMessageField( CARD_NUMBER ) && ( txn.getCardNumber() != null ) ) {
+		if ( txn.getCardNumber() != null ) {
 			fields.put( CARD_NUMBER, llVar( txn.getCardNumber() ) );
 		}
 		
-		if ( supportsMessageField( EXPIRY_DATE ) && ( txn.getExpiry() != null ) ) {
+		if ( txn.getExpiry() != null ) {
 			fields.put( EXPIRY_DATE, YYMM.format( txn.getExpiry() ) );
 		}
 		
-		if ( supportsMessageField( TRANSACTION_TYPE ) && ( txn.getType() != null ) ) {
+		if ( txn.getType() != null ) {
 			fields.put( TRANSACTION_TYPE, txn.getType().name().substring( 0, 1 ) ); // [S|A|C|R]
 		}
 		
-		if ( supportsMessageField( AMOUNT_PENCE ) && ( txn.getAmountPence() != null ) ) {
+		if ( txn.getAmountPence() != null ) {
 			fields.put( AMOUNT_PENCE, String.format( "%012d", txn.getAmountPence() ) );
 		}
 		
-		if ( supportsMessageField( TRANSACTION_DATE ) && ( txn.getDate() != null ) ) {
+		if ( txn.getDate() != null ) {
 			fields.put( TRANSACTION_DATE, YYYYMMDD.format( txn.getDate() ) );
 		}
 		
@@ -66,20 +66,6 @@ public class Iso3103 extends MessageFormat {
 		header.append( "00" ); // Extensible to all of eight fields! We'll never run out!
 		
 		return header.append( mainPart ).toString();
-	}
-	
-	@Override
-	public boolean supportsMessageField( MessageField field ) {
-		switch (field) {
-		case TRANSACTION_TYPE:
-		case CARD_NUMBER:
-		case AMOUNT_PENCE:
-		case TRANSACTION_DATE:
-		case EXPIRY_DATE:
-			return true;
-		default:
-			return false;
-		}
 	}
 	
 	private String llVar( String data ) {

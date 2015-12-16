@@ -28,9 +28,4 @@ public abstract class MessageFormatTweak extends MessageFormat {
 	public String buildMessage( Map<MessageField, String> fields ) {
 		return inner.buildMessage( fields );
 	}
-
-	@Override
-	public boolean supportsMessageField( MessageField field ) {
-		return inner.supportsMessageField( field );
-	}
 }

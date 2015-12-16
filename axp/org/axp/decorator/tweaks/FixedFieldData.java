@@ -28,9 +28,4 @@ public class FixedFieldData extends MessageFormatTweak {
 		fields.put( this.field, this.value );
 		return fields;
 	}
-	
-	@Override
-	public boolean supportsMessageField( MessageField field ) {
-		return ( field.equals( this.field ) || inner.supportsMessageField( field ) );
-	}
 }
