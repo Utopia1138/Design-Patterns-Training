@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jpappe</groupId>
+	<artifactId>observer</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>observer</name>
+	<description>Example of Observer Pattern</description>
+	<packaging>jar</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jmonkey.version>3.0.10</jmonkey.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jme3</groupId>
+			<artifactId>jme3-core</artifactId>
+			<version>${jmonkey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jme3</groupId>
+			<artifactId>jme3-desktop</artifactId>
+			<version>${jmonkey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jme3</groupId>
+			<artifactId>jme3-lwjgl</artifactId>
+			<version>${jmonkey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jme3</groupId>
+			<artifactId>jme3-terrain</artifactId>
+			<version>${jmonkey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jme3</groupId>
+			<artifactId>jme3-jbullet</artifactId>
+			<version>${jmonkey.version}</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>jme3</id>
+			<name>JMonkeyEngine</name>
+			<url>http://updates.jmonkeyengine.org/maven/</url>
+		</repository>
+	</repositories>
+</project>
