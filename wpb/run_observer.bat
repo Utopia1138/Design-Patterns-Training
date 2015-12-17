@@ -1,0 +1,1 @@
+java -cp bin;lib\jansi-1.4.jar com.clearscene.Observer.ObserverDemo
