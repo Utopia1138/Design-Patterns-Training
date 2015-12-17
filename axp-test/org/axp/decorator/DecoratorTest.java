@@ -36,4 +36,16 @@ public class DecoratorTest {
 		String message = fooBankMsgFmt.encode( txn );
 		assertEquals( "Foo Bank Message Format", "054111111001644443333222211111812S00000001000020160106GBP", message );
 	}
+	
+	@Test
+	public void testEmptyTxn() {
+		MessageFormat fooBankMsgFmt = new Iso3103();
+		fooBankMsgFmt = new SubpenceInAmount( fooBankMsgFmt );
+		fooBankMsgFmt = new FixedFieldData( MessageField.CURRENCY, "GBP", fooBankMsgFmt );
+		fooBankMsgFmt = new LengthPrepended( 3, fooBankMsgFmt );
+		
+		Transaction txn = new Transaction();
+		String message = fooBankMsgFmt.encode( txn );
+		assertEquals( "Foo Bank Message Format", "01100000100GBP", message );
+	}
 }
