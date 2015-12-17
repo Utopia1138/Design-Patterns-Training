@@ -2,6 +2,10 @@ package org.txr.designpatterns.chapter2.tv;
 
 public class DefaultViewer implements Viewer{
 	private int currentInterest;
+	public int getCurrentInterest() {
+		return currentInterest;
+	}
+
 	private ViewingBehaviour behaviour;
 	private Display display;
 	private String name;
