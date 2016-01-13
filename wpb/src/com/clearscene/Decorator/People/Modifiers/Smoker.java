@@ -4,8 +4,6 @@ import com.clearscene.Decorator.People.Person;
 
 public class Smoker extends LifeModifier {
 	
-	Person p;
-	
 	public Smoker( Person p ) {
 		this.p = p;
 	}

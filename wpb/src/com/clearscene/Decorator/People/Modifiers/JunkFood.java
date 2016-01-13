@@ -4,8 +4,6 @@ import com.clearscene.Decorator.People.Person;
 
 public class JunkFood extends LifeModifier {
 	
-	Person p;
-	
 	public JunkFood( Person p ) {
 		this.p = p;
 	}

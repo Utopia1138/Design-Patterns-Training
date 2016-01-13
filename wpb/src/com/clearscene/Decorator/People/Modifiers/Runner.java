@@ -4,8 +4,6 @@ import com.clearscene.Decorator.People.Person;
 
 public class Runner extends LifeModifier {
 	
-	Person p;
-	
 	public Runner( Person p ) {
 		this.p = p;
 	}

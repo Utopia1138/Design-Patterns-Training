@@ -4,14 +4,12 @@ import com.clearscene.Decorator.People.Person;
 
 public class Drinker extends LifeModifier {
 	
-	Person p;
-	
 	public Drinker( Person p ) {
 		this.p = p;
 	}
 
   public String getDescription() {
-	  return p.getDescription() + ", Developer";
+	  return p.getDescription() + ", Drinker";
   }
 	
   public int getDeathDate() {
