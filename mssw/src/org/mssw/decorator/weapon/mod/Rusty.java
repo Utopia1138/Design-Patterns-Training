@@ -23,7 +23,7 @@ public class Rusty extends WeaponMod {
 
 	@Override
 	public int getDamage() {
-		return base.getDamage();
+		return base.getDamage() / 2;
 	}
 
 	@Override
