@@ -10,7 +10,14 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Eclipse build dirs and settings
 /bin/
+/target/
+/.settings/
+/.classpath
+/.project
+/pom.xml
 
 # Apple crap.
 **/.DS_Store
