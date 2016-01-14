@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.mssw.decorator.weapon.PointyStick;
 import org.mssw.decorator.weapon.Rifle;
 import org.mssw.decorator.weapon.RocketLauncher;
 import org.mssw.decorator.weapon.SMG;
@@ -38,6 +39,7 @@ public class Generator {
 		baseWeapons.add(new Shotgun());
 		baseWeapons.add(new RocketLauncher());
 		baseWeapons.add(new SMG());
+		baseWeapons.add(new PointyStick());
 	}
 
 	public void initialiseCombatents() {

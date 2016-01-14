@@ -13,7 +13,7 @@ public class Combatent {
 	private String name;
 	private int health;
 	private Weapon weapon;
-	private int reloading;
+	private long reloading;
 	private int currentClip = 0;
 
 	public Combatent(String name) {
@@ -48,20 +48,29 @@ public class Combatent {
 	}
 
 	public CombatentState shoot(Combatent enemy, int distance, int chance) {
+		// Weapon is currently reloading.
 		if (reloading > 0) {
 			reloading--;
+			
+			// We've finished reloading now so add ammo to the clip
+			if( reloading <= 0){
+				currentClip = weapon.getAmmoCapacity();
+			}
 			return CombatentState.RELOADING;
 		}
 
+		// Are we within range to fire?
 		if (distance > weapon.getRange()) {
 			return CombatentState.CLOSING_IN;
 		}
 
-		if (currentClip == 0) {
-			reloading += weapon.getReloadSpeed();
+		// Do we have ammo to shoot?
+		if (currentClip <= 0) {
+			reloading = Math.round(weapon.getReloadSpeed());
 			return CombatentState.RELOADING;
 		}
 
+		// Did we actually hit them?
 		if (chance > weapon.getAccuracy()) {
 			currentClip--;
 			return CombatentState.MISS;

@@ -37,12 +37,21 @@ public class Main {
 			System.out.println(c.getName() + " picked up a " + c.getWeapon().getDescription());
 		}
 
+		Thread.sleep(5000);
+		System.out.println("Battle commencing in: ");
+		System.out.println("3...");
+		Thread.sleep(1000);
+		System.out.println("2...");
+		Thread.sleep(1000);
+		System.out.println("1...");
+		Thread.sleep(1000);
+		System.out.println("Go!");
 		int distance = 100;
 		boolean winner = false;
 		while (!winner) {
 			for (Combatent c : combatents) {
 				Combatent target = c;
-				while (c.equals(target) || gen.chance() < 99) {
+				while (c.equals(target) && gen.chance() < 99) {
 					target = combatents.get(gen.chance(combatents.size()));
 				}
 
@@ -57,8 +66,15 @@ public class Main {
 				case HIT:
 					if (c.equals(target)) {
 						System.out.println(c.getName() + " shot himself with his " + c.getWeapon().getDescription());
+						Thread.sleep(1000);
+						System.out.print(".");
+						Thread.sleep(1000);
+						System.out.print(".");
+						Thread.sleep(1000);
+						System.out.println(".");
+						Thread.sleep(1000);
 					} else {
-						System.out.println(c.getName() + " shot at " + target.getName() + " with his "
+						System.out.println(c.getName() + " shot at " + target.getName() + (c.alive()? "" : " from the grave ") + " with his "
 								+ c.getWeapon().getDescription());
 					}
 					int targetHealth = target.getHealth();
