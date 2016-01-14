@@ -57,7 +57,7 @@ public class Main {
 
 				switch (c.shoot(target, distance, gen.chance())) {
 				case CLOSING_IN:
-					System.out.println(c.getName() + " is closing in on " + target.getName());
+					System.out.println(c.getName() + " is closing in on " + target.getName() + "(" + distance+" paces)");
 					distance -= 2;
 					break;
 				case RELOADING:

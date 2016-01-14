@@ -91,7 +91,8 @@ public class Generator {
 	}
 
 	private boolean shouldAddMod(int random, int threshold) {
-		return random > threshold;
+		// On a rare day you could end up with all the mods!
+		return (random > threshold || random > 99);
 	}
 
 	public Combatent generateCombatent() throws InstantiationException, IllegalAccessException,
