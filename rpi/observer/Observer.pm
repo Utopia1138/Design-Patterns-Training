@@ -14,7 +14,7 @@ sub get_observer_methods {
   my $subscribe_ref = sub {
           my ( $observer ) = @_;
           if ( my $notify_ref = $observer->can( 'notify' ) ) {
-            $observers{$observer} = $notify_ref;
+            $observers{$observer} = { 'observer' => $observer, 'callback' => $notify_ref );
           }
           else {
             warn "This object [$observer] does not have a notify sub";
@@ -34,7 +34,7 @@ sub get_observer_methods {
   my $notify_ref = sub {
           my ( $data_burst ) = @_;
           foreach my $observer ( keys %observers ) {
-            $observers{$observer}->( $data_burst );
+            $observers{$observer}{'callback'}->( $observers{$observer}{'observer'}, $data_burst );
           }
   };
 
