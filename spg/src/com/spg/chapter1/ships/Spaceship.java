@@ -10,7 +10,7 @@ public abstract class Spaceship {
 	private Engine engine;
 	private Shield shield;
 	private int health;
-	public String name;
+	private String name;
 	private Spaceship target;
 	private Faction faction;
 	
