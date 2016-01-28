@@ -41,7 +41,6 @@ import org.red.utils.gfx.GFXContext;
 public class Application {
 	private static final int W = 600, H = 600;
 	private static final int TILES = 300;
-	private static final Random RAND = new Random();
 
 	public static void main(String[] args) {
 		MapFactory[] factories = {
@@ -49,28 +48,25 @@ public class Application {
 			new VolcanoMapFactory(TILES, TILES),
 			new AlienLandscapeMapFactory(TILES, TILES) };
 
-		Supplier<MapFactory> next = () -> {
-			float val = RAND.nextFloat();
-			int idx = val < 0.4 ? 0 : val < 0.8 ? 1 : 2;
-			return factories[idx];
-		};
-
-		MapGenerator gen = new MapGenerator(
-			next.get(),
-			new PerlinNoiseFactory().setWeighting(0.65) );
+		MapCache cache = new MapCache(factories, W, H,
+			new PerlinNoiseFactory()
+				.setOctaves(8)
+				.setWeighting(0.65) );
 
 		// If you want boring, boring maps...
-		//gen.setNoiseFactory(new WhiteNoiseFactory());
+		//cache.setNoiseFactory(new WhiteNoiseFactory());
 
 		GFXContext ctx = new GFXContext("Factory Pattern", W, H);
-		ctx.register(gen.getMap(W, H));
+		ctx.register(cache.get());
 
 		Mouse mouse = new Mouse(ctx.getWindowRef());
 		mouse.bind(o -> {
 			if (o.getType() == MouseEvent.Type.CLICK) {
-				gen.setMapFactory(next.get());
-				ctx.remove(0);
-				ctx.register(gen.getMap(W, H));
+				Map map = cache.get();
+				if ( map != null ) {
+					ctx.remove(0);
+					ctx.register(map);
+				}
 			}
 		});
 
