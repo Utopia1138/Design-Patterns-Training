@@ -1,11 +1,9 @@
 package org.red.factory;
 
-public class OverworldMapFactory implements MapFactory {
-	private final int gridW, gridH;
-	
+public class OverworldMapFactory extends MapFactory {
+
 	public OverworldMapFactory(int gridW, int gridH) {
-		this.gridW = gridW;
-		this.gridH = gridH;
+		super(gridW, gridH);
 	}
 
 	@Override
@@ -20,5 +18,4 @@ public class OverworldMapFactory implements MapFactory {
 		return map;
 	}
 
-	
 }

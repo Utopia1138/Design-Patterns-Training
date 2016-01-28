@@ -1,11 +1,9 @@
 package org.red.factory;
 
-public class VolcanoMapFactory implements MapFactory {
-	private final int gridW, gridH;
-	
+public class VolcanoMapFactory extends MapFactory {
+
 	public VolcanoMapFactory(int gridW, int gridH) {
-		this.gridW = gridW;
-		this.gridH = gridH;
+		super(gridW, gridH);
 	}
 
 	@Override

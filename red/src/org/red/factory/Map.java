@@ -25,6 +25,14 @@ public class Map implements Renderable {
 		return tiles.length;
 	}
 
+	public int getTilesWide() {
+		return map[0].length;
+	}
+
+	public int getTilesHigh() {
+		return map.length;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
