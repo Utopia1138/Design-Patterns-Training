@@ -1,11 +1,15 @@
 package com.jpappe.ch5.log.appender.file;
 
+import java.nio.file.Path;
+
 import com.jpappe.ch5.log.appender.LogMessageAppender;
 
 public class FileBasedAppender implements LogMessageAppender {
 
-	public FileBasedAppender() {
-		// TODO Auto-generated constructor stub
+	private Path logFile;
+	
+	public FileBasedAppender(Path logFile) {
+		this.logFile = logFile;
 	}
 
 	@Override
