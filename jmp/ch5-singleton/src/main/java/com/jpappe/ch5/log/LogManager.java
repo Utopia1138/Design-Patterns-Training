@@ -16,11 +16,7 @@ public class LogManager {
 	}
 	
 	public static Logger getLogger(String logContext) {
-		return new Logger.LoggerBuilder(logContext)
-			.logLevel(config.getLogLevelSupplier().get())
-			.logMessageAppender(config.getAppenderSupplier().get())
-			.logMessageFormatter(config.getMessageFormatterSupplier().get())
-			.build();
+		return new Logger(logContext);
 	}
 
 }

@@ -2,7 +2,6 @@ package com.jpappe.ch5.log;
 
 import java.util.function.Supplier;
 
-import com.jpappe.ch5.log.appender.FileAppender;
 import com.jpappe.ch5.log.appender.LogMessageAppender;
 import com.jpappe.ch5.log.layout.LogMessageFormatter;
 
@@ -15,46 +14,26 @@ import com.jpappe.ch5.log.layout.LogMessageFormatter;
  *
  */
 public class LogConfiguration {
-
-	private static LogConfiguration instance;
 	
-	private LogConfiguration() {}
-	
-	public static LogConfiguration getInstance() {
-		if(instance == null) {
-			instance = new LogConfiguration();
-		}
-		return instance;
+	private LogMessageAppender appender;
+	private LogMessageFormatter messageFormatter;
+	private LogLevel logLevel;
+	public LogMessageAppender getAppender() {
+		return appender;
 	}
-	
-	private Supplier<LogMessageAppender> appenderSupplier;
-	private Supplier<LogMessageFormatter> messageFormatterSupplier;
-	private Supplier<LogLevel> logLevelSupplier;
-
-	public Supplier<LogMessageAppender> getAppenderSupplier() {
-		return appenderSupplier;
+	public void setAppender(LogMessageAppender appender) {
+		this.appender = appender;
 	}
-
-	public void setAppenderSupplier(Supplier<LogMessageAppender> appenderSupplier) {
-		this.appenderSupplier = appenderSupplier;
+	public LogMessageFormatter getMessageFormatter() {
+		return messageFormatter;
 	}
-
-	public Supplier<LogMessageFormatter> getMessageFormatterSupplier() {
-		return messageFormatterSupplier;
+	public void setMessageFormatter(LogMessageFormatter messageFormatter) {
+		this.messageFormatter = messageFormatter;
 	}
-
-	public void setMessageFormatterSupplier(
-			Supplier<LogMessageFormatter> messageFormatterSupplier) {
-		this.messageFormatterSupplier = messageFormatterSupplier;
+	public LogLevel getLogLevel() {
+		return logLevel;
 	}
-
-	public Supplier<LogLevel> getLogLevelSupplier() {
-		return logLevelSupplier;
+	public void setLogLevel(LogLevel logLevel) {
+		this.logLevel = logLevel;
 	}
-
-	public void setLogLevelSupplier(Supplier<LogLevel> logLevelSupplier) {
-		this.logLevelSupplier = logLevelSupplier;
-	}
-
-
 }
