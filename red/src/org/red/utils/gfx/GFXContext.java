@@ -55,6 +55,11 @@ public class GFXContext implements Runnable {
 		return this;
 	}
 
+	public GFXContext remove(int index) {
+		models.remove(index);
+		return this;
+	}
+
 	public GFXContext register(FrameListener listener) {
 		listeners.add(listener);
 		return this;
