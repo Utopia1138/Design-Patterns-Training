@@ -15,10 +15,11 @@ import com.jpappe.ch5.log.Logger;
 public class DefaultLogMessageFormatter implements LogMessageFormatter {
 
 	@Override
-	public String formatMessage(Logger logger, String msg) {
+	public String formatMessage(String context, String msg) {
+		System.out.println("formatMessage()");
 		return String.format("%s\t%s: %s", 
 				LocalDate.now().format( DateTimeFormatter.ISO_DATE_TIME ),
-				logger.getContext(),
+				context,
 				msg );
 	}
 

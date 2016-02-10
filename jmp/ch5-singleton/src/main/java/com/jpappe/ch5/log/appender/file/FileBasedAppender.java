@@ -17,10 +17,12 @@ public class FileBasedAppender implements LogMessageAppender {
 	
 	public FileBasedAppender(Path logFile) {
 		this.logFile = logFile;
+		System.out.println("New FileBasedAppender: " + this.logFile.toAbsolutePath().toString() );
 	}
 
 	@Override
 	public void append(String msg) {
+		System.out.println("Appending");
 		if(fileWriter == null) {
 			throw new IllegalStateException("`append' called without `startup'");
 		}
