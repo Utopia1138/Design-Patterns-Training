@@ -44,16 +44,16 @@ public class Generator {
 
 	public void initialiseCombatents() {
 		combatents = new ArrayList<>();
-		combatents.add(new Combatent("Axp"));
-		combatents.add(new Combatent("Big"));
-		combatents.add(new Combatent("Jump"));
-		combatents.add(new Combatent("Mssw"));
-		combatents.add(new Combatent("Red"));
-		combatents.add(new Combatent("Rpi"));
-		combatents.add(new Combatent("Sdt"));
-		combatents.add(new Combatent("Spg"));
-		combatents.add(new Combatent("Txr"));
-		combatents.add(new Combatent("Wpb"));
+		combatents.add(new Combatent("Axp", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Big", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Jump", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Mssw", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Red", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Rpi", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Sdt", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Spg", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Txr", chance(100), boolChance(), chance(10)));
+		combatents.add(new Combatent("Wpb", chance(100), boolChance(), chance(10)));
 	}
 
 	public List<Class<? extends Weapon>> createModSet() {
@@ -112,6 +112,10 @@ public class Generator {
 
 	public int chance(int max) {
 		return random.nextInt(max);
+	}
+	
+	public boolean boolChance(){
+		return random.nextBoolean();
 	}
 
 }

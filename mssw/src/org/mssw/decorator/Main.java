@@ -7,6 +7,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
+import ui.Screen;
+
 /**
  * @author Mike
  *
@@ -58,7 +62,7 @@ public class Main {
 				switch (c.shoot(target, distance, gen.chance())) {
 				case CLOSING_IN:
 					System.out.println(c.getName() + " is closing in on " + target.getName() + "(" + distance+" paces)");
-					distance -= 2;
+					distance -= c.getSpeed();
 					break;
 				case RELOADING:
 					System.out.println(c.getName() + " is reloading...");

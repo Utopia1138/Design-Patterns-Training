@@ -15,11 +15,24 @@ public class Combatent {
 	private Weapon weapon;
 	private long reloading;
 	private int currentClip = 0;
+	private int speed;
 
-	public Combatent(String name) {
+	public Combatent(String name, int healthModifier, boolean positiveHealthMod, int speed) {
 		this.name = name;
-		this.health = 1000;
+		this.health = this.initialiseHealth(healthModifier, positiveHealthMod);
 		this.reloading = 0;
+		this.speed = speed + 1;
+	}
+	
+	private int initialiseHealth( int mod, boolean isPositive){
+		int health = 1000;
+		if( isPositive){
+			health+= mod;
+		}
+		else{
+			health -= mod;
+		}
+		return health;
 	}
 
 	public String getName() {
@@ -37,6 +50,10 @@ public class Combatent {
 
 	public Weapon getWeapon() {
 		return weapon;
+	}
+	
+	public int getSpeed(){
+		return speed;
 	}
 
 	public boolean alive() {
