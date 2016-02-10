@@ -12,6 +12,12 @@ public abstract class Spaceship {
 	private int health;
 	private String name;
 	private Spaceship target;
+	private Faction faction;
+	
+	public enum Faction {
+		REBEL,
+		EMPIRE;
+	}
 	
 	protected void setName( String name ){
 		this.name = name;
@@ -67,6 +73,14 @@ public abstract class Spaceship {
 
 	public void setTarget( Spaceship target ) {
 		this.target = target;
+	}
+	
+	public void setFaction( Faction faction ) {
+		this.faction = faction;
+	}
+	
+	public Faction getFaction() {
+		return faction;
 	}
 	
 	public Weapon shoot() {
