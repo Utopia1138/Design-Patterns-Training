@@ -3,13 +3,14 @@
  */
 package org.mssw.decorator;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import ui.Screen;
+import org.mssw.ui.Screen;
 
 /**
  * @author Mike
@@ -26,20 +27,27 @@ public class Main {
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 * @throws InterruptedException
+	 * @throws IOException 
 	 */
 	public static void main(String[] args)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			NoSuchMethodException, SecurityException, InterruptedException {
+			NoSuchMethodException, SecurityException, InterruptedException, IOException {
 
 		Generator gen = new Generator();
+		
 
 		List<Combatent> combatents = new ArrayList<>();
 		combatents.add(gen.generateCombatent());
 		combatents.add(gen.generateCombatent());
 
 		for (Combatent c : combatents) {
+			System.out.println(c.getName() + " Entered the arena (" + c.getHealth() +"hp)");
 			System.out.println(c.getName() + " picked up a " + c.getWeapon().getDescription());
 		}
+		int distance = 150;
+		
+		Screen screen = new Screen(combatents, distance);
+		new Thread(screen).start();
 
 		Thread.sleep(5000);
 		System.out.println("Battle commencing in: ");
@@ -50,7 +58,6 @@ public class Main {
 		System.out.println("1...");
 		Thread.sleep(1000);
 		System.out.println("Go!");
-		int distance = 100;
 		boolean winner = false;
 		while (!winner) {
 			for (Combatent c : combatents) {
@@ -61,8 +68,8 @@ public class Main {
 
 				switch (c.shoot(target, distance, gen.chance())) {
 				case CLOSING_IN:
+					screen.updateDistance(distance -= c.getSpeed());
 					System.out.println(c.getName() + " is closing in on " + target.getName() + "(" + distance+" paces)");
-					distance -= c.getSpeed();
 					break;
 				case RELOADING:
 					System.out.println(c.getName() + " is reloading...");
@@ -70,6 +77,7 @@ public class Main {
 				case HIT:
 					if (c.equals(target)) {
 						System.out.println(c.getName() + " shot himself with his " + c.getWeapon().getDescription());
+						c.fail();
 						Thread.sleep(1000);
 						System.out.print(".");
 						Thread.sleep(1000);
@@ -93,6 +101,7 @@ public class Main {
 					System.out.println(c.getName() + " shot at " + target.getName() + " but missed!");
 				}
 			}
+			screen.tic();
 			Thread.sleep(500);
 		}
 	}

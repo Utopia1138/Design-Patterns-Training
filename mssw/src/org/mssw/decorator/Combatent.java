@@ -16,6 +16,7 @@ public class Combatent {
 	private long reloading;
 	private int currentClip = 0;
 	private int speed;
+	private boolean fail = false;
 
 	public Combatent(String name, int healthModifier, boolean positiveHealthMod, int speed) {
 		this.name = name;
@@ -63,6 +64,10 @@ public class Combatent {
 	public void takeDamage(int damage) {
 		health -= damage;
 	}
+	
+	public int getCurrentClip(){
+		return currentClip;
+	}
 
 	public CombatentState shoot(Combatent enemy, int distance, int chance) {
 		// Weapon is currently reloading.
@@ -96,6 +101,14 @@ public class Combatent {
 		// If nothing has failed it means we can deal some damage!
 		enemy.takeDamage(weapon.getDamage());
 		return CombatentState.HIT;
+	}
+	
+	public void fail(){
+		this.fail = true;
+	}
+	
+	public boolean failed(){
+		return fail;
 	}
 
 	@Override
