@@ -1,3 +1,4 @@
+
 package com.jpappe.ch5.log;
 
 import java.util.Map;
@@ -14,7 +15,7 @@ public class LogEngine {
 	private static LogEngine instance;
 
 	public static LogEngine getInstance() {
-		if (instance == null) {
+		if ( instance == null ) {
 			instance = new LogEngine();
 		}
 		return instance;
@@ -34,99 +35,140 @@ public class LogEngine {
 	private final ExecutorService executor;
 
 	/**
-	 * When the engine is referenced for the first time, it starts everything
-	 * up.
+	 * When the engine is referenced for the first time, it starts everything up.
 	 */
 	private LogEngine() {
 		logEntryQueue = new LinkedBlockingQueue<LogEntry>();
-		engineRunning = new AtomicBoolean(false);
-		executor = Executors.newFixedThreadPool(5);
+		engineRunning = new AtomicBoolean( false );
+		executor = Executors.newFixedThreadPool( 5 );
 	}
 
 	public void startUp() {
 
-		logEntryQueue.add(new LogEntry.LogEntryBuilder("LogEngine starting up")
-				.context("root").level(LogLevel.INFO).build());
+		// allow the various configurations to start up
+		startUpLogConfigurations();
 
-		engineRunning.set(true);
+		// add an initial log line to the root logger
+		logEntryQueue.add( new LogEntry.LogEntryBuilder( "LogEngine starting up" )
+		      .context( "root" ).level( LogLevel.INFO ).build() );
 
-		executor.submit(() -> {
+		// start the engine itself
+		engineRunning.set( true );
+		startUpExecutor();
 
-			System.out.println("Starting LogEntry processing thread: "
-					+ Thread.currentThread().getName());
+	}
+
+	private void startUpExecutor() {
+		executor.submit( () -> {
+
+			String myName = Thread.currentThread().getName();
+			System.out.println( "Starting LogEntry processing thread: "
+		         + myName );
 
 			Map<String, LogConfiguration> configurations = LogConfigurationManager
-					.getInstance().getConfigurations();
-			while (engineRunning.get()) {
-				System.out.println("...starting loop");
-				try {
-					final LogEntry entry = logEntryQueue.take();
-					System.out.println("Pulled LogEntry from context "
-							+ entry.getContext());
+		         .getInstance().getConfigurations();
 
-					/**
-					 * go through all log configurations and find any that are
-					 * compatible with the log entry. This means that the config
-					 * name prefix-matches the log context and the log levels
-					 * match
-					 */
-					configurations.forEach((name, config) -> {
-						if (entry.getContext().startsWith(name)
-								&& entry.getLogLevel().gteq(
-										config.getLogLevel())) {
+			while ( engineRunning.get() ) {
+			System.out.println( myName + ": ...starting loop" );
 
-							System.out
-									.println("Using LogConfiguration " + name);
+			try {
+				final LogEntry entry = logEntryQueue.poll( 100, TimeUnit.MILLISECONDS );
 
-							config.getAppender().append(
-									config.getMessageFormatter().formatMessage(
-											entry.getContext(),
-											entry.getMessage()));
+			if ( entry != null ) {
+
+				System.out.println( myName + ": Pulled LogEntry from context "
+		               + entry.getContext() );
+
+				/**
+				 * go through all log configurations and find any that are compatible with the log
+				 * entry. This means that the config name prefix-matches the log context and the log
+				 * levels match
+				 */
+				configurations.forEach( ( name, config ) -> {
+					if ( entry.getContext().startsWith( name )
+		                  && entry.getLogLevel().gteq(
+		                        config.getLogLevel() ) ) {
+
+						System.out
+		                     .println( myName + ": Using LogConfiguration " + name );
+
+						try {
+						config.getAppender().append(
+		                        config.getMessageFormatter().formatMessage(
+		                              entry ) );
 						}
-					});
-				} catch (InterruptedException e) {
-					System.err.println("Error encountered waiting for queue: "
-							+ e.getMessage());
-				}
-				System.out.println("...reached end of loop");
+						catch ( Exception e ) {
+						System.err.println( myName + ": Error encountered appending log entry: " + e.getMessage() );
+						}
+						}
+				} );
 			}
-		});
+			}
+			catch ( InterruptedException e ) {
+					System.err.println( "Error encountered waiting for queue: "
+				          + e.getMessage() );
+			}
+			}
+
+			System.out.println( myName + ": engine has turned off. Shutting down." );
+		} );
+
+	}
+
+	private static void startUpLogConfigurations() {
+		LogConfigurationManager.getInstance().startUp();
+	}
+
+	private static void shutDownLogConfigurations() {
+		LogConfigurationManager.getInstance().shutDown();
 	}
 
 	public void shutDown() throws LogShutdownException {
-		System.out.println("Shutting down LogEngine");
+		System.out.println( "Shutting down LogEngine" );
+
+		// add a final log line to the root logger
+		logEntryQueue.add( new LogEntry.LogEntryBuilder( "LogEngine shutting down" )
+		      .context( "root" ).level( LogLevel.INFO ).build() );
+
 		// wait for all messages to get off the queue
-		while (logEntryQueue.peek() != null) {
+		while ( logEntryQueue.peek() != null ) {
 			try {
-				System.out.println("Log Queue is not empty. Waiting 100ms.");
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new LogShutdownException(
-						"Error waiting until log entry queue is empty", e);
+			System.out.println( "Log Queue is not empty. Waiting 100ms." );
+			Thread.sleep( 1000 );
+			}
+			catch ( InterruptedException e ) {
+			throw new LogShutdownException(
+			      "Error waiting until log entry queue is empty", e );
 			}
 		}
-		engineRunning.set(false);
+
+		System.out.println( "Setting engineRunning to false" );
+		engineRunning.set( false );
 
 		// now shutdown the executor
 		executor.shutdown();
 		try {
-			executor.awaitTermination(5, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			System.err.println("Tasks interrupted shutting down executor: "
-					+ e.getMessage());
-		} finally {
-			if (!executor.isTerminated()) {
-				System.err.println("cancel non-finished tasks");
+			executor.awaitTermination( 5, TimeUnit.SECONDS );
+		}
+		catch ( InterruptedException e ) {
+			System.err.println( "Tasks interrupted shutting down executor: "
+			      + e.getMessage() );
+		}
+		finally {
+			if ( !executor.isTerminated() ) {
+			System.err.println( "cancel non-finished tasks" );
 			}
 			executor.shutdownNow();
-			System.out.println("shutdown finished");
+			System.out.println( "shutdown finished" );
 		}
+
+		shutDownLogConfigurations();
 	}
 
-	public void addLogEntry(LogEntry entry) {
-		System.out.println("Adding log entry from context "
-				+ entry.getContext());
-		logEntryQueue.add(entry);
+	public void addLogEntry( LogEntry entry ) {
+		System.out.println( "Adding log entry from context "
+		      + entry.getContext() );
+		logEntryQueue.add( entry );
 	}
 
 }

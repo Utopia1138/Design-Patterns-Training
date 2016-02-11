@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.jpappe.ch5.log.appender.file.FileBasedAppender;
+import com.jpappe.ch5.log.exception.LogShutdownException;
+import com.jpappe.ch5.log.exception.LogStartupException;
 import com.jpappe.ch5.log.layout.DefaultLogMessageFormatter;
 
 
@@ -44,6 +46,33 @@ public class LogConfigurationManager {
 	
 	public Map<String,LogConfiguration> getConfigurations() {
 		return configurations;
+	}
+
+	public void startUp() {
+		configurations.forEach( ( key, config ) -> {
+			try {
+			config.getAppender().startup();
+			}
+			catch ( LogStartupException e ) {
+			System.err.println( "Error starting up appender for config " + key + ". Removing configuration." );
+			e.printStackTrace( System.err );
+			configurations.remove( key );
+			}
+		} );
+
+	}
+
+	public void shutDown() {
+		configurations.forEach( ( key, config ) -> {
+
+			try {
+			config.getAppender().shutdown();
+			}
+			catch ( LogShutdownException e ) {
+			System.err.println( "Error shutting down appender for config " + key );
+			e.printStackTrace( System.err );
+			}
+		} );
 	}
 
 }

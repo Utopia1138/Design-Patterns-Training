@@ -17,7 +17,7 @@ public class Driver {
 
 		LogConfiguration config = new LogConfiguration();
 		config.setAppender(new FileBasedAppender(Paths.get("main.log")));
-		config.setMessageFormatter(new DefaultLogMessageFormatter() );
+		config.setMessageFormatter( new DefaultLogMessageFormatter() );
 		config.setLogLevel(LogLevel.DEBUG);
 		LogConfigurationManager.getInstance()
 			.addLogConfiguration("main", config);
