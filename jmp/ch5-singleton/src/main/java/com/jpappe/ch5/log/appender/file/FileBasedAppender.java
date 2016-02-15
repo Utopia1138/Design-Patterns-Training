@@ -28,7 +28,7 @@ public class FileBasedAppender implements LogMessageAppender {
 		}
 		
 		try {
-			fileWriter.write(msg);
+			fileWriter.write( msg + "\n" );
 			fileWriter.flush();
 		} catch (IOException e) {
 			throw new RuntimeException("Error writing to log file " + logFile.toString(), e);
@@ -38,7 +38,7 @@ public class FileBasedAppender implements LogMessageAppender {
 	@Override
 	public void startup() throws LogStartupException {
 		try {
-			fileWriter = Files.newBufferedWriter(logFile, StandardOpenOption.APPEND);
+			fileWriter = Files.newBufferedWriter( logFile, StandardOpenOption.CREATE );
 		} catch (IOException e) {
 			throw new LogStartupException("Unable to startup FileBasedAppender", e);
 		}

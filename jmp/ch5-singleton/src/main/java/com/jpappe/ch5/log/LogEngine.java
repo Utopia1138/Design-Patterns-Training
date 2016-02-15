@@ -8,14 +8,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
-
-import com.jpappe.ch5.log.exception.LogShutdownException;import com.jpappe.ch5.log.runner.LogEntryRunner;
-
+import com.jpappe.ch5.log.exception.LogShutdownException;
+import com.jpappe.ch5.log.runner.LogEntryRunner;
 
 public class LogEngine {
 
 	private static LogEngine instance;
-	
+
 	private int numThreads = 1;
 
 	public static LogEngine getInstance() {
@@ -47,35 +46,53 @@ public class LogEngine {
 		engineRunning = new AtomicBoolean(false);
 		executor = Executors.newFixedThreadPool(5);
 	}
-	
+
 	public void setNumThreads(int i) {
 		this.numThreads = i;
 	}
 
 	public void startUp() {
 
-		logEntryQueue.add(
-				new LogEntry.LogEntryBuilder("LogEngine starting up with " + numThreads + " threads")
+		// allow the various configurations to start up
+		startUpLogConfigurations();
+
+		logEntryQueue.add(new LogEntry.LogEntryBuilder(
+				"LogEngine starting up with " + numThreads + " threads")
 				.context("root").level(LogLevel.INFO).build());
 
 		engineRunning.set(true);
-		
-		IntStream.range(1, (numThreads + 1))
-			.forEach((i) -> {
-				System.out.println("Starting thread " + i);
-				
-				executor.submit(
-						new LogEntryRunner(engineRunning, 
-								logEntryQueue, 
-								LogConfigurationManager
-									.getInstance()
-									.getConfigurations())
-						);
-			});
+
+		IntStream.range(1, (numThreads + 1)).forEach(
+				(i) -> {
+					System.out.println("Starting thread " + i);
+
+					executor.submit(
+							new LogEntryRunner(
+									engineRunning,
+									logEntryQueue, 
+									LogConfigurationManager
+										.getInstance()
+										.getConfigurations()));
+				});
+
+	}
+
+	private static void startUpLogConfigurations() {
+		LogConfigurationManager.getInstance().startUp();
+	}
+
+	private static void shutDownLogConfigurations() {
+		LogConfigurationManager.getInstance().shutDown();
 	}
 
 	public void shutDown() throws LogShutdownException {
 		System.out.println("Shutting down LogEngine");
+
+		// add a final log line to the root logger
+		logEntryQueue.add(new LogEntry.LogEntryBuilder(
+				"LogEngine shutting down").context("root").level(LogLevel.INFO)
+				.build());
+
 		// wait for all messages to get off the queue
 		while (logEntryQueue.peek() != null) {
 			try {
@@ -86,6 +103,8 @@ public class LogEngine {
 						"Error waiting until log entry queue is empty", e);
 			}
 		}
+
+		System.out.println("Setting engineRunning to false");
 		engineRunning.set(false);
 
 		// now shutdown the executor
@@ -102,6 +121,8 @@ public class LogEngine {
 			executor.shutdownNow();
 			System.out.println("shutdown finished");
 		}
+
+		shutDownLogConfigurations();
 	}
 
 	public void addLogEntry(LogEntry entry) {
