@@ -47,8 +47,9 @@ public class LogEngine {
 		executor = Executors.newFixedThreadPool(5);
 	}
 
-	public void setNumThreads(int i) {
+	public LogEngine setNumThreads(int i) {
 		this.numThreads = i;
+		return this;
 	}
 
 	public void startUp() {

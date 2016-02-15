@@ -22,7 +22,10 @@ public class Driver {
 		LogConfigurationManager.getInstance()
 			.addLogConfiguration("main", config);
 		
-		LogEngine.getInstance().startUp();
+		LogEngine
+			.getInstance()
+			.setNumThreads(3)
+			.startUp();
 		
 		Logger log = LogManager.getLogger("main-logger");
 		
