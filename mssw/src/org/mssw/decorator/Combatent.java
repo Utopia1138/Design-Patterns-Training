@@ -83,7 +83,7 @@ public class Combatent {
 
 		// Are we within range to fire?
 		if (distance > weapon.getRange()) {
-			return CombatentState.CLOSING_IN;
+			return CombatentState.OUT_OF_RANGE;
 		}
 
 		// Do we have ammo to shoot?

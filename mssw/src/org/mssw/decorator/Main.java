@@ -67,7 +67,7 @@ public class Main {
 				}
 
 				switch (c.shoot(target, distance, gen.chance())) {
-				case CLOSING_IN:
+				case OUT_OF_RANGE:
 					screen.updateDistance(distance -= c.getSpeed());
 					System.out.println(c.getName() + " is closing in on " + target.getName() + "(" + distance+" paces)");
 					break;
@@ -101,7 +101,7 @@ public class Main {
 					System.out.println(c.getName() + " shot at " + target.getName() + " but missed!");
 				}
 			}
-			screen.tic();
+			screen.tick();
 			Thread.sleep(500);
 		}
 	}

@@ -8,5 +8,5 @@ package org.mssw.decorator.combatent;
  *
  */
 public enum CombatentState {
-	RELOADING, CLOSING_IN, HIT, MISS
+	RELOADING, OUT_OF_RANGE, HIT, MISS
 }

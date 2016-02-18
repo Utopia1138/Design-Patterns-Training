@@ -141,7 +141,7 @@ public class Screen implements Runnable {
 		this.distance.setText(distance.toString());
 	}
 
-	public void tic() {
+	public void tick() {
 		int p1Health = combatent1.getHealth();
 		player1Health.setValue(p1Health);
 		player1Ammo.setValue(combatent1.getCurrentClip());
