@@ -3,6 +3,7 @@ package com.spg.chapter1.ships;
 import com.spg.chapter1.engines.Engine;
 import com.spg.chapter1.shields.Shield;
 import com.spg.chapter1.weapons.Weapon;
+import com.spg.chapter5.SingleAnnouncer;
 
 public abstract class Spaceship {
 	// Needs engines, weapons, and shields
@@ -57,6 +58,9 @@ public abstract class Spaceship {
 	
 	public void explode() {
 		System.out.println( name + " has exploded!" );
+		
+		SingleAnnouncer announcer = SingleAnnouncer.getInstance();
+		announcer.speak( "Oh my, it looks like bits of " + name + " have been scattered all over " + announcer.getLocation() );
 	}
 
 	public int getHealth() {

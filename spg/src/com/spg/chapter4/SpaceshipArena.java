@@ -12,12 +12,17 @@ import com.spg.chapter4.abstractfactory.SienarSystemsFactory;
 import com.spg.chapter4.factorymethod.ImperialFactory;
 import com.spg.chapter4.factorymethod.RebelFactory;
 import com.spg.chapter4.factorymethod.SpaceshipFactory;
+import com.spg.chapter5.SingleAnnouncer;
 
 public class SpaceshipArena {
 
 	public static void main( String[] args ) {
 
 		List<Spaceship> ships = new ArrayList<Spaceship>();
+		
+		// Our first battle takes place in a space junkyard
+		SingleAnnouncer announcer = SingleAnnouncer.getInstance();
+		announcer.setLocation( "a space junkyard" );
 
 		// Here we have some factories
 		SpaceshipFactory empire = new ImperialFactory();
@@ -48,6 +53,9 @@ public class SpaceshipArena {
 		ships = new ArrayList<Spaceship>();
 		empire.setPartProvider( new IncomCorporationFactory() );
 		rebels.setPartProvider( new SienarSystemsFactory() );
+		
+		// This time the battle takes place in deep space
+		announcer.setLocation( "deep space" );
 
 		// Let's set up one cruiser against ten fighters and see who wins
 		ships.add( empire.constructShip( "Imp 1" ) );
@@ -83,6 +91,9 @@ public class SpaceshipArena {
 	}
 
 	public static void battle( List<Spaceship> ships ) {
+		SingleAnnouncer announcer = SingleAnnouncer.getInstance();
+		announcer.speak( "The battle begins in " + announcer.getLocation() );
+		
 		while ( true ) {
 			for ( Spaceship ship : ships ) {
 				if ( ship.getHealth() < 0 ) {

@@ -6,6 +6,7 @@ import com.spg.chapter1.shields.Shield;
 import com.spg.chapter1.ships.Spaceship;
 import com.spg.chapter1.weapons.Weapon;
 import com.spg.chapter4.abstractfactory.SpaceshipPartFactory;
+import com.spg.chapter5.SingleAnnouncer;
 
 public abstract class SpaceshipFactory {
 
@@ -15,6 +16,8 @@ public abstract class SpaceshipFactory {
 		System.out.println( "Placing order with parts provider" );
 
 		System.out.println( "Assembling starship " + name );
+		SingleAnnouncer announcer = SingleAnnouncer.getInstance();
+		announcer.speak( "A new ship rolls off the production lines and heads out to do battle in " + announcer.getLocation() );
 
 		return assembleShip( name, partProvider.buildShield(), partProvider.buildWeapon(), partProvider.buildEngine() );
 	}
