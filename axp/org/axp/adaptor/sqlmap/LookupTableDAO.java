@@ -1,4 +1,4 @@
-package org.axp.adaptor.sqlset;
+package org.axp.adaptor.sqlmap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

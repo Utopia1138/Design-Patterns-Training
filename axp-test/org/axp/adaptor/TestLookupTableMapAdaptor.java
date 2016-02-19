@@ -13,8 +13,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import org.axp.adaptor.sqlset.LookupTableDAO;
-import org.axp.adaptor.sqlset.LookupTableMapAdaptor;
+import org.axp.adaptor.sqlmap.LookupTableDAO;
+import org.axp.adaptor.sqlmap.LookupTableMapAdaptor;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
