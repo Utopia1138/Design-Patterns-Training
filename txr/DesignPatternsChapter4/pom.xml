@@ -26,6 +26,11 @@
   		<artifactId>jme3-lwjgl</artifactId>
   		<version>3.0.10</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.jme3</groupId>
+  		<artifactId>jme3-plugins</artifactId>
+  		<version>3.0.10</version>
+  	</dependency>
   </dependencies>
   <repositories>
   <repository>
