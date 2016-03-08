@@ -1,14 +1,13 @@
 package chapter6.commands;
 
 import chapter6.Army;
-import chapter6.BattleSimulator;
 import chapter6.Location;
 
-public class Attack implements Command {
+public class Recouperate implements Command {
 
 	private Army army;
 	private Location location;
-	
+
 	@Override
 	public Army getArmy() {
 		return army;
@@ -31,14 +30,24 @@ public class Attack implements Command {
 
 	@Override
 	public void execute() {
-		BattleSimulator bs = new BattleSimulator();
-		army.setStrength(2); // Defensive bonuses ayz ayz
-		bs.attack(army, location);
+		army.setStrength(1); // Healing up = weak defense
+		
+		int newSize = (int) ( (double) army.getSize() * 1.33);
+		if(newSize > army.getInitialSize()){
+			newSize=army.getInitialSize();
+		}
+		army.setSize(newSize);
+		System.out.println(army);
+		
+		if(location.getOwnedBy() == army.getCountry()){
+			army.setLocation(location);
+		} else {
+			// Don't move anywhere, sucker!
+		}
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return this.getClass().getSimpleName();
 	}
-	
 }

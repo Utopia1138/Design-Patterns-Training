@@ -1,11 +1,9 @@
-package chapter6.battle;
+package chapter6;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import chapter6.Army;
-import chapter6.location.Location;
+import chapter6.singleton.Armies;
 
 /**
  * Responsible for determining the outcome of a single battle at a given
@@ -18,21 +16,22 @@ public class BattleSimulator {
 
 	Random r = new Random();
 
-	public Location attack(Army attacker, Location location) {
+	public void attack(Army attacker, Location location) {
 
 		System.out.println(location.getName() + " (Owned by "
 				+ location.getOwnedBy() + ") is being attacked by "
 				+ attacker.getCountry());
 
-		List<Army> defenders = location.getDefendingForces();
+		List<Army> defenders = Armies.getDefendingForces(location);
 
-		// Hackity hack hack
-		attacker.setSizeAtStartOfBattle(attacker.getSize());
-		for( Army defender : defenders ){
-			defender.setSizeAtStartOfBattle(defender.getSize());
-		}
-		
 		while (!isBattleWon(attacker, defenders)) {
+
+			try {
+				System.out.println();
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// Swallow
+			}
 			
 			attacker.setStrength(calculateArmyStrength(attacker));
 			int totalDefenseStrength = 0;
@@ -42,25 +41,34 @@ public class BattleSimulator {
 			}
 
 			attacker = calculateAttrition(attacker, attacker.getStrength(),
-					totalDefenseStrength, attacker.getSizeAtStartOfBattle() / 10);
+					totalDefenseStrength, attacker.getInitialSize() / 10);
 			for (Army defender : defenders) {
 				defender = calculateAttrition(defender, defender.getStrength(),
-						attacker.getStrength(), defender.getSizeAtStartOfBattle() / 10);
+						attacker.getStrength(), defender.getInitialSize() / 10);
 			}
 
 		}
 
 		if (attacker.getSize() > 0) {
+
+			attacker.setExperience(attacker.getExperience() + 1); // Level up!
+
 			// Attacker has won, so update location stuff
-			location.setDefendingForces(Arrays.asList(attacker));
 			location.setOwnedBy(attacker.getCountry());
+			attacker.setLocation(location);
 			System.out.println(attacker.getCountry() + " won the battle");
 		} else {
 			System.out.println("Defenders held out");
+			for (Army defender : defenders) {
+				defender.setExperience(defender.getExperience() + 1); // Level
+																		// up!
+			}
 		}
-
-		return location;
+		
+		Armies.purgeDeadArmies();
 	}
+
+
 
 	private boolean isBattleWon(Army attacker, List<Army> defenders) {
 		if (attacker.getSize() == 0) {

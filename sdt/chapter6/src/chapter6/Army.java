@@ -2,11 +2,12 @@ package chapter6;
 
 public class Army {
 	private Country country;
+	private Location location;
+
+	private int initialSize = 0;
 	private int size;
 	private int strength = 1;
 	private int experience = 1;
-	
-	private int sizeAtStartOfBattle; // This should be held in the BattleSimulator but I couldn't be bothered.
 
 	public int getSize() {
 		return size;
@@ -14,6 +15,9 @@ public class Army {
 
 	public void setSize(int size) {
 		this.size = size;
+		if (initialSize == 0) {
+			this.initialSize = size;
+		}
 	}
 
 	public int getStrength() {
@@ -40,12 +44,28 @@ public class Army {
 		this.country = country;
 	}
 
-	public int getSizeAtStartOfBattle() {
-		return sizeAtStartOfBattle;
+	public String toString() {
+
+		double percentageOfSize = (((double) size / (double) initialSize) * 100.0);
+
+		return "Army - Country: " + getCountry() + " Size: " + getSize()
+				+ " [ " + percentageOfSize + "% ]";
 	}
 
-	public void setSizeAtStartOfBattle(int sizeAtStartOfBattle) {
-		this.sizeAtStartOfBattle = sizeAtStartOfBattle;
+	public int getInitialSize() {
+		return initialSize;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public boolean isDead() {
+		return (size == 0);
 	}
 
 }
