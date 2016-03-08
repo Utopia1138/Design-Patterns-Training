@@ -1,5 +1,7 @@
 package com.jpappe.ch6.game;
 
+import com.jpappe.ch6.game.map.GameMap;
+
 public class Driver {
 
 	public Driver() {
@@ -8,6 +10,7 @@ public class Driver {
 	
 	public static void main(String [] args) {
 		
+		GameMap map = new GameMap(15);
 	}
 
 }
