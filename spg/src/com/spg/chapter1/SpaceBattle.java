@@ -26,7 +26,7 @@ public class SpaceBattle {
 		while ( true ) {
 			
 			for (Spaceship ship: ships) {
-					ship.getTarget().damage( ship.shoot() );
+					ship.shoot().execute( ship.getTarget() );
 					
 					if ( ship.getTarget().getHealth() < 0 ) {
 						ship.getTarget().explode();

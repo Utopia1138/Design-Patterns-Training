@@ -16,7 +16,7 @@ import com.spg.chapter5.SingleAnnouncer;
 
 public class SpaceshipArena {
 
-	public static void main( String[] args ) {
+	public static void main( String[] args ) throws Exception {
 
 		List<Spaceship> ships = new ArrayList<Spaceship>();
 		
@@ -90,7 +90,7 @@ public class SpaceshipArena {
 		}
 	}
 
-	public static void battle( List<Spaceship> ships ) {
+	public static void battle( List<Spaceship> ships ) throws Exception {
 		SingleAnnouncer announcer = SingleAnnouncer.getInstance();
 		announcer.speak( "The battle begins in " + announcer.getLocation() );
 		
@@ -106,13 +106,14 @@ public class SpaceshipArena {
 					return;
 				}
 
-				ship.getTarget().damage( ship.shoot() );
+				ship.shoot().execute( ship.getTarget() );
 
 				if ( ship.getTarget().getHealth() < 0 ) {
 					ship.getTarget().explode();
 					setTarget( ship, ships );
 				}
 			}
+			Thread.sleep( 500 );
 		}
 	}
 

@@ -17,4 +17,20 @@ public class Cruiser extends Spaceship {
 		setEngine( engine );
 		setFaction( faction );
 	}
+
+	@Override
+	public void dazzle() {
+		System.out.println( "Argh! Why did we install this huge window in the front." );
+		this.dodgeUpdate -= 0.10;
+	}
+
+	@Override
+	public void activatePointDefence() {
+		
+		// 20% chance of shooting down incoming missile
+		if ( (int) Math.ceil( Math.random() * 100 ) < 20 ) {
+			System.out.println( "Shoot it down" );
+			this.mitigationUpdate = 0.0;
+		}
+	}
 }
