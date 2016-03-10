@@ -21,9 +21,6 @@ import org.txr.designpatterns.chapter6.reporters.TedCruzDisciple;
 public class Campaign {
 
 	public static void main (String [] args) {
-		
-	
-		
 		Network network = new Network(buildReporterList());
 		network.broadcastElectionsNews();
 		
