@@ -1,8 +1,5 @@
 package org.red.factory;
 
-import java.util.Random;
-import java.util.function.Supplier;
-
 import org.red.observer.Mouse;
 import org.red.observer.MouseEvent;
 import org.red.utils.gfx.GFXContext;
