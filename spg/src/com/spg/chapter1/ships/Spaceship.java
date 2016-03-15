@@ -4,6 +4,8 @@ import com.spg.chapter1.engines.Engine;
 import com.spg.chapter1.shields.Shield;
 import com.spg.chapter1.weapons.Weapon;
 import com.spg.chapter5.SingleAnnouncer;
+import com.spg.chapter6.Projectile;
+import com.spg.chapter6.ProjectileClass;
 
 public abstract class Spaceship {
 	// Needs engines, weapons, and shields
@@ -14,6 +16,10 @@ public abstract class Spaceship {
 	private String name;
 	private Spaceship target;
 	private Faction faction;
+	
+	// Buffs/debuffs
+	protected double dodgeUpdate = 1.0; 
+	protected double mitigationUpdate = 1.0; 
 	
 	public enum Faction {
 		REBEL,
@@ -36,14 +42,18 @@ public abstract class Spaceship {
 		this.shield = shield;
 	}
 
-	public void damage( Weapon damager ) {
-		// Ship damage based on dodge chance and shield strength
+	public void damage( ProjectileClass projectile, int damage ) {
 		
-		int damage = 0;
+		// If we're dead what are we doing here?
+		if ( getHealth() < 0 ) {
+			return;
+		}
+		
+		// Ship damage based on dodge chance and shield strength		
 		
 		// See if we were hit
-		if ( (int) Math.ceil( Math.random() * 100 ) > engine.dodge() )  {
-			damage = (int) Math.floor( shield.mitigate( damager ) );
+		if ( (int) Math.ceil( Math.random() * 100 ) > ( engine.dodge() * dodgeUpdate ) )  {
+			damage = (int) Math.floor( shield.mitigate( projectile, damage ) );
 
 			setHealth( getHealth() - damage );
 
@@ -87,7 +97,15 @@ public abstract class Spaceship {
 		return faction;
 	}
 	
-	public Weapon shoot() {
-		return weapon;
+	public Projectile shoot() {
+		return weapon.shoot();
+	}
+	
+	public abstract void dazzle();
+
+	public abstract void activatePointDefence();
+
+	public void knockback() {
+		// TODO 
 	}
 }

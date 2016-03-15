@@ -17,4 +17,17 @@ public class Freighter extends Spaceship {
 		setEngine( engine );
 		setFaction( faction );
 	}
+
+	@Override
+	public void dazzle() {
+		System.out.println( "Good thing we bought those sunglasses." );
+	}
+
+	@Override
+	public void activatePointDefence() {
+		System.out.println( "Launch chaff" );
+		
+		// Chaff explodes missile early, cutting damage in half
+		this.mitigationUpdate = 0.5;
+	}
 }

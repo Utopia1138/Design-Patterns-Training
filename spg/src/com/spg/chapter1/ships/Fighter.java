@@ -16,4 +16,23 @@ public class Fighter extends Spaceship {
 		setFaction( faction );
 	}
 
+	
+	@Override
+	public void dazzle() {
+		System.out.println( "Argh! *flails wildly at the controls*" );
+		this.dodgeUpdate += 0.20;
+	}
+
+
+	@Override
+	public void activatePointDefence() {
+		System.out.println( "Firing flare!" );
+		
+		// Missile has 50-50 chance of picking flare or fighter
+		if ( (int) Math.ceil( Math.random() * 100 ) < 50 ) {
+			this.dodgeUpdate += 100.0;
+		}
+
+	}
+
 }
