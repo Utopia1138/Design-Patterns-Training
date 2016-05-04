@@ -1,4 +1,4 @@
-package org.axp.template.dpg;
+package org.axp.template.xml;
 
 import java.util.Stack;
 

@@ -1,4 +1,4 @@
-package org.axp.template.dpg;
+package org.axp.template;
 
 public class TransactionRejectException extends Exception {
 	private static final long serialVersionUID = -4076737718279747886L;

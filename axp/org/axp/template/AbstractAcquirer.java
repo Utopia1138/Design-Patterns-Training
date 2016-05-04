@@ -1,10 +1,12 @@
-package org.axp.template.dpg;
+package org.axp.template;
 
+import org.axp.template.xml.XMLBuilder;
+import org.axp.template.xml.XMLQuery;
 import org.w3c.dom.Document;
 
 public abstract class AbstractAcquirer<E> {
 	public Document processTransaction( Document request ) {
-		String method = XMLQuery.get( "/Request/Transaction/CardTxn/method", request );
+		String method = XMLQuery.get( "/Request/Transaction/method", request );
 		
 		if ( method == null ) {
 			method = "null";
@@ -62,8 +64,6 @@ public abstract class AbstractAcquirer<E> {
 	protected Document generateErrorResponse( Document request, int errorCode, String errorMessage ) {
 		return new XMLBuilder().
 			start( "Response" ).
-				addChild( "datacash_reference", "bob" ).
-				addChild( "merchantreference", "dave" ).
 				addChild( "status", Integer.toString( errorCode ) ).
 				addChild( "reason", errorMessage ).
 			finish().getDocument();

@@ -1,4 +1,4 @@
-package org.axp.template.dpg;
+package org.axp.template.xml;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;

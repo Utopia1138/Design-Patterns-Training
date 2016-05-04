@@ -1,5 +1,6 @@
-package org.axp.template.dpg;
+package org.axp.template;
 
+import org.axp.template.xml.XMLBuilder;
 import org.w3c.dom.Document;
 
 public class NoopAcquirer extends AbstractAcquirer<String> {
@@ -9,10 +10,9 @@ public class NoopAcquirer extends AbstractAcquirer<String> {
 		synchronized ( this ) {
 			return new XMLBuilder().
 				start( "Response" ).
-					addChild( "datacash_reference", "123456789" ).
-					addChild( "merchantreference", "54321" ).
+					addChild( "reference", "87654321" ).
 					addChild( "authcode", Integer.toString( this.currAuthcode++ ) ).
-					addChild( "status", "1" ).
+					addChild( "code", "1" ).
 					addChild( "reason", "ACCEPTED" ).
 				finish().getDocument();
 		}
