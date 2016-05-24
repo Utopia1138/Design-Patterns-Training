@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<channel>
+	<user id="p1">Alice Aqua</user>
+	<user id="p2">Bob Brown</user>
+	<user id="p3">Carol Chartreuse</user>
+	<user id="p4">Dave Dandelion</user>
+	<user id="p5">Eve Emerald</user>
+	<game id="g1" type="chess">
+		<player id="p1"/>
+		<player id="p4"/>
+		<rule name="secondsPerMove" setting="30"/>
+		<rule name="totalTimeMinutes" setting="15"/> 
+	</game>
+	<user id="p6">Fred Fuschia</user>
+	<logoff id="p5"/>
+	<game id="g2" type="hearts">
+		<player id="p2"/>
+		<player id="p3"/>
+		<player id="p6"/>
+		<player id="p4"/>
+		<rule name="jackDiamonds" setting="on"/>
+	</game>
+	<finishGame id="g1" winner="p1"/>
+	<logoff id="p1"/>
+	<finishGame id="g2" winner="p6"/>
+</channel>
