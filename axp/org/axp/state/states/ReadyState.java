@@ -5,6 +5,13 @@ import org.axp.state.XMLState;
 import org.axp.state.entity.Game;
 import org.xml.sax.Attributes;
 
+/**
+ * This is the main state of the XML parser. We wait for users to log in (&lt;user&gt;) and out
+ * (&lt;logoff/&gt;) and for games to be created (&lt;game&gt;) and finish (&lt;finishGame/&gt;),
+ * moving into the {@link UserState} and {@link GameState} respectively.
+ * 
+ * Once we finally see the end &lt;/channel&gt; element, we disconnect and move to the {@link FinalState}.
+ */
 public class ReadyState extends XMLState {
 	public ReadyState( GameEventController controller ) {
 		super( controller );

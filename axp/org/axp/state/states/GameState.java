@@ -5,6 +5,11 @@ import org.axp.state.XMLState;
 import org.axp.state.entity.Game;
 import org.xml.sax.Attributes;
 
+/**
+ * Game details state of the XML parser. Here we process &lt;player/&gt; and &lt;rule/&gt; tags that
+ * modify the current game; we apply these to the {@link Game} entity and tell the controller to
+ * refresh. When we see the end &lt;/game&gt; tag, we return to {@link ReadyState}.
+ */
 public class GameState extends XMLState {
 	private Game game;
 	

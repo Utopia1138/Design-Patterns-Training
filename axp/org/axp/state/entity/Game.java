@@ -3,6 +3,10 @@ package org.axp.state.entity;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+/**
+ * An entity representing the state of some game on the server. We see who's playing, some rule variations,
+ * and if it is finished. (And if so, who won).
+ */
 public class Game {
 	private String gameType;
 	private ArrayList<String> players = new ArrayList<>();

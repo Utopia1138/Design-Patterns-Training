@@ -9,6 +9,11 @@ import javax.swing.ListCellRenderer;
 
 import org.axp.state.entity.Game;
 
+/**
+ * Another boring UI class -- this renders games in multiline HTML.
+ * 
+ * (An example of the adaptor pattern, though, for those keeping score...)
+ */
 public class GameCellRenderer implements ListCellRenderer<Game> {
 	private static final Color ALICE_BLUE = new Color( 0xf0f8ff );
 	

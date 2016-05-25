@@ -3,6 +3,11 @@ package org.axp.state.states;
 import org.axp.state.GameEventController;
 import org.axp.state.XMLState;
 
+/**
+ * In this state we read in the user's name. We could extend this with some more data, in which case we'd
+ * want an actual <tt>User</tt> entity, but for now we just pass a plain {@link String} to the controller
+ * when we're done parsing. We then return to the {@link ReadyState}.
+ */
 public class UserState extends XMLState {
 	private String userId;
 	private String userName;

@@ -16,6 +16,9 @@ import javax.swing.JScrollPane;
 import org.axp.state.GameEventController;
 import org.axp.state.entity.Game;
 
+/**
+ * Just a boring UI class. It observes the {@link GameEventController} and refreshes when necessary.
+ */
 public class ClientView extends JFrame implements Observer {
 	private static final long serialVersionUID = -8864927050557607120L;
 	
