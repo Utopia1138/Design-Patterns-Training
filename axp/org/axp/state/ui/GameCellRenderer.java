@@ -17,12 +17,24 @@ public class GameCellRenderer implements ListCellRenderer<Game> {
 	public static String toHtml( Game g ) {
 		StringBuilder sb = new StringBuilder( "<html>" ).append( g.getGameType() );
 		
+		if ( g.isFinished() ) {
+			sb.append( "<i>" ).append( " - COMPLETE" );
+		}
+		
 		for ( String p : g.getPlayers() ) {
 			sb.append( "<br>&nbsp;&nbsp;" ).append( p );
+			
+			if ( p.equals( g.getWinner() ) ) {
+				sb.append( " - WINNER" );
+			}
 		}
 		
 		for ( String rule : g.getRules() ) {
 			sb.append( "<br>&nbsp;&nbsp;" ).append( rule );
+		}
+		
+		if ( g.isFinished() ) {
+			sb.append( "</i>" );
 		}
 		
 		return sb.append( "</html>" ).toString();
@@ -30,10 +42,10 @@ public class GameCellRenderer implements ListCellRenderer<Game> {
 
 	@Override
 	public Component getListCellRendererComponent( JList<? extends Game> list,
-			Game value, int index, boolean isSelected, boolean cellHasFocus ) {
+			Game game, int index, boolean isSelected, boolean cellHasFocus ) {
 		
-		Component label = baseRenderer.getListCellRendererComponent( list, toHtml( value ), index, isSelected, cellHasFocus );
-		
+		Component label = baseRenderer.getListCellRendererComponent( list, toHtml( game ), index, isSelected, cellHasFocus );
+
 		if ( !isSelected && label.isEnabled() && ( index % 2 == 1 ) ) {
 			label.setBackground( ALICE_BLUE );
 		}

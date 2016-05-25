@@ -28,7 +28,8 @@ public class ReadyState extends XMLState {
 		}
 		else if ( "finishGame".equals( qName ) ) {
 			String gameId = getId( "Finish game", attributes );
-			controller.removeGame( gameId );
+			String winner = attributes.getValue( "winner" );
+			controller.finishGame( gameId, winner );
 		}
 		else {
 			super.startElement( uri, localName, qName, attributes );

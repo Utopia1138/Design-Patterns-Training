@@ -7,6 +7,8 @@ public class Game {
 	private String gameType;
 	private ArrayList<String> players = new ArrayList<>();
 	private TreeMap<String,String> rules = new TreeMap<>();
+	private boolean finished;
+	private String winner;
 	
 	public Game( String gameType ) {
 		this.gameType = gameType;
@@ -17,6 +19,10 @@ public class Game {
 		
 		for ( String p : this.players ) {
 			sb.append( "\n\t" ).append( p );
+			
+			if ( p.equals( this.winner ) ) {
+				sb.append( " *" );
+			}
 		}
 		
 		for ( String rule : this.rules.keySet() ) {
@@ -51,5 +57,18 @@ public class Game {
 		}
 		
 		return ruleList;
+	}
+	
+	public boolean isFinished() {
+		return this.finished;
+	}
+	
+	public String getWinner() {
+		return this.winner;
+	}
+	
+	public void setFinished( String winner ) {
+		this.finished = true;
+		this.winner = winner;
 	}
 }

@@ -87,13 +87,24 @@ public class GameEventController extends Observable {
 		updateGames();
 	}
 
-	public void removeGame( String gameId ) {
-		Game game = this.games.remove( gameId );
+	public void finishGame( String gameId, String winnerId ) {
+		Game game = this.games.get( gameId );
 		
 		if ( game == null ) {
 			throw new IllegalArgumentException( "No game with id " + gameId );
 		}
 		
+		String winner = null;
+		
+		if ( winnerId != null ) {
+			winner = this.users.get( winnerId );
+			
+			if ( winner == null ) {
+				throw new IllegalArgumentException( "No player with id " + winnerId );
+			}
+		}
+		
+		game.setFinished( winner );
 		updateGames();
 	}
 
