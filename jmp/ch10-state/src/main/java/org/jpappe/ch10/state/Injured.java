@@ -22,7 +22,7 @@ public class Injured extends HealthState {
 
 	@Override
 	public double getEffectivenessMultiplier() {
-		return 0.5;
+		return 0.75;
 	}
 
 }
