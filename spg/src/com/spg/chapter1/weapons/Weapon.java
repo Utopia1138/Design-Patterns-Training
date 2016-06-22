@@ -1,8 +1,9 @@
 package com.spg.chapter1.weapons;
 
+import com.spg.chapter6.Projectile;
 
 public interface Weapon {
 
-	public int shoot();
+	public Projectile shoot();
 	
 }

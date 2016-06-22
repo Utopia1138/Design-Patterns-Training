@@ -3,6 +3,9 @@ package com.spg.chapter1.ships;
 import com.spg.chapter1.engines.Engine;
 import com.spg.chapter1.shields.Shield;
 import com.spg.chapter1.weapons.Weapon;
+import com.spg.chapter5.SingleAnnouncer;
+import com.spg.chapter6.Projectile;
+import com.spg.chapter6.ProjectileClass;
 
 public abstract class Spaceship {
 	// Needs engines, weapons, and shields
@@ -12,6 +15,16 @@ public abstract class Spaceship {
 	private int health;
 	private String name;
 	private Spaceship target;
+	private Faction faction;
+	
+	// Buffs/debuffs
+	protected double dodgeUpdate = 1.0; 
+	protected double mitigationUpdate = 1.0; 
+	
+	public enum Faction {
+		REBEL,
+		EMPIRE;
+	}
 	
 	protected void setName( String name ){
 		this.name = name;
@@ -29,14 +42,18 @@ public abstract class Spaceship {
 		this.shield = shield;
 	}
 
-	public void damage( Weapon damager ) {
-		// Ship damage based on dodge chance and shield strength
+	public void damage( ProjectileClass projectile, int damage ) {
 		
-		int damage = 0;
+		// If we're dead what are we doing here?
+		if ( getHealth() < 0 ) {
+			return;
+		}
+		
+		// Ship damage based on dodge chance and shield strength		
 		
 		// See if we were hit
-		if ( (int) Math.ceil( Math.random() * 100 ) > engine.dodge() )  {
-			damage = (int) Math.floor( shield.mitigate( damager ) );
+		if ( (int) Math.ceil( Math.random() * 100 ) > ( engine.dodge() * dodgeUpdate ) )  {
+			damage = (int) Math.floor( shield.mitigate( projectile, damage ) );
 
 			setHealth( getHealth() - damage );
 
@@ -51,6 +68,9 @@ public abstract class Spaceship {
 	
 	public void explode() {
 		System.out.println( name + " has exploded!" );
+		
+		SingleAnnouncer announcer = SingleAnnouncer.getInstance();
+		announcer.speak( "Oh my, it looks like bits of " + name + " have been scattered all over " + announcer.getLocation() );
 	}
 
 	public int getHealth() {
@@ -69,7 +89,23 @@ public abstract class Spaceship {
 		this.target = target;
 	}
 	
-	public Weapon shoot() {
-		return weapon;
+	public void setFaction( Faction faction ) {
+		this.faction = faction;
+	}
+	
+	public Faction getFaction() {
+		return faction;
+	}
+	
+	public Projectile shoot() {
+		return weapon.shoot();
+	}
+	
+	public abstract void dazzle();
+
+	public abstract void activatePointDefence();
+
+	public void knockback() {
+		// TODO 
 	}
 }

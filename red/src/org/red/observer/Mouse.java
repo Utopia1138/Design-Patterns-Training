@@ -18,23 +18,29 @@ public class Mouse implements Observable<MouseEvent> {
 	private List<Observer<MouseEvent>> observers = new ArrayList<>();
 	private double x, y;
 	private Map<Integer, Boolean> buttonState = new HashMap<>();
+	
+	// So we have to maintain a reference ourselves because GLFW does not, and it gets garbage collected!
+	private GLFWMouseButtonCallback buttonCallback;
+	private GLFWCursorPosCallback cursorCallback;
 
 	public Mouse(long window) {
 		// As it happens, the GLFW callbacks are abstract classes, so this can't
-		// implement them directly in the outer type
-		GLFW.glfwSetCursorPosCallback(window, new GLFWCursorPosCallback() {
+		// implement them directly in the outer type 
+		cursorCallback = new GLFWCursorPosCallback() {
 			@Override
 			public void invoke(long window, double xpos, double ypos) {
 				Mouse.this.setCursorPos(xpos, ypos);
 			}
-		});
+		};
+		GLFW.glfwSetCursorPosCallback(window, cursorCallback);
 
-		GLFW.glfwSetMouseButtonCallback(window, new GLFWMouseButtonCallback() {
+		buttonCallback = new GLFWMouseButtonCallback() {
 			@Override
 			public void invoke(long window, int button, int action, int mods) {
 				Mouse.this.setMouseButton(button, action);
 			}
-		});
+		};
+		GLFW.glfwSetMouseButtonCallback(window, buttonCallback);
 	}
 	
 	@Override
