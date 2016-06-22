@@ -8,6 +8,7 @@ import javax.swing.text.DefaultCaret;
 
 public class PokémonTrainerUI extends JFrame {
 	private static final long serialVersionUID = -7330744381281649192L;
+	private static final int DURATION = 45;
 
 	private PokémonTrainer trainer;
 	private JTextArea outField;
@@ -39,6 +40,6 @@ public class PokémonTrainerUI extends JFrame {
 		
 		PokémonTrainerUI ui = new PokémonTrainerUI( name );
 		ui.setVisible( true );
-		ui.begin( 60 );
+		ui.begin( DURATION );
 	}
 }

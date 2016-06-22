@@ -16,7 +16,7 @@ public class PokémonTrainer {
 	private int discoveries = 0;
 	
 	public static final String[] POKÉMON_NAMES = new String[] {
-		"Axpbok", "Biglett", "Redidash", "Mikeachu", "Jumpluff", "Sandyile", "Simonsear", "Rpiduck", "Thierrykion", "Waynemer"
+		"Axpbok", "Biglett", "Redidash", "Mikeachu", "Jumpluff", "Sandyshrew", "Simonsear", "Rpiduck", "Thierrykion", "Waynemer"
 	};
 	
 	public static final String[] POKÉMON_CATEGORIES = new String[] {
