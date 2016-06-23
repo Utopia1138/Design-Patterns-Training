@@ -9,6 +9,8 @@ import javax.swing.text.DefaultCaret;
 public class PokémonTrainerUI extends JFrame {
 	private static final long serialVersionUID = -7330744381281649192L;
 	private static final int DURATION = 45;
+	private static final int TEXT_ROWS = 30;
+	private static final int TEXT_COLS = 40;
 
 	private PokémonTrainer trainer;
 	private JTextArea outField;
@@ -16,7 +18,7 @@ public class PokémonTrainerUI extends JFrame {
 	public PokémonTrainerUI( String name ) {
 		super( name + ", Pokémon trainer extraordinaire" );
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		outField = new JTextArea( 30, 50 );
+		outField = new JTextArea( TEXT_ROWS, TEXT_COLS );
 		outField.setEditable( false );
 		((DefaultCaret) outField.getCaret()).setUpdatePolicy( DefaultCaret.ALWAYS_UPDATE );
 		
