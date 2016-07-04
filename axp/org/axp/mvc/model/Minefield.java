@@ -1,11 +1,9 @@
 package org.axp.mvc.model;
 
-import java.awt.Dimension;
 import java.util.HashSet;
-import java.util.Observable;
 import java.util.Random;
 
-public class Minefield extends Observable implements IMinefield {
+public class Minefield implements IMinefield {
 	private final MineSquare[][] field;
 	private final Random rand = new Random();
 	private final HashSet<MineSquare> uncleared;
@@ -50,16 +48,10 @@ public class Minefield extends Observable implements IMinefield {
 			}
 		}
 	}
-
-	@Override
-	public Dimension getDimensions() {
-		return new Dimension( field[0].length, field.length );
-	}
 	
 	public synchronized void reveal( int ypos, int xpos ) {
 		field[ ypos ][ xpos ].setRevealed( true );
 		uncleared.remove( field[ ypos ][ xpos ] );
-		broadcastSquare( field[ ypos ][ xpos ] );
 	}
 	
 	public synchronized int countNeighbourMines( int ypos, int xpos ) {
@@ -86,14 +78,9 @@ public class Minefield extends Observable implements IMinefield {
 	public synchronized boolean isCleared() {
 		return uncleared.isEmpty();
 	}
-	
-	private void broadcastSquare( MineSquare square ) {
-		setChanged();
-		notifyObservers( square );
-	}
 
 	@Override
-	public synchronized boolean hasMine( int ypos, int xpos ) {
-		return field[ ypos ][ xpos ].hasMine();
+	public MineSquare squareAt(int ypos, int xpos) {
+		return field[ ypos ][ xpos ];
 	}
 }

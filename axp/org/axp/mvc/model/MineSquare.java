@@ -1,7 +1,7 @@
 package org.axp.mvc.model;
 
 public class MineSquare {
-	private int ypos, xpos;
+	private final int ypos, xpos;
 	private boolean revealed;
 	private boolean hasMine;
 	
@@ -22,7 +22,7 @@ public class MineSquare {
 		return revealed;
 	}
 	
-	public void setRevealed( boolean revealed ) {
+	protected void setRevealed( boolean revealed ) {
 		this.revealed = revealed;
 	}
 
@@ -30,7 +30,7 @@ public class MineSquare {
 		return hasMine;
 	}
 
-	public void setHasMine( boolean hasMine ) {
+	protected void setHasMine( boolean hasMine ) {
 		this.hasMine = hasMine;
 	}
 }

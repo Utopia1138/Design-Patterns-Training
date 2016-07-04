@@ -1,14 +1,7 @@
 package org.axp.mvc.model;
 
-import java.awt.Dimension;
-import java.util.Observer;
 
 public interface IMinefield {
-	/**
-	 * @return the dimensions of this minefield
-	 */
-	public Dimension getDimensions();
-	
 	/**
 	 * Count the number of neighbouring mines in a square. Can only be called on uncovered, mine-free squares.
 	 * @param ypos Y-position of the square in the field
@@ -24,18 +17,6 @@ public interface IMinefield {
 	 * @return true if the field is cleared, false if there are still squares to clear
 	 */
 	public boolean isCleared();
-	
-	/**
-	 * We should be able to add observers to the model
-	 * @param o an observer
-	 */
-	public void addObserver( Observer o );
-	
-	/**
-	 * We should be able to remove observers from the model
-	 * @param o an observer
-	 */
-	public void deleteObserver( Observer o );
 
 	/**
 	 * Reveal a square
@@ -46,11 +27,10 @@ public interface IMinefield {
 	public void reveal( int ypos, int xpos );
 
 	/**
-	 * Has the square got a mine in it?
+	 * Get the square at this position
 	 * @param ypos Y-position of the square in the field
 	 * @param xpos X-position of the square in the field
-	 * @throws ArrayIndexOutOfBoundsException if the position is not valid
-	 * @return true if the field contains a mine, false otherwise
+	 * @return the square, with associated information
 	 */
-	public boolean hasMine( int ypos, int xpos );
+	public MineSquare squareAt( int ypos, int xpos );
 }

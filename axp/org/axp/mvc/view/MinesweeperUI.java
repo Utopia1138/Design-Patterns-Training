@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 
 import org.axp.mvc.controller.ISweeper;
 import org.axp.mvc.controller.Sweeper;
-import org.axp.mvc.model.IMinefield;
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
 
@@ -23,27 +22,23 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 	private static final int BUTTON_GAP = 2;
 	
 	private ISweeper controller;
-	private IMinefield model;
 	private GridSquare[][] grid;
 	
-	public MinesweeperUI( ISweeper controller, IMinefield model ) {
+	public MinesweeperUI( ISweeper controller, Dimension dimen ) {
 		super( "Minesweeper" );
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
 		this.controller = controller;
-		
-		this.model = model;
-		model.addObserver( this );
+		controller.addObserver( this );
 		
 		addWindowListener( new WindowAdapter() {
 			@Override
 			public void windowClosed( WindowEvent e ) {
-				model.deleteObserver( MinesweeperUI.this );
+				controller.deleteObserver( MinesweeperUI.this );
 			}
 		});
 		
-		Dimension d = model.getDimensions();
-		addUiComponents( (int) d.getHeight(), (int) d.getWidth() );
+		addUiComponents( (int) dimen.getHeight(), (int) dimen.getWidth() );
 		pack();
 	}
 	
@@ -71,7 +66,7 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 				grid[j][i].showBomb();
 			}
 			else {
-				grid[j][i].showCount( model.countNeighbourMines( j, i ) );
+				grid[j][i].showCount( controller.countNeighbourMines( j, i ) );
 			}
 			
 			revalidate();
@@ -80,7 +75,7 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 
 	@Override
 	public void update( Observable o, Object arg ) {
-		if ( model == o ) {
+		if ( controller == o ) {
 			if ( arg instanceof MineSquare ) {
 				updateUi( (MineSquare) arg );
 			}
@@ -89,7 +84,8 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 	
 	public static void main( String...args ) {
 		Minefield model = new Minefield( 16, 24, 40 );
-		new MinesweeperUI( new Sweeper( model ), model ).setVisible( true );
+		Sweeper controller = new Sweeper( model );
+		new MinesweeperUI( controller, new Dimension( 24, 16 ) ).setVisible( true );
 	}
 
 	@Override
