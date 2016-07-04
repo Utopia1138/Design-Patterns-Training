@@ -1,6 +1,10 @@
 package org.axp.mvc.model;
 
-public class MineSquare {
+import java.io.Serializable;
+
+public class MineSquare implements Serializable {
+	private static final long serialVersionUID = -1879274262909545338L;
+	
 	private final int ypos, xpos;
 	private boolean revealed;
 	private boolean hasMine;

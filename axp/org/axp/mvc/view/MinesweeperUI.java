@@ -6,27 +6,30 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Observable;
-import java.util.Observer;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 import javax.swing.JFrame;
 
 import org.axp.mvc.controller.ISweeper;
-import org.axp.mvc.controller.Sweeper;
 import org.axp.mvc.model.MineSquare;
-import org.axp.mvc.model.Minefield;
+import org.axp.mvc.rmi.RemoteObserver;
 
-public class MinesweeperUI implements Observer, MouseListener {
+public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver<MineSquare>, MouseListener {
 	private static final long serialVersionUID = -6043526207968115429L;
 	private static final int BUTTON_DIMEN = 20;
 	private static final int BUTTON_GAP = 2;
 	
-	protected ISweeper controller;
+	protected transient ISweeper controller;
 	private transient GridSquare[][] grid;
 	private transient JFrame ui;
 	
-	public MinesweeperUI( ISweeper controller, Dimension dimen ) {
-		this.controller = controller;
+	public MinesweeperUI( Dimension dimen ) throws RemoteException, NotBoundException {
+		Registry registry = LocateRegistry.getRegistry();
+		controller = (ISweeper) registry.lookup( "Mineserver" ); 
 		controller.addObserver( this );
 		
 		setupUi( (int) dimen.getHeight(), (int) dimen.getWidth() );
@@ -38,8 +41,13 @@ public class MinesweeperUI implements Observer, MouseListener {
 		
 		ui.addWindowListener( new WindowAdapter() {
 			@Override
-			public void windowClosing( WindowEvent e ) {
-				controller.deleteObserver( MinesweeperUI.this );
+			public void windowClosing( WindowEvent evt ) {
+				try {
+					controller.deleteObserver( MinesweeperUI.this );
+				}
+				catch ( RemoteException e ) {
+					System.err.println( "Error deregistering view; " + e.getMessage() );
+				}
 			}
 		});
 		
@@ -60,7 +68,8 @@ public class MinesweeperUI implements Observer, MouseListener {
 		ui.setVisible( true );
 	}
 	
-	private void updateUi( MineSquare square ) {
+	@Override
+	public void update( MineSquare square ) throws RemoteException {
 		if ( square.isRevealed() ) {
 			int j = square.getY();
 			int i = square.getX();
@@ -75,31 +84,30 @@ public class MinesweeperUI implements Observer, MouseListener {
 			ui.revalidate();
 		}
 	}
-
-	@Override
-	public void update( Observable o, Object arg ) {
-		if ( controller == o ) {
-			if ( arg instanceof MineSquare ) {
-				updateUi( (MineSquare) arg );
-			}
-		}
-	}
 	
 	public static void main( String...args ) {
-		Minefield model = new Minefield( 16, 24, 40 );
-		Sweeper controller = new Sweeper( model );
-		new MinesweeperUI( controller, new Dimension( 24, 16 ) );
+		try {
+			new MinesweeperUI( new Dimension( 24, 16 ) );
+		}
+		catch ( RemoteException|NotBoundException e ) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void mousePressed( MouseEvent e ) {
-		if ( e.getSource() instanceof GridSquare ) {
-			GridSquare square = (GridSquare) e.getSource();
+	public void mousePressed( MouseEvent evt ) {
+		if ( evt.getSource() instanceof GridSquare ) {
+			GridSquare square = (GridSquare) evt.getSource();
 			
-			if ( e.getButton() == MouseEvent.BUTTON1 ) {
-				controller.uncover( square.getYpos(), square.getXpos() );
+			if ( evt.getButton() == MouseEvent.BUTTON1 ) {
+				try {
+					controller.uncover( square.getYpos(), square.getXpos() );
+				}
+				catch ( RemoteException e ) {
+					System.err.println( "Error communicating with model; " + e.getMessage() );
+				}
 			}
-			else if ( e.getButton() == MouseEvent.BUTTON3 ) {
+			else if ( evt.getButton() == MouseEvent.BUTTON3 ) {
 				square.toggleFlag();
 			}
 		}
@@ -109,4 +117,5 @@ public class MinesweeperUI implements Observer, MouseListener {
 	@Override public void mouseReleased( MouseEvent e ) {}
 	@Override public void mouseEntered( MouseEvent e ) {}
 	@Override public void mouseExited( MouseEvent e ) {}
+
 }
