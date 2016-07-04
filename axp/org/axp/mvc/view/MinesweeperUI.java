@@ -89,7 +89,7 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 	}
 
 	@Override
-	public void mouseClicked( MouseEvent e ) {
+	public void mousePressed( MouseEvent e ) {
 		if ( e.getSource() instanceof GridSquare ) {
 			GridSquare square = (GridSquare) e.getSource();
 			
@@ -102,7 +102,7 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 		}
 	}
 
-	@Override public void mousePressed( MouseEvent e ) {}
+	@Override public void mouseClicked( MouseEvent e ) {}	
 	@Override public void mouseReleased( MouseEvent e ) {}
 	@Override public void mouseEntered( MouseEvent e ) {}
 	@Override public void mouseExited( MouseEvent e ) {}
