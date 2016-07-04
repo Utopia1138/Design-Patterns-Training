@@ -16,34 +16,34 @@ import org.axp.mvc.controller.Sweeper;
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
 
-public class MinesweeperUI extends JFrame implements Observer, MouseListener {
+public class MinesweeperUI implements Observer, MouseListener {
 	private static final long serialVersionUID = -6043526207968115429L;
 	private static final int BUTTON_DIMEN = 20;
 	private static final int BUTTON_GAP = 2;
 	
-	private ISweeper controller;
-	private GridSquare[][] grid;
+	protected ISweeper controller;
+	private transient GridSquare[][] grid;
+	private transient JFrame ui;
 	
 	public MinesweeperUI( ISweeper controller, Dimension dimen ) {
-		super( "Minesweeper" );
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		
 		this.controller = controller;
 		controller.addObserver( this );
 		
-		addWindowListener( new WindowAdapter() {
+		setupUi( (int) dimen.getHeight(), (int) dimen.getWidth() );
+	}
+	
+	private void setupUi( int rows, int cols ) {
+		ui = new JFrame( "Minesweeper" );
+		ui.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		
+		ui.addWindowListener( new WindowAdapter() {
 			@Override
-			public void windowClosed( WindowEvent e ) {
+			public void windowClosing( WindowEvent e ) {
 				controller.deleteObserver( MinesweeperUI.this );
 			}
 		});
 		
-		addUiComponents( (int) dimen.getHeight(), (int) dimen.getWidth() );
-		pack();
-	}
-	
-	private void addUiComponents( int rows, int cols ) {
-		setLayout( new GridLayout( rows, cols, BUTTON_GAP, BUTTON_GAP ) );
+		ui.setLayout( new GridLayout( rows, cols, BUTTON_GAP, BUTTON_GAP ) );
 		grid = new GridSquare[ rows ][ cols ];
 		
 		for ( int j = 0; j < rows; j++ ) {
@@ -52,9 +52,12 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 				square.setPreferredSize( new Dimension( BUTTON_DIMEN, BUTTON_DIMEN ) );
 				square.addMouseListener( this );
 				grid[j][i] = square;
-				add( square );
+				ui.add( square );
 			}
 		}
+		
+		ui.pack();
+		ui.setVisible( true );
 	}
 	
 	private void updateUi( MineSquare square ) {
@@ -69,7 +72,7 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 				grid[j][i].showCount( controller.countNeighbourMines( j, i ) );
 			}
 			
-			revalidate();
+			ui.revalidate();
 		}
 	}
 
@@ -85,7 +88,7 @@ public class MinesweeperUI extends JFrame implements Observer, MouseListener {
 	public static void main( String...args ) {
 		Minefield model = new Minefield( 16, 24, 40 );
 		Sweeper controller = new Sweeper( model );
-		new MinesweeperUI( controller, new Dimension( 24, 16 ) ).setVisible( true );
+		new MinesweeperUI( controller, new Dimension( 24, 16 ) );
 	}
 
 	@Override
