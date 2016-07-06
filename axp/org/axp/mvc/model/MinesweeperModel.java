@@ -1,7 +1,7 @@
 package org.axp.mvc.model;
 
 
-public interface IMinefield {
+public interface MinesweeperModel {
 	/**
 	 * Count the number of neighbouring mines in a square. Can only be called on uncovered, mine-free squares.
 	 * @param ypos Y-position of the square in the field

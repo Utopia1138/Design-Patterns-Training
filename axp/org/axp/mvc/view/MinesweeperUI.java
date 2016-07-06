@@ -14,7 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 import javax.swing.JFrame;
 
-import org.axp.mvc.controller.ISweeper;
+import org.axp.mvc.controller.MinesweeperController;
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.rmi.RemoteObserver;
 
@@ -23,13 +23,13 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	private static final int BUTTON_DIMEN = 20;
 	private static final int BUTTON_GAP = 2;
 	
-	protected transient ISweeper controller;
+	protected transient MinesweeperController controller;
 	private transient GridSquare[][] grid;
 	private transient JFrame ui;
 	
 	public MinesweeperUI( Dimension dimen ) throws RemoteException, NotBoundException {
 		Registry registry = LocateRegistry.getRegistry();
-		controller = (ISweeper) registry.lookup( "Mineserver" ); 
+		controller = (MinesweeperController) registry.lookup( "Mineserver" ); 
 		controller.addObserver( this );
 		
 		setupUi( (int) dimen.getHeight(), (int) dimen.getWidth() );
@@ -99,9 +99,13 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 		if ( evt.getSource() instanceof GridSquare ) {
 			GridSquare square = (GridSquare) evt.getSource();
 			
+			if ( !square.isEnabled() ) {
+				return;
+			}
+			
 			if ( evt.getButton() == MouseEvent.BUTTON1 ) {
 				try {
-					controller.uncover( square.getYpos(), square.getXpos() );
+					tryUncover( square.getYpos(), square.getXpos() );
 				}
 				catch ( RemoteException e ) {
 					System.err.println( "Error communicating with model; " + e.getMessage() );
@@ -118,4 +122,16 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	@Override public void mouseEntered( MouseEvent e ) {}
 	@Override public void mouseExited( MouseEvent e ) {}
 
+	public void tryUncover( int ypos, int xpos ) throws RemoteException {
+		if ( !controller.uncover( ypos, xpos) ) {
+			// Uh-oh, found a mine! No more clicks, please
+			for ( GridSquare[] row : grid ) {
+				for ( GridSquare square : row ) {
+					if ( square.getXpos() != xpos || square.getYpos() != ypos ) {
+						square.setEnabled( false );
+					}
+				}
+			}
+		}
+	}
 }

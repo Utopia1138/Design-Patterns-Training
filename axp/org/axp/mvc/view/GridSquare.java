@@ -38,6 +38,7 @@ public class GridSquare extends JLabel {
 	
 	public void showBomb() {
 		setText( "" );
+		state = GridSquareState.UNCOVERED;
 		setIcon( new ImageIcon( "axp/org/axp/mvc/img/mine.png" ) );
 		setBorder( BorderFactory.createEmptyBorder() );
 	}

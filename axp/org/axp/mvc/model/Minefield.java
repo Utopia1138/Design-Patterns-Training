@@ -3,7 +3,7 @@ package org.axp.mvc.model;
 import java.util.HashSet;
 import java.util.Random;
 
-public class Minefield implements IMinefield {
+public class Minefield implements MinesweeperModel {
 	private final MineSquare[][] field;
 	private final Random rand = new Random();
 	private final HashSet<MineSquare> uncleared;

@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.rmi.RemoteObserver;
 
-public interface ISweeper extends Remote {
+public interface MinesweeperController extends Remote {
 	/**
 	 * Count the number of neighbouring mines in a square. Can only be called on uncovered, mine-free squares.
 	 * @param ypos Y-position of the square in the field

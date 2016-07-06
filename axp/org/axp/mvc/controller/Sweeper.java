@@ -5,20 +5,20 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-import org.axp.mvc.model.IMinefield;
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
+import org.axp.mvc.model.MinesweeperModel;
 import org.axp.mvc.rmi.RemoteObservable;
 
-public class Sweeper extends RemoteObservable<MineSquare> implements ISweeper {
-	private IMinefield model;
+public class Sweeper extends RemoteObservable<MineSquare> implements MinesweeperController {
+	private MinesweeperModel model;
 	
-	public Sweeper( IMinefield model ) {
+	public Sweeper( MinesweeperModel model ) {
 		this.model = model;
 	}
 	
 	public void run() throws RemoteException {
-		ISweeper stub = (ISweeper) UnicastRemoteObject.exportObject( this, 0 );
+		MinesweeperController stub = (MinesweeperController) UnicastRemoteObject.exportObject( this, 0 );
 		Registry registry = LocateRegistry.getRegistry();
 		registry.rebind( "Mineserver", stub );
 		System.out.println( "Created model, waiting for views" );
