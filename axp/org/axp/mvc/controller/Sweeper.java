@@ -4,14 +4,18 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
 import org.axp.mvc.model.MinesweeperModel;
+import org.axp.mvc.model.Player;
 import org.axp.mvc.rmi.RemoteObservable;
+import org.axp.mvc.rmi.RemoteObserver;
 
 public class Sweeper extends RemoteObservable<MineSquare> implements MinesweeperController {
 	private MinesweeperModel model;
+	private HashMap<RemoteObserver<MineSquare>, Player> players = new HashMap<>();
 	
 	public Sweeper( MinesweeperModel model ) {
 		this.model = model;
@@ -49,4 +53,23 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 	public MinesweeperModel getCurrentFieldState() {
 		return this.model;
 	}
+	
+	@Override
+	public void addObserver( RemoteObserver<MineSquare> obs ) throws RemoteException {
+		super.addObserver( obs );
+		
+		Player player;
+		do {
+			player = new Player();
+		}
+		while ( players.containsValue( player ) );
+		
+		players.put( obs, player );
+	}
+	
+	@Override
+	public void deleteObserver( RemoteObserver<MineSquare> obs ) throws RemoteException {
+        super.deleteObserver( obs );
+        players.remove( obs );
+	}    
 }

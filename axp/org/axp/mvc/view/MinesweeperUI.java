@@ -13,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.axp.mvc.controller.MinesweeperController;
 import org.axp.mvc.model.MineSquare;
@@ -21,6 +22,7 @@ import org.axp.mvc.rmi.RemoteObserver;
 
 public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver<MineSquare>, MouseListener {
 	private static final long serialVersionUID = -6043526207968115429L;
+	private static final String DEFAULT_HOST = "GH-CK78P12.corp.mastercard.org";
 	private static final int BUTTON_DIMEN = 20;
 	private static final int BUTTON_GAP = 2;
 	
@@ -29,7 +31,8 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	private transient JFrame ui;
 	
 	public MinesweeperUI() throws RemoteException, NotBoundException {
-		Registry registry = LocateRegistry.getRegistry();
+		String host =  JOptionPane.showInputDialog( "Select host, or cancel to run against local server", DEFAULT_HOST );
+		Registry registry = LocateRegistry.getRegistry( host );
 		controller = (MinesweeperController) registry.lookup( "Mineserver" ); 
 		controller.addObserver( this );
 
