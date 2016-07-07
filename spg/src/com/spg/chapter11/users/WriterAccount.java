@@ -1,3 +1,4 @@
+
 package com.spg.chapter11.users;
 
 import java.lang.reflect.InvocationHandler;
@@ -7,15 +8,14 @@ import com.spg.chapter11.Comment;
 import com.spg.chapter11.handler.ArticleEditorHandler;
 import com.spg.chapter11.handler.CommentReaderHandler;
 
-
 public class WriterAccount implements UserAccount {
 
 	private String name;
-	
+
 	public WriterAccount( String name ) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public InvocationHandler getArticleHandler( Article article ) {
 		return new ArticleEditorHandler( article );
@@ -33,7 +33,7 @@ public class WriterAccount implements UserAccount {
 
 	@Override
 	public void setName( String name ) {
-		this.name = name;		
+		this.name = name;
 	}
 
 }

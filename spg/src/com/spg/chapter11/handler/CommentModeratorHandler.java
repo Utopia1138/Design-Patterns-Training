@@ -1,3 +1,4 @@
+
 package com.spg.chapter11.handler;
 
 import java.lang.reflect.InvocationHandler;
@@ -7,7 +8,8 @@ import java.lang.reflect.Method;
 import com.spg.chapter11.Comment;
 
 /**
- * Comment moderator can make comments and edit existing comments, but can't change the score or status of comments
+ * Comment moderator can make comments and edit existing comments, but can't change the score or
+ * status of comments
  *
  */
 public class CommentModeratorHandler implements InvocationHandler {
@@ -41,7 +43,7 @@ public class CommentModeratorHandler implements InvocationHandler {
 		catch ( InvocationTargetException e ) {
 			throw new IllegalAccessException( "Error when invoking method" );
 		}
-		
+
 		return null;
 	}
 }

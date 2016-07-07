@@ -1,3 +1,4 @@
+
 package com.spg.chapter11.handler;
 
 import java.lang.reflect.InvocationHandler;
@@ -41,7 +42,7 @@ public class CommentReaderHandler implements InvocationHandler {
 		catch ( InvocationTargetException e ) {
 			throw new IllegalAccessException( "Error when invoking method" );
 		}
-		
+
 		return null;
 	}
 

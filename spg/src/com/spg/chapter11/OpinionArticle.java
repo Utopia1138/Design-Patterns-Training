@@ -1,33 +1,31 @@
+
 package com.spg.chapter11;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OpinionArticle implements Article {
-	private String title;
-	private String articleText;
-	
+
+	private String	title;
+	private String	articleText;
+
 	private List<Comment> comments;
 
-	
 	@Override
 	public String getTitle() {
 		return title;
 	}
 
-	
 	@Override
 	public void setTitle( String title ) {
 		this.title = title;
 	}
 
-	
 	@Override
 	public String getArticleText() {
 		return articleText;
 	}
 
-	
 	@Override
 	public void setArticleText( String articleText ) {
 		this.articleText = articleText;
@@ -38,7 +36,7 @@ public class OpinionArticle implements Article {
 	public List<Comment> getComments() {
 		return comments;
 	}
-	
+
 	@Override
 	public Comment getComment( int commentId ) {
 		if ( comments == null ) {
@@ -48,7 +46,6 @@ public class OpinionArticle implements Article {
 		return comments.get( commentId );
 	}
 
-	
 	@Override
 	public void addComment( String author, String text ) {
 		if ( comments == null ) {
@@ -58,5 +55,5 @@ public class OpinionArticle implements Article {
 		this.comments.add( new UserComment( author, text ) );
 		System.out.println( "Wrote comment: " + text );
 	}
-	
+
 }

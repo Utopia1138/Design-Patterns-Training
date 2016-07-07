@@ -1,3 +1,4 @@
+
 package com.spg.chapter11.handler;
 
 import java.lang.reflect.InvocationHandler;
@@ -35,7 +36,7 @@ public class ArticleReaderHandler implements InvocationHandler {
 		catch ( InvocationTargetException e ) {
 			throw new IllegalAccessException( "Error when invoking method" );
 		}
-		
+
 		return null;
 	}
 

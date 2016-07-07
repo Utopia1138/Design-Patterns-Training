@@ -1,3 +1,4 @@
+
 package com.spg.chapter11.handler;
 
 import java.lang.reflect.InvocationHandler;
@@ -13,7 +14,7 @@ import com.spg.chapter11.Article;
 public class ArticleEditorHandler implements InvocationHandler {
 
 	private Article article;
-	
+
 	public ArticleEditorHandler( Article article ) {
 		super();
 		this.article = article;
@@ -21,7 +22,7 @@ public class ArticleEditorHandler implements InvocationHandler {
 
 	@Override
 	public Object invoke( Object proxy, Method method, Object[] args ) throws IllegalAccessException {
-		
+
 		try {
 			if ( method.getName().startsWith( "get" ) ) {
 				return method.invoke( article, args );
@@ -36,7 +37,7 @@ public class ArticleEditorHandler implements InvocationHandler {
 		catch ( InvocationTargetException e ) {
 			throw new IllegalAccessException( "Error when invoking method" );
 		}
-		
+
 		return null;
 	}
 

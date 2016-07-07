@@ -47,21 +47,21 @@ public class NewsWebsite {
 		Article article = new OpinionArticle();
 
 		System.out.println( "\nArticle writer:" );
-		
+
 		// Editor writes the article
 		Article editorAccess = getArticleProxy( article, writer.getArticleHandler( article ) );
 		editorAccess.setTitle( "Man's best friend" );
 		editorAccess.setArticleText( "I like puppies." );
 
 		System.out.println( "\nArticle reader:" );
-		
+
 		// Reader reads the article
 		Article readerAccess = getArticleProxy( article, reader1.getArticleHandler( article ) );
 		System.out.println( "Reader reads article text: " + readerAccess.getArticleText() );
 		readerAccess.addComment( reader1.getName(), "I really like this article" );
 
 		System.out.println( "\nArticle reader 2:" );
-		
+
 		// People like this comment
 		Article readerAccess2 = getArticleProxy( article, reader2.getArticleHandler( article ) );
 		Comment readerAccess2Comment0 = getCommentProxy( readerAccess2.getComment( 0 ), reader2.getCommentHandler( readerAccess2.getComment( 0 ) ) );
@@ -79,7 +79,7 @@ public class NewsWebsite {
 		UserAccount reader1 = new ReaderAccount( "Dennis" );
 		UserAccount reader2 = new ReaderAccount( "Righteous dog-lover" );
 		UserAccount moderator = new ModeratorAccount( "TinMother" );
-		
+
 		Article article = new OpinionArticle();
 
 		System.out.println( "\nArticle writer:" );
@@ -90,14 +90,14 @@ public class NewsWebsite {
 		editorAccess.setArticleText( "I hate puppies. They're only good for kicking." );
 
 		System.out.println( "\nArticle reader:" );
-		
+
 		// Reader reads the article
 		Article readerAccess = getArticleProxy( article, reader1.getArticleHandler( article ) );
 		System.out.println( "Reader reads article text: " + readerAccess.getArticleText() );
 		readerAccess.addComment( "Dennis", "Totally agree. My dog ate my homework and now my teacher is mad" );
 
 		System.out.println( "\nArticle reader 2:" );
-		
+
 		// Another reader hates the article and tries to change it out of anger
 		Article readerAccess2 = getArticleProxy( article, reader2.getArticleHandler( article ) );
 		System.out.println( "Reader 2 reads article text: " + readerAccess2.getArticleText() );
@@ -121,7 +121,7 @@ public class NewsWebsite {
 
 		// Finally they leave an angry comment
 		readerAccess2.addComment( "Righteous dog-lover", "You're both monsters. I hope you get eaten by starving dogs" );
-		
+
 		System.out.println( "\nArticle reader:" );
 
 		// Reader one does not like this so they downvote it and flag it for moderation
@@ -132,7 +132,7 @@ public class NewsWebsite {
 		System.out.println( "Reader changes comment score to: " + readerAccessComment1.getScore() );
 
 		System.out.println( "\nArticle moderator:" );
-		
+
 		// A moderator comes in to examine the thread
 		Article modAccess = getArticleProxy( article, moderator.getArticleHandler( article ) );
 		Comment modAccessComment;

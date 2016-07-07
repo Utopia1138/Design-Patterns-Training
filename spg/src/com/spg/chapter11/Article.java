@@ -21,6 +21,6 @@ public interface Article {
 
 	public Comment getComment( int commentId );
 
-	public void addComment( String author, String text ); 
+	public void addComment( String author, String text );
 
 }
