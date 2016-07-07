@@ -1,5 +1,7 @@
 package org.axp.mvc.model;
 
+import java.awt.Dimension;
+
 
 public interface MinesweeperModel {
 	/**
@@ -33,4 +35,10 @@ public interface MinesweeperModel {
 	 * @return the square, with associated information
 	 */
 	public MineSquare squareAt( int ypos, int xpos );
+	
+	/**
+	 * Get the dimensions of this field-- number of squares across and down
+	 * @return an (x, y) dimension of the field
+	 */
+	public Dimension getDimensions();
 }

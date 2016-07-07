@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 
 import org.axp.mvc.controller.MinesweeperController;
 import org.axp.mvc.model.MineSquare;
+import org.axp.mvc.model.MinesweeperModel;
 import org.axp.mvc.rmi.RemoteObserver;
 
 public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver<MineSquare>, MouseListener {
@@ -27,15 +28,17 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	private transient GridSquare[][] grid;
 	private transient JFrame ui;
 	
-	public MinesweeperUI( Dimension dimen ) throws RemoteException, NotBoundException {
+	public MinesweeperUI() throws RemoteException, NotBoundException {
 		Registry registry = LocateRegistry.getRegistry();
 		controller = (MinesweeperController) registry.lookup( "Mineserver" ); 
 		controller.addObserver( this );
-		
-		setupUi( (int) dimen.getHeight(), (int) dimen.getWidth() );
+
+		setupUi( controller.getCurrentFieldState() );
 	}
 	
-	private void setupUi( int rows, int cols ) {
+	private void setupUi( MinesweeperModel field ) throws RemoteException {
+		Dimension d = field.getDimensions();
+		
 		ui = new JFrame( "Minesweeper" );
 		ui.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
@@ -51,16 +54,19 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 			}
 		});
 		
-		ui.setLayout( new GridLayout( rows, cols, BUTTON_GAP, BUTTON_GAP ) );
-		grid = new GridSquare[ rows ][ cols ];
+		ui.setLayout( new GridLayout( d.height, d.width, BUTTON_GAP, BUTTON_GAP ) );
+		grid = new GridSquare[ d.height ][ d.width ];
 		
-		for ( int j = 0; j < rows; j++ ) {
-			for ( int i = 0; i < cols; i++ ) {
+		for ( int j = 0; j < d.height; j++ ) {
+			for ( int i = 0; i < d.width; i++ ) {
 				GridSquare square = new GridSquare( j, i );
 				square.setPreferredSize( new Dimension( BUTTON_DIMEN, BUTTON_DIMEN ) );
 				square.addMouseListener( this );
 				grid[j][i] = square;
 				ui.add( square );
+				
+				// Some squares may initially be revealed; check for this
+				update( field.squareAt( j, i ) );
 			}
 		}
 		
@@ -87,7 +93,7 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	
 	public static void main( String...args ) {
 		try {
-			new MinesweeperUI( new Dimension( 24, 16 ) );
+			new MinesweeperUI();
 		}
 		catch ( RemoteException|NotBoundException e ) {
 			e.printStackTrace();

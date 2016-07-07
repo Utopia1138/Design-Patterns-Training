@@ -44,4 +44,9 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public MinesweeperModel getCurrentFieldState() {
+		return this.model;
+	}
 }

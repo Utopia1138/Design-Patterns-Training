@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import org.axp.mvc.model.MineSquare;
+import org.axp.mvc.model.MinesweeperModel;
 import org.axp.mvc.rmi.RemoteObserver;
 
 public interface MinesweeperController extends Remote {
@@ -38,4 +39,10 @@ public interface MinesweeperController extends Remote {
 	 * @param obs an observer
 	 */
 	public void deleteObserver( RemoteObserver<MineSquare> obs ) throws RemoteException;
+
+	/**
+	 * Get the full state of the minefield at this point
+	 * @return a model representing the minefield
+	 */
+	public MinesweeperModel getCurrentFieldState() throws RemoteException;
 }

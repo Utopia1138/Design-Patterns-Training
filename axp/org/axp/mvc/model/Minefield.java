@@ -1,11 +1,15 @@
 package org.axp.mvc.model;
 
+import java.awt.Dimension;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Random;
 
-public class Minefield implements MinesweeperModel {
+public class Minefield implements MinesweeperModel, Serializable {
+	private static final long serialVersionUID = -2009952785658955431L;
+	
 	private final MineSquare[][] field;
-	private final Random rand = new Random();
+	private final transient Random rand = new Random();
 	private final HashSet<MineSquare> uncleared;
 	
 	public Minefield( int height, int width, int numMines ) {
@@ -82,5 +86,10 @@ public class Minefield implements MinesweeperModel {
 	@Override
 	public MineSquare squareAt(int ypos, int xpos) {
 		return field[ ypos ][ xpos ];
+	}
+
+	@Override
+	public Dimension getDimensions() {
+		return new Dimension( field[0].length, field.length );
 	}
 }
