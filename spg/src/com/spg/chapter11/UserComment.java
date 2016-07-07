@@ -14,6 +14,8 @@ public class UserComment implements Comment {
 		this.commentText = text;
 		this.score = 0;
 		this.flagged = false;
+		
+		System.out.println( author + " wrote comment: " + text );
 	}
 
 	@Override
@@ -24,6 +26,7 @@ public class UserComment implements Comment {
 	@Override
 	public void setCommentText( String commentText ) {
 		this.commentText = commentText;
+		System.out.println( "Changed comment: " + commentText );
 	}
 	
 	@Override

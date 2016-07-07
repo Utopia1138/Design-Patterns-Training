@@ -23,19 +23,19 @@ public class CommentReaderHandler implements InvocationHandler {
 	public Object invoke( Object proxy, Method method, Object[] args ) throws IllegalAccessException {
 		try {
 			if ( method.getName().startsWith( "get" ) ) {
-				method.invoke( comment, args );
+				return method.invoke( comment, args );
 			}
 			else if ( method.getName().startsWith( "setFlagged" ) ) {
-				method.invoke( comment, args );
+				return method.invoke( comment, args );
 			}
 			else if ( method.getName().startsWith( "set" ) ) {
 				throw new IllegalAccessException( "Reader cannot change comment contents" );
 			}
 			else if ( method.getName().startsWith( "change" ) ) {
-				method.invoke( comment, args );
+				return method.invoke( comment, args );
 			}
 			else if ( method.getName().startsWith( "is" ) ) {
-				method.invoke( comment, args );
+				return method.invoke( comment, args );
 			}
 		}
 		catch ( InvocationTargetException e ) {

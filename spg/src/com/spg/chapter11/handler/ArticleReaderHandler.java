@@ -23,13 +23,13 @@ public class ArticleReaderHandler implements InvocationHandler {
 	public Object invoke( Object proxy, Method method, Object[] args ) throws IllegalAccessException {
 		try {
 			if ( method.getName().startsWith( "get" ) ) {
-				method.invoke( article, args );
+				return method.invoke( article, args );
 			}
 			else if ( method.getName().startsWith( "set" ) ) {
 				throw new IllegalAccessException( "Readers cannot change article contents" );
 			}
 			else if ( method.getName().startsWith( "add" ) ) {
-				method.invoke( article, args );
+				return method.invoke( article, args );
 			}
 		}
 		catch ( InvocationTargetException e ) {

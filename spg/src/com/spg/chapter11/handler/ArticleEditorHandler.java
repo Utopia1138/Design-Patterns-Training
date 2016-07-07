@@ -24,13 +24,13 @@ public class ArticleEditorHandler implements InvocationHandler {
 		
 		try {
 			if ( method.getName().startsWith( "get" ) ) {
-				method.invoke( article, args );
+				return method.invoke( article, args );
 			}
 			else if ( method.getName().startsWith( "set" ) ) {
-				method.invoke( article, args );
+				return method.invoke( article, args );
 			}
 			else if ( method.getName().startsWith( "add" ) ) {
-				method.invoke( article, args );
+				return method.invoke( article, args );
 			}
 		}
 		catch ( InvocationTargetException e ) {

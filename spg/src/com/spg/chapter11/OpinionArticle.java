@@ -31,6 +31,7 @@ public class OpinionArticle implements Article {
 	@Override
 	public void setArticleText( String articleText ) {
 		this.articleText = articleText;
+		System.out.println( "Wrote article: " + articleText );
 	}
 
 	@Override
@@ -55,6 +56,7 @@ public class OpinionArticle implements Article {
 		}
 
 		this.comments.add( new UserComment( author, text ) );
+		System.out.println( "Wrote comment: " + text );
 	}
 	
 }
