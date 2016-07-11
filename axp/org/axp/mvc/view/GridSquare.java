@@ -11,7 +11,6 @@ import javax.swing.border.BevelBorder;
 public class GridSquare extends JLabel {
 	private static final long serialVersionUID = 1640490291433636521L;
 	
-	
 	private static enum GridSquareState {
 		UNMARKED, FLAGGED, UNCOVERED
 	}
@@ -34,6 +33,10 @@ public class GridSquare extends JLabel {
 	
 	public int getXpos() {
 		return xpos;
+	}
+	
+	public boolean isUncovered() {
+		return ( state == GridSquareState.UNCOVERED );
 	}
 	
 	public void showBomb() {
