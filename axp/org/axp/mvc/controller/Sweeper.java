@@ -30,17 +30,23 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 	}
 	
 	@Override
-	public synchronized boolean uncover( RemoteObserver<MineSquare> client, int ypos, int xpos ) {
+	public synchronized void uncover( RemoteObserver<MineSquare> client, int ypos, int xpos ) throws RemoteException {
 		model.reveal( ypos, xpos );
 		MineSquare square = model.squareAt( ypos, xpos );
 		notifyObservers( square );
 		
 		if ( square.hasMine() ) {
-			return false;
+			client.message( MinesweeperController.YOU_STEPPED_ON_A_MINE );
 		}
 		
 		model.addPoint( players.get( client ) );
-		return true;
+		client.message( MinesweeperController.YOU_SCORED_A_POINT );
+		
+		if ( model.isCleared() ) {
+			for ( RemoteObserver<MineSquare> obs : players.keySet() ) {
+				obs.message( MinesweeperController.END_OF_GAME );
+			}
+		}
 	}
 
 	@Override
@@ -78,5 +84,16 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 	@Override
 	public String getPlayerName( RemoteObserver<MineSquare> obs ) {
 		return players.get( obs ).getName();
+	}
+
+	@Override
+	public String getFullScores() {
+		StringBuilder sb = new StringBuilder();
+		
+		for ( Player p : model.getScores() ) {
+			sb.append( '\n' ).append( p.getScore() ).append( '\t' ).append( p.getName() );
+		}
+		
+		return sb.substring( 1 );
 	}    
 }

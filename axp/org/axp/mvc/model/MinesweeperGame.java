@@ -58,7 +58,7 @@ public class MinesweeperGame implements MinesweeperModel {
 	@Override
 	public List<Player> getScores() {
 		ArrayList<Player> playersByScore = new ArrayList<>( players );
-		Collections.sort( playersByScore, (x,y) -> x.getScore() - y.getScore() );
+		Collections.sort( playersByScore, (x,y) -> y.getScore() - x.getScore() );
 		return playersByScore;
 	}
 }

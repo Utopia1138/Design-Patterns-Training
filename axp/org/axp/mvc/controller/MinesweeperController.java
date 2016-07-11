@@ -8,6 +8,10 @@ import org.axp.mvc.model.Minefield;
 import org.axp.mvc.rmi.RemoteObserver;
 
 public interface MinesweeperController extends Remote {
+	public static final int END_OF_GAME = 1;
+	public static final int YOU_STEPPED_ON_A_MINE = 2;
+	public static final int YOU_SCORED_A_POINT = 3;
+
 	/**
 	 * Count the number of neighbouring mines in a square. Can only be called on uncovered, mine-free squares.
 	 * @param ypos Y-position of the square in the field
@@ -24,10 +28,9 @@ public interface MinesweeperController extends Remote {
 	 * @param client the ui sending the guess
 	 * @param ypos Y-position of the square in the field
 	 * @param xpos X-position of the square in the field
-	 * @return true if the square was cleared successfully, false if it contained a mine
 	 * @throws ArrayIndexOutOfBoundsException if the position is not valid
 	 */
-	public boolean uncover( RemoteObserver<MineSquare> client, int ypos, int xpos ) throws RemoteException;
+	public void uncover( RemoteObserver<MineSquare> client, int ypos, int xpos ) throws RemoteException;
 	
 	/**
 	 * We should be able to add observers to the controller
@@ -53,4 +56,10 @@ public interface MinesweeperController extends Remote {
 	 * @return the player name assigned to this observer
 	 */
 	public String getPlayerName( RemoteObserver<MineSquare> obs ) throws RemoteException;
+
+	/**
+	 * Get the full scores at the end of the game
+	 * @return a list of players and their scores
+	 */
+	public String getFullScores() throws RemoteException;
 }

@@ -129,7 +129,7 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 			
 			if ( evt.getButton() == MouseEvent.BUTTON1 ) {
 				try {
-					tryUncover( square.getYpos(), square.getXpos() );
+					controller.uncover( this, square.getYpos(), square.getXpos() );
 				}
 				catch ( RemoteException e ) {
 					System.err.println( "Error communicating with model; " + e.getMessage() );
@@ -146,19 +146,25 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	@Override public void mouseEntered( MouseEvent e ) {}
 	@Override public void mouseExited( MouseEvent e ) {}
 
-	public void tryUncover( int ypos, int xpos ) throws RemoteException {
-		if ( controller.uncover( this, ypos, xpos ) ) {
+	@Override
+	public void message( int msg ) throws RemoteException {
+		switch ( msg ) {
+		case MinesweeperController.END_OF_GAME:
+			JOptionPane.showMessageDialog( this.ui, controller.getFullScores(), "Game over!", JOptionPane.PLAIN_MESSAGE );
+			break;
+		case MinesweeperController.YOU_SCORED_A_POINT:
 			score.increment();
-		}
-		else {
-			// Uh-oh, found a mine! No more clicks, please
+			break;
+		case MinesweeperController.YOU_STEPPED_ON_A_MINE:
+			// Uh-oh! No more clicks, please
 			for ( GridSquare[] row : grid ) {
 				for ( GridSquare square : row ) {
-					if ( square.getXpos() != xpos || square.getYpos() != ypos ) {
-						square.setEnabled( false );
-					}
+					square.setEnabled( false );
 				}
 			}
+			break;
+		default:
+			System.err.println( "Unknown message (" + msg + ')' );
 		}
 	}
 }
