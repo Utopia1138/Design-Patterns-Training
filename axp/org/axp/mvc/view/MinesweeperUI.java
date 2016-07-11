@@ -150,13 +150,10 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	public void message( int msg ) throws RemoteException {
 		switch ( msg ) {
 		case MinesweeperController.END_OF_GAME:
+			String scoreCard = controller.getFullScores();
+			
 			new Thread( () -> {
-				try {
-					JOptionPane.showMessageDialog( this.ui, controller.getFullScores(), "Game over!", JOptionPane.PLAIN_MESSAGE );
-				}
-				catch (Exception e) {
-				}
-			}).start();
+				JOptionPane.showMessageDialog( this.ui, scoreCard, "Game over!", JOptionPane.PLAIN_MESSAGE ); }).start();
 			
 			break;
 		case MinesweeperController.YOU_SCORED_A_POINT:

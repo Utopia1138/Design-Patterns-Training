@@ -56,7 +56,7 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 	
 	public static void main( String...args ) {
 		try {
-			Minefield field = new Minefield( 16, 24, 40 );
+			Minefield field = new Minefield( 6, 8, 10 )/*( 16, 24, 40 )*/;
 			new Sweeper( new MinesweeperGame( field ) ).run();
 		}
 		catch ( RemoteException e ) {
@@ -91,7 +91,7 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 		StringBuilder sb = new StringBuilder();
 		
 		for ( Player p : model.getScores() ) {
-			sb.append( '\n' ).append( p.getScore() ).append( '\t' ).append( p.getName() );
+			sb.append( '\n' ).append( p.getScore() ).append( "   " ).append( p.getName() );
 		}
 		
 		return sb.substring( 1 );
