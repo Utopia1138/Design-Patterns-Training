@@ -1,6 +1,7 @@
 package org.axp.mvc.model;
 
 import java.awt.Dimension;
+import java.util.List;
 
 
 public interface MinesweeperModel {
@@ -35,10 +36,34 @@ public interface MinesweeperModel {
 	 * @return the square, with associated information
 	 */
 	public MineSquare squareAt( int ypos, int xpos );
+
+	/**
+	 * Add a new player to the game
+	 * @return
+	 */
+	public Player addNewPlayer();
 	
 	/**
-	 * Get the dimensions of this field-- number of squares across and down
-	 * @return an (x, y) dimension of the field
+	 * Remove a player from the game
+	 * @param p an existing player
 	 */
-	public Dimension getDimensions();
+	public void removePlayer( Player p );
+	
+	/**
+	 * Increase the score of a given player
+	 * @param p an existing player
+	 */
+	public void addPoint( Player p );
+	
+	/**
+	 * Get the final list of players and scores
+	 * @return
+	 */
+	public List<Player> getScores();
+
+	/**
+	 * Get the current field
+	 * @return
+	 */
+	public Minefield getField();
 }

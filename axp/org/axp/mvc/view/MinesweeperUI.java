@@ -1,6 +1,8 @@
 package org.axp.mvc.view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,11 +15,13 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.axp.mvc.controller.MinesweeperController;
 import org.axp.mvc.model.MineSquare;
-import org.axp.mvc.model.MinesweeperModel;
+import org.axp.mvc.model.Minefield;
 import org.axp.mvc.rmi.RemoteObserver;
 
 public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver<MineSquare>, MouseListener {
@@ -29,6 +33,7 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	protected transient MinesweeperController controller;
 	private transient GridSquare[][] grid;
 	private transient JFrame ui;
+	private transient IntLabel score;
 	
 	public MinesweeperUI() throws RemoteException, NotBoundException {
 		String host =  JOptionPane.showInputDialog( "Select host, or cancel to run against local server", DEFAULT_HOST );
@@ -36,10 +41,10 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 		controller = (MinesweeperController) registry.lookup( "Mineserver" ); 
 		controller.addObserver( this );
 
-		setupUi( controller.getCurrentFieldState() );
+		setupUi( controller.getCurrentFieldState(), controller.getPlayerName( this ) );
 	}
 	
-	private void setupUi( MinesweeperModel field ) throws RemoteException {
+	private void setupUi( Minefield field, String playerName ) throws RemoteException {
 		Dimension d = field.getDimensions();
 		
 		ui = new JFrame( "Minesweeper" );
@@ -57,7 +62,9 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 			}
 		});
 		
-		ui.setLayout( new GridLayout( d.height, d.width, BUTTON_GAP, BUTTON_GAP ) );
+		JPanel gridPanel = new JPanel();
+		
+		gridPanel.setLayout( new GridLayout( d.height, d.width, BUTTON_GAP, BUTTON_GAP ) );
 		grid = new GridSquare[ d.height ][ d.width ];
 		
 		for ( int j = 0; j < d.height; j++ ) {
@@ -66,13 +73,21 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 				square.setPreferredSize( new Dimension( BUTTON_DIMEN, BUTTON_DIMEN ) );
 				square.addMouseListener( this );
 				grid[j][i] = square;
-				ui.add( square );
+				gridPanel.add( square );
 				
 				// Some squares may initially be revealed; check for this
 				update( field.squareAt( j, i ) );
 			}
 		}
 		
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout( new FlowLayout( FlowLayout.LEFT ) );
+		topPanel.add( new JLabel( playerName ) );
+		topPanel.add( score = new IntLabel() );
+		
+		ui.setLayout( new BorderLayout() );
+		ui.add( topPanel, BorderLayout.NORTH );
+		ui.add( gridPanel, BorderLayout.CENTER );
 		ui.pack();
 		ui.setVisible( true );
 	}
@@ -132,7 +147,10 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	@Override public void mouseExited( MouseEvent e ) {}
 
 	public void tryUncover( int ypos, int xpos ) throws RemoteException {
-		if ( !controller.uncover( ypos, xpos) ) {
+		if ( controller.uncover( this, ypos, xpos ) ) {
+			score.increment();
+		}
+		else {
 			// Uh-oh, found a mine! No more clicks, please
 			for ( GridSquare[] row : grid ) {
 				for ( GridSquare square : row ) {

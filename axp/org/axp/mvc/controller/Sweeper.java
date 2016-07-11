@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
+import org.axp.mvc.model.MinesweeperGame;
 import org.axp.mvc.model.MinesweeperModel;
 import org.axp.mvc.model.Player;
 import org.axp.mvc.rmi.RemoteObservable;
@@ -28,11 +29,18 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 		System.out.println( "Created model, waiting for views" );
 	}
 	
-	public synchronized boolean uncover( int ypos, int xpos ) {
+	@Override
+	public synchronized boolean uncover( RemoteObserver<MineSquare> client, int ypos, int xpos ) {
 		model.reveal( ypos, xpos );
 		MineSquare square = model.squareAt( ypos, xpos );
 		notifyObservers( square );
-		return !square.hasMine();
+		
+		if ( square.hasMine() ) {
+			return false;
+		}
+		
+		model.addPoint( players.get( client ) );
+		return true;
 	}
 
 	@Override
@@ -42,7 +50,8 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 	
 	public static void main( String...args ) {
 		try {
-			new Sweeper( new Minefield( 16, 24, 40 ) ).run();
+			Minefield field = new Minefield( 16, 24, 40 );
+			new Sweeper( new MinesweeperGame( field ) ).run();
 		}
 		catch ( RemoteException e ) {
 			e.printStackTrace();
@@ -50,26 +59,24 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 	}
 
 	@Override
-	public MinesweeperModel getCurrentFieldState() {
-		return this.model;
+	public Minefield getCurrentFieldState() {
+		return this.model.getField();
 	}
 	
 	@Override
 	public void addObserver( RemoteObserver<MineSquare> obs ) throws RemoteException {
 		super.addObserver( obs );
-		
-		Player player;
-		do {
-			player = new Player();
-		}
-		while ( players.containsValue( player ) );
-		
-		players.put( obs, player );
+		players.put( obs, model.addNewPlayer() );
 	}
 	
 	@Override
 	public void deleteObserver( RemoteObserver<MineSquare> obs ) throws RemoteException {
         super.deleteObserver( obs );
-        players.remove( obs );
+        model.removePlayer( players.remove( obs ) );
+	}
+
+	@Override
+	public String getPlayerName( RemoteObserver<MineSquare> obs ) {
+		return players.get( obs ).getName();
 	}    
 }

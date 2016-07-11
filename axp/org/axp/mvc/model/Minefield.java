@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Random;
 
-public class Minefield implements MinesweeperModel, Serializable {
+public class Minefield implements Serializable {
 	private static final long serialVersionUID = -2009952785658955431L;
 	
 	private final MineSquare[][] field;
@@ -83,12 +83,10 @@ public class Minefield implements MinesweeperModel, Serializable {
 		return uncleared.isEmpty();
 	}
 
-	@Override
-	public MineSquare squareAt(int ypos, int xpos) {
+	public MineSquare squareAt( int ypos, int xpos ) {
 		return field[ ypos ][ xpos ];
 	}
 
-	@Override
 	public Dimension getDimensions() {
 		return new Dimension( field[0].length, field.length );
 	}

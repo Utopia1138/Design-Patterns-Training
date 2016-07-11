@@ -4,7 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import org.axp.mvc.model.MineSquare;
-import org.axp.mvc.model.MinesweeperModel;
+import org.axp.mvc.model.Minefield;
 import org.axp.mvc.rmi.RemoteObserver;
 
 public interface MinesweeperController extends Remote {
@@ -21,12 +21,13 @@ public interface MinesweeperController extends Remote {
 	
 	/**
 	 * Guess that a position is free of a mine, and uncover it
+	 * @param client the ui sending the guess
 	 * @param ypos Y-position of the square in the field
 	 * @param xpos X-position of the square in the field
 	 * @return true if the square was cleared successfully, false if it contained a mine
 	 * @throws ArrayIndexOutOfBoundsException if the position is not valid
 	 */
-	public boolean uncover( int ypos, int xpos ) throws RemoteException;
+	public boolean uncover( RemoteObserver<MineSquare> client, int ypos, int xpos ) throws RemoteException;
 	
 	/**
 	 * We should be able to add observers to the controller
@@ -44,5 +45,12 @@ public interface MinesweeperController extends Remote {
 	 * Get the full state of the minefield at this point
 	 * @return a model representing the minefield
 	 */
-	public MinesweeperModel getCurrentFieldState() throws RemoteException;
+	public Minefield getCurrentFieldState() throws RemoteException;
+
+	/**
+	 * What player name does this observer correspond to?
+	 * @param obs an observer
+	 * @return the player name assigned to this observer
+	 */
+	public String getPlayerName( RemoteObserver<MineSquare> obs ) throws RemoteException;
 }

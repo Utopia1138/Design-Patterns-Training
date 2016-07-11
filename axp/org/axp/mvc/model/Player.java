@@ -24,6 +24,10 @@ public class Player {
 		return score;
 	}
 	
+	public void incrementScore() {
+		score++;
+	}
+	
 	@Override
 	public boolean equals( Object other ) {
 		if ( !( other instanceof Player ) ) return false;
