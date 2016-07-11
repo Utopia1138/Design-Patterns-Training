@@ -1,6 +1,5 @@
 package org.axp.mvc.model;
 
-import java.awt.Dimension;
 import java.util.List;
 
 
@@ -41,13 +40,7 @@ public interface MinesweeperModel {
 	 * Add a new player to the game
 	 * @return
 	 */
-	public Player addNewPlayer();
-	
-	/**
-	 * Remove a player from the game
-	 * @param p an existing player
-	 */
-	public void removePlayer( Player p );
+	public Player newPlayer();
 	
 	/**
 	 * Increase the score of a given player

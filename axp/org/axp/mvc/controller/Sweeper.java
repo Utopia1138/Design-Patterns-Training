@@ -66,13 +66,13 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 	@Override
 	public void addObserver( RemoteObserver<MineSquare> obs ) throws RemoteException {
 		super.addObserver( obs );
-		players.put( obs, model.addNewPlayer() );
+		players.put( obs, model.newPlayer() );
 	}
 	
 	@Override
 	public void deleteObserver( RemoteObserver<MineSquare> obs ) throws RemoteException {
         super.deleteObserver( obs );
-        model.removePlayer( players.remove( obs ) );
+        players.remove( obs );
 	}
 
 	@Override

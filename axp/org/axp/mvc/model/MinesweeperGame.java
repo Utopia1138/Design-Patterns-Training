@@ -39,7 +39,7 @@ public class MinesweeperGame implements MinesweeperModel {
 	}
 
 	@Override
-	public Player addNewPlayer() {
+	public Player newPlayer() {
 		Player p;
 		do {
 			p = new Player();
@@ -48,11 +48,6 @@ public class MinesweeperGame implements MinesweeperModel {
 		
 		players.add( p );
 		return p;
-	}
-
-	@Override
-	public void removePlayer( Player p ) {
-		players.remove( p );
 	}
 
 	@Override
