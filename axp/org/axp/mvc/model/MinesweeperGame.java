@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-public class MinesweeperGame implements MinesweeperModel {
+public class MinesweeperGame implements IMinesweeperGame {
 	private final Minefield field;
 	private HashSet<Player> players = new HashSet<>();
 	

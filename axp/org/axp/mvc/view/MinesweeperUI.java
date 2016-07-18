@@ -19,7 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.axp.mvc.controller.MinesweeperController;
+import org.axp.mvc.controller.ISweeper;
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
 import org.axp.mvc.rmi.RemoteObserver;
@@ -30,7 +30,7 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	private static final int BUTTON_DIMEN = 20;
 	private static final int BUTTON_GAP = 2;
 	
-	protected transient MinesweeperController controller;
+	protected transient ISweeper controller;
 	private transient GridSquare[][] grid;
 	private transient JFrame ui;
 	private transient IntLabel score;
@@ -38,7 +38,7 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	public MinesweeperUI() throws RemoteException, NotBoundException {
 		String host =  JOptionPane.showInputDialog( "Select host, or cancel to run against local server", DEFAULT_HOST );
 		Registry registry = LocateRegistry.getRegistry( host );
-		controller = (MinesweeperController) registry.lookup( "Mineserver" ); 
+		controller = (ISweeper) registry.lookup( "Mineserver" ); 
 		controller.addObserver( this );
 
 		setupUi( controller.getCurrentFieldState(), controller.getPlayerName( this ) );
@@ -149,16 +149,16 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	@Override
 	public void message( int msg ) throws RemoteException {
 		switch ( msg ) {
-		case MinesweeperController.YOU_SCORED_A_POINT:
+		case ISweeper.YOU_SCORED_A_POINT:
 			score.increment();
 			break;
-		case MinesweeperController.END_OF_GAME:
+		case ISweeper.END_OF_GAME:
 			String scoreCard = controller.getFullScores();
 			
 			new Thread( () -> {
 				JOptionPane.showMessageDialog( this.ui, scoreCard, "Game over!", JOptionPane.PLAIN_MESSAGE ); }).start();
 			
-		case MinesweeperController.YOU_STEPPED_ON_A_MINE:
+		case ISweeper.YOU_STEPPED_ON_A_MINE:
 			// No longer listen for clicks
 			for ( GridSquare[] row : grid ) {
 				for ( GridSquare square : row ) {

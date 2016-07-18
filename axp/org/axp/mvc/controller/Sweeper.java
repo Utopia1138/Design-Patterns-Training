@@ -9,21 +9,21 @@ import java.util.HashMap;
 import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
 import org.axp.mvc.model.MinesweeperGame;
-import org.axp.mvc.model.MinesweeperModel;
+import org.axp.mvc.model.IMinesweeperGame;
 import org.axp.mvc.model.Player;
 import org.axp.mvc.rmi.RemoteObservable;
 import org.axp.mvc.rmi.RemoteObserver;
 
-public class Sweeper extends RemoteObservable<MineSquare> implements MinesweeperController {
-	private MinesweeperModel model;
+public class Sweeper extends RemoteObservable<MineSquare> implements ISweeper {
+	private IMinesweeperGame model;
 	private HashMap<RemoteObserver<MineSquare>, Player> players = new HashMap<>();
 	
-	public Sweeper( MinesweeperModel model ) {
+	public Sweeper( IMinesweeperGame model ) {
 		this.model = model;
 	}
 	
 	public void run() throws RemoteException {
-		MinesweeperController stub = (MinesweeperController) UnicastRemoteObject.exportObject( this, 0 );
+		ISweeper stub = (ISweeper) UnicastRemoteObject.exportObject( this, 0 );
 		Registry registry = LocateRegistry.getRegistry();
 		registry.rebind( "Mineserver", stub );
 		System.out.println( "Created model, waiting for views" );
@@ -37,16 +37,16 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 		
 		if ( square.hasMine() ) {
 			model.killPlayer( players.get( client ) );
-			client.message( MinesweeperController.YOU_STEPPED_ON_A_MINE );
+			client.message( ISweeper.YOU_STEPPED_ON_A_MINE );
 		}
 		else {
 			model.addPoint( players.get( client ) );
-			client.message( MinesweeperController.YOU_SCORED_A_POINT );
+			client.message( ISweeper.YOU_SCORED_A_POINT );
 		}
 		
 		if ( model.isCleared() ) {
 			for ( RemoteObserver<MineSquare> obs : players.keySet() ) {
-				obs.message( MinesweeperController.END_OF_GAME );
+				obs.message( ISweeper.END_OF_GAME );
 			}
 		}
 	}

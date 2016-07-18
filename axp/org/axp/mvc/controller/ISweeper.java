@@ -7,7 +7,7 @@ import org.axp.mvc.model.MineSquare;
 import org.axp.mvc.model.Minefield;
 import org.axp.mvc.rmi.RemoteObserver;
 
-public interface MinesweeperController extends Remote {
+public interface ISweeper extends Remote {
 	public static final int END_OF_GAME = 1;
 	public static final int YOU_STEPPED_ON_A_MINE = 2;
 	public static final int YOU_SCORED_A_POINT = 3;

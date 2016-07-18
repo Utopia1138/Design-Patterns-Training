@@ -3,7 +3,7 @@ package org.axp.mvc.model;
 import java.util.List;
 
 
-public interface MinesweeperModel {
+public interface IMinesweeperGame {
 	/**
 	 * Count the number of neighbouring mines in a square. Can only be called on uncovered, mine-free squares.
 	 * @param ypos Y-position of the square in the field
