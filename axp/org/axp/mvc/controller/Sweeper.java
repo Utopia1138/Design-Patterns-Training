@@ -58,7 +58,7 @@ public class Sweeper extends RemoteObservable<MineSquare> implements ISweeper {
 	
 	public static void main( String...args ) {
 		try {
-			Minefield field = new Minefield( 6, 8, 10 )/*( 16, 24, 40 )*/;
+			Minefield field = new Minefield( 16, 24, 40 );
 			new Sweeper( new MinesweeperGame( field ) ).run();
 		}
 		catch ( RemoteException e ) {
