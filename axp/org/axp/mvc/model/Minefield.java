@@ -51,6 +51,23 @@ public class Minefield implements Serializable {
 				mineCount++;
 			}
 		}
+		
+		revealInitial();
+	}
+	
+	private synchronized void revealInitial() {
+		for ( int x = 0; x < 1000; x++ ) {
+			int j = rand.nextInt( field.length );
+			int i = rand.nextInt( field[0].length );
+					
+			if ( mineCount( j, i ) == 0 ) {
+				reveal( j, i );
+				return;
+			}
+		}
+				
+		System.err.println( "Can't find an initial empty square!" );
+		System.exit( 5 );
 	}
 	
 	public synchronized void reveal( int ypos, int xpos ) {
@@ -66,6 +83,10 @@ public class Minefield implements Serializable {
 			throw new IllegalStateException( "Can only count neighbours on square without a mine" );
 		} 
 		
+		return mineCount( ypos, xpos );
+	}
+	
+	private synchronized int mineCount( int ypos, int xpos ) {
 		int count = 0;
 		
 		for ( int j = Math.max( 0, ypos - 1 ); j < Math.min( field.length, ypos + 2 ); j++ ) {
