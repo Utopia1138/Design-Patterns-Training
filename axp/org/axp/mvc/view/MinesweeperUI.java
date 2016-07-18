@@ -38,17 +38,39 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	public MinesweeperUI() throws RemoteException, NotBoundException {
 		String host =  JOptionPane.showInputDialog( "Select host, or cancel to run against local server", DEFAULT_HOST );
 		Registry registry = LocateRegistry.getRegistry( host );
-		controller = (ISweeper) registry.lookup( "Mineserver" ); 
-		controller.addObserver( this );
+		
+		showPendingUi();
+		boolean online = false;
+		
+		while ( !online ) {
+			try {
+				controller = (ISweeper) registry.lookup( "Mineserver" );
+				controller.checkOnline();
+				controller.addObserver( this );
+				online = true;
+			}
+			catch ( Exception e ) {
+				try {
+					Thread.sleep( 500 );
+				}
+				catch ( InterruptedException interrupt ) {
+				}
+			}
+		}
 
-		setupUi( controller.getCurrentFieldState(), controller.getPlayerName( this ) );
+		showFinalUi( controller.getCurrentFieldState(), controller.getPlayerName( this ) );		
 	}
 	
-	private void setupUi( Minefield field, String playerName ) throws RemoteException {
-		Dimension d = field.getDimensions();
-		
+	private void showPendingUi() {
 		ui = new JFrame( "Minesweeper" );
 		ui.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		ui.add( new JLabel( "Waiting to connect...", JLabel.CENTER ) );
+		ui.setSize( 500, 200 );
+		ui.setVisible( true );
+	}
+	
+	private void showFinalUi( Minefield field, String playerName ) throws RemoteException {
+		Dimension d = field.getDimensions();
 		
 		ui.addWindowListener( new WindowAdapter() {
 			@Override
@@ -85,11 +107,11 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 		topPanel.add( new JLabel( playerName ) );
 		topPanel.add( score = new IntLabel() );
 		
+		ui.getContentPane().removeAll();
 		ui.setLayout( new BorderLayout() );
 		ui.add( topPanel, BorderLayout.NORTH );
 		ui.add( gridPanel, BorderLayout.CENTER );
 		ui.pack();
-		ui.setVisible( true );
 	}
 	
 	@Override

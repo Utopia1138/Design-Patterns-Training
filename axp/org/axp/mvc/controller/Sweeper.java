@@ -101,5 +101,10 @@ public class Sweeper extends RemoteObservable<MineSquare> implements ISweeper {
 		}
 		
 		return sb.substring( 1 );
+	}
+
+	@Override
+	public void checkOnline() {
+		/* Do nothing */
 	}    
 }

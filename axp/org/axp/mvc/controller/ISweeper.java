@@ -13,6 +13,12 @@ public interface ISweeper extends Remote {
 	public static final int YOU_SCORED_A_POINT = 3;
 
 	/**
+	 * Check that the controller is up and running
+	 * @throws RemoteException if it is not
+	 */
+	public void checkOnline() throws RemoteException;
+	
+	/**
 	 * Count the number of neighbouring mines in a square. Can only be called on uncovered, mine-free squares.
 	 * @param ypos Y-position of the square in the field
 	 * @param xpos X-position of the square in the field
