@@ -149,18 +149,17 @@ public class MinesweeperUI extends UnicastRemoteObject implements RemoteObserver
 	@Override
 	public void message( int msg ) throws RemoteException {
 		switch ( msg ) {
+		case MinesweeperController.YOU_SCORED_A_POINT:
+			score.increment();
+			break;
 		case MinesweeperController.END_OF_GAME:
 			String scoreCard = controller.getFullScores();
 			
 			new Thread( () -> {
 				JOptionPane.showMessageDialog( this.ui, scoreCard, "Game over!", JOptionPane.PLAIN_MESSAGE ); }).start();
 			
-			break;
-		case MinesweeperController.YOU_SCORED_A_POINT:
-			score.increment();
-			break;
 		case MinesweeperController.YOU_STEPPED_ON_A_MINE:
-			// Uh-oh! No more clicks, please
+			// No longer listen for clicks
 			for ( GridSquare[] row : grid ) {
 				for ( GridSquare square : row ) {
 					square.setEnabled( false );
