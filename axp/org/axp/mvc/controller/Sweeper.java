@@ -36,6 +36,7 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 		notifyObservers( square );
 		
 		if ( square.hasMine() ) {
+			model.killPlayer( players.get( client ) );
 			client.message( MinesweeperController.YOU_STEPPED_ON_A_MINE );
 		}
 		else {
@@ -93,6 +94,10 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 		
 		for ( Player p : model.getScores() ) {
 			sb.append( '\n' ).append( p.getScore() ).append( "   " ).append( p.getName() );
+			
+			if ( p.isDead() ) {
+				sb.append( "   (DEAD)" );
+			}
 		}
 		
 		return sb.substring( 1 );

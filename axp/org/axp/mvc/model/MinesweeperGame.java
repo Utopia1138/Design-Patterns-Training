@@ -61,4 +61,9 @@ public class MinesweeperGame implements MinesweeperModel {
 		Collections.sort( playersByScore, (x,y) -> y.getScore() - x.getScore() );
 		return playersByScore;
 	}
+
+	@Override
+	public void killPlayer( Player p ) {
+		p.markDead();
+	}
 }

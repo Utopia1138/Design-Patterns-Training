@@ -10,6 +10,7 @@ public class Player {
 	
 	private String name;
 	private int score;
+	private boolean dead;
 	
 	public Player() {
 		Random random = new Random();
@@ -26,6 +27,14 @@ public class Player {
 	
 	public void incrementScore() {
 		score++;
+	}
+	
+	public void markDead() {
+		dead = true;
+	}
+	
+	public boolean isDead() {
+		return dead;
 	}
 	
 	@Override

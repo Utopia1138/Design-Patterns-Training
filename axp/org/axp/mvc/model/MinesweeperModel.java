@@ -59,4 +59,10 @@ public interface MinesweeperModel {
 	 * @return
 	 */
 	public Minefield getField();
+
+	/**
+	 * Mark a player as dead
+	 * @param p an existing player
+	 */
+	public void killPlayer( Player p );
 }
