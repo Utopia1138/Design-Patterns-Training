@@ -38,9 +38,10 @@ public class Sweeper extends RemoteObservable<MineSquare> implements Minesweeper
 		if ( square.hasMine() ) {
 			client.message( MinesweeperController.YOU_STEPPED_ON_A_MINE );
 		}
-		
-		model.addPoint( players.get( client ) );
-		client.message( MinesweeperController.YOU_SCORED_A_POINT );
+		else {
+			model.addPoint( players.get( client ) );
+			client.message( MinesweeperController.YOU_SCORED_A_POINT );
+		}
 		
 		if ( model.isCleared() ) {
 			for ( RemoteObserver<MineSquare> obs : players.keySet() ) {
