@@ -54,6 +54,6 @@ public class EmployeeFrame extends JFrame {
 	
 	private void addEmployee( Employee e ) {
 		employees.add( e );
-		panel.addEmployee( e );
+		panel.addRow( e );
 	}
 }
