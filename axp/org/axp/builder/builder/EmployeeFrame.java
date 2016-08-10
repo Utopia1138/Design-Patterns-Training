@@ -8,12 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.axp.builder.model.Department;
 import org.axp.builder.model.Employee;
 
 public class EmployeeFrame extends JFrame {
 	private static final long serialVersionUID = 6934127159559802729L;
 	
-	private EmployeePanel panel;
+	private EntityPanel<Employee> panel;
 	private ArrayList<Employee> employees = new ArrayList<>();
 	private JButton print;
 	private JButton addEmp;
@@ -25,8 +26,14 @@ public class EmployeeFrame extends JFrame {
 		JPanel root = new JPanel();
 		root.setBorder( new EmptyBorder( 5, 8, 8, 8 ) );
 		root.setLayout( new BorderLayout( 5, 5 ) );
+
+		panel = new EntityPanelBuilder<Employee>()
+				.addColumn( "Common name", (p,e) -> p.addTextBox( e.getCommonName(), 10 ) )
+				.addColumn( "Full name", (p,e) -> p.addTextBox( e.getFullName(), 25 ) )
+				.addColumn( "Department", (p,e) -> p.addDropDown( e.getDepartment(), Department.values() ) )
+				.addColumn( "Permanent?", (p,e) -> p.addCheckBox( e.isPermanent() ) )
+				.buildPanel();
 		
-		panel = new EmployeePanel();
 		for ( Employee e : currentEmployees ) {
 			addEmployee( e );
 		}
