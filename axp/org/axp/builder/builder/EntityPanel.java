@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.function.Consumer;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -61,7 +62,7 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( label );
 	}
 	
-	protected void addTextBox( String initialValue, int columns, EntityPanelCallback<String> callback ) {
+	protected void addTextBox( String initialValue, int columns, Consumer<String> callback ) {
 		JTextField textBox = new JTextField( initialValue );
 		textBox.setColumns( columns );
 		textBox.addFocusListener( new FocusListener() {
@@ -69,7 +70,7 @@ public abstract class EntityPanel<E> extends JPanel {
 
 			@Override
 			public void focusLost( FocusEvent e ) {
-				callback.doCallback( textBox.getText() );
+				callback.accept( textBox.getText() );
 			}
 		});
 		
@@ -77,17 +78,17 @@ public abstract class EntityPanel<E> extends JPanel {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <V> void addDropDown( V value, V[] allValues, EntityPanelCallback<V> callback ) {
+	protected <V> void addDropDown( V value, V[] allValues, Consumer<V> callback ) {
 		JComboBox<V> dropDown = new JComboBox<>( allValues );
 		dropDown.setSelectedItem( value );
-		dropDown.addActionListener( l -> callback.doCallback( (V) dropDown.getSelectedItem() ) );
+		dropDown.addActionListener( l -> callback.accept( (V) dropDown.getSelectedItem() ) );
 		addComponent( dropDown );
 	}
 
-	protected void addCheckBox( boolean checked, EntityPanelCallback<Boolean> callback ) {
+	protected void addCheckBox( boolean checked, Consumer<Boolean> callback ) {
 		JCheckBox checkBox = new JCheckBox();
 		checkBox.setSelected( checked );
-		checkBox.addChangeListener( l -> callback.doCallback( checkBox.isSelected() ) );
+		checkBox.addChangeListener( l -> callback.accept( checkBox.isSelected() ) );
 		addComponent( checkBox );
 	}
 	
