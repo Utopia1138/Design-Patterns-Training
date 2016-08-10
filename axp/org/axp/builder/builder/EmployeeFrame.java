@@ -30,7 +30,7 @@ public class EmployeeFrame extends JFrame {
 		panel = new EntityPanelBuilder<Employee>()
 				.addColumn( "Common name", (p,e) -> p.addTextBox( e.getCommonName(), 10, e::setCommonName ) )
 				.addColumn( "Full name", (p,e) -> p.addTextBox( e.getFullName(), 25, e::setFullName ) )
-				.addColumn( "Department", (p,e) -> p.addDropDown( e.getDepartment(), Department.values() ) )
+				.addColumn( "Department", (p,e) -> p.addDropDown( e.getDepartment(), Department.values(), e::setDepartment ) )
 				.addColumn( "Permanent?", (p,e) -> p.addCheckBox( e.isPermanent(), e::setPermanent ) )
 				.buildPanel();
 		

@@ -13,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
 
 public abstract class EntityPanel<E> extends JPanel {
 	private static final long serialVersionUID = -2937775783589472191L;
@@ -77,9 +76,11 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( textBox );
 	}
 	
-	protected void addDropDown( Enum<?> value, Enum<?>[] allValues ) {
-		JComboBox<Enum<?>> dropDown = new JComboBox<>( allValues );
+	@SuppressWarnings("unchecked")
+	protected <V> void addDropDown( V value, V[] allValues, EntityPanelCallback<V> callback ) {
+		JComboBox<V> dropDown = new JComboBox<>( allValues );
 		dropDown.setSelectedItem( value );
+		dropDown.addActionListener( l -> callback.doCallback( (V) dropDown.getSelectedItem() ) );
 		addComponent( dropDown );
 	}
 
