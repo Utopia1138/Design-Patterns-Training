@@ -1,13 +1,14 @@
 package org.axp.builder.builder;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class EntityPanelBuilder<E> {
 	protected ArrayList<String> headingList = new ArrayList<>();
-	protected ArrayList<EntityPanelStep<E>> populateSteps = new ArrayList<>();
+	protected ArrayList<Consumer<E>> populateSteps = new ArrayList<>();
 	protected boolean finished;
 	
-	public EntityPanelBuilder<E> addColumn( String heading, EntityPanelStep<E> step ) {
+	public EntityPanelBuilder<E> addColumn( String heading, Consumer<E> step ) {
 		if ( finished ) {
 			throw new IllegalStateException( "Panel is already built!" );
 		}
@@ -35,7 +36,7 @@ public class EntityPanelBuilder<E> {
 						lastInRow();
 					}
 					
-					populateSteps.get( i ).populatePanel( entity );
+					populateSteps.get( i ).accept( entity );
 				}
 			}
 		};
