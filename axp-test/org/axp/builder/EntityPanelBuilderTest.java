@@ -1,9 +1,12 @@
-package org.axp.builder.builder;
+package org.axp.builder;
 
+import org.axp.builder.builder.EntityFrame;
+import org.axp.builder.builder.EntityPanel;
+import org.axp.builder.builder.EntityPanelBuilder;
 import org.axp.builder.model.Department;
 import org.axp.builder.model.Employee;
 
-public class TempTest {
+public class EntityPanelBuilderTest {
 	static EntityPanel<Employee> panel;
 	
 	public static final Employee ALICE = new Employee()

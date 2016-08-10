@@ -62,7 +62,7 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( label );
 	}
 	
-	protected void addTextBox( String initialValue, int columns, Consumer<String> callback ) {
+	public void addTextBox( String initialValue, int columns, Consumer<String> callback ) {
 		JTextField textBox = new JTextField( initialValue );
 		textBox.setColumns( columns );
 		textBox.addFocusListener( new FocusListener() {
@@ -78,14 +78,14 @@ public abstract class EntityPanel<E> extends JPanel {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <V> void addDropDown( V value, V[] allValues, Consumer<V> callback ) {
+	public <V> void addDropDown( V value, V[] allValues, Consumer<V> callback ) {
 		JComboBox<V> dropDown = new JComboBox<>( allValues );
 		dropDown.setSelectedItem( value );
 		dropDown.addActionListener( l -> callback.accept( (V) dropDown.getSelectedItem() ) );
 		addComponent( dropDown );
 	}
 
-	protected void addCheckBox( boolean checked, Consumer<Boolean> callback ) {
+	public void addCheckBox( boolean checked, Consumer<Boolean> callback ) {
 		JCheckBox checkBox = new JCheckBox();
 		checkBox.setSelected( checked );
 		checkBox.addChangeListener( l -> callback.accept( checkBox.isSelected() ) );
