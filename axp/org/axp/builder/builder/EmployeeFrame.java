@@ -28,10 +28,10 @@ public class EmployeeFrame extends JFrame {
 		root.setLayout( new BorderLayout( 5, 5 ) );
 
 		panel = new EntityPanelBuilder<Employee>()
-				.addColumn( "Common name", (p,e) -> p.addTextBox( e.getCommonName(), 10, e::setCommonName ) )
-				.addColumn( "Full name", (p,e) -> p.addTextBox( e.getFullName(), 25, e::setFullName ) )
-				.addColumn( "Department", (p,e) -> p.addDropDown( e.getDepartment(), Department.values(), e::setDepartment ) )
-				.addColumn( "Permanent?", (p,e) -> p.addCheckBox( e.isPermanent(), e::setPermanent ) )
+				.addColumn( "Common name", e -> panel.addTextBox( e.getCommonName(), 10, e::setCommonName ) )
+				.addColumn( "Full name", e -> panel.addTextBox( e.getFullName(), 25, e::setFullName ) )
+				.addColumn( "Department", e -> panel.addDropDown( e.getDepartment(), Department.values(), e::setDepartment ) )
+				.addColumn( "Permanent?", e -> panel.addCheckBox( e.isPermanent(), e::setPermanent ) )
 				.buildPanel();
 		
 		for ( Employee e : currentEmployees ) {

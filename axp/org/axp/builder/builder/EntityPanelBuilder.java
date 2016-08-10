@@ -35,7 +35,7 @@ public class EntityPanelBuilder<E> {
 						lastInRow();
 					}
 					
-					populateSteps.get( i ).populatePanel( this, entity );
+					populateSteps.get( i ).populatePanel( entity );
 				}
 			}
 		};
