@@ -4,6 +4,8 @@ import org.axp.builder.model.Department;
 import org.axp.builder.model.Employee;
 
 public class TempTest {
+	static EntityPanel<Employee> panel;
+	
 	public static final Employee ALICE = new Employee()
 		.setCommonName( "Alice" )
 		.setFullName( "Alice Aqua" )
@@ -28,8 +30,20 @@ public class TempTest {
 		.setDepartment( Department.HR )
 		.setPermanent( true );
 	
-	public static void main( String...args ) {
-		EmployeeFrame frame = new EmployeeFrame( ALICE, BOB, CAROL, DAN );		
+	public static void main( String...args ) {		
+		panel = new EntityPanelBuilder<Employee>()
+				.addColumn( "Common name", e -> panel.addTextBox( e.getCommonName(), 10, e::setCommonName ) )
+				.addColumn( "Full name", e -> panel.addTextBox( e.getFullName(), 25, e::setFullName ) )
+				.addColumn( "Department", e -> panel.addDropDown( e.getDepartment(), Department.values(), e::setDepartment ) )
+				.addColumn( "Permanent?", e -> panel.addCheckBox( e.isPermanent(), e::setPermanent ) )
+				.buildPanel();
+		
+		EntityFrame<Employee> frame = new EntityFrame<Employee>( panel, Employee::new );
+		
+		for ( Employee e : new Employee[] { ALICE, BOB, CAROL, DAN } ) {
+			frame.addEntity( e );
+		}
+		
 		frame.setVisible( true );
 	}
 }
