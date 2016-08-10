@@ -5,12 +5,15 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 public abstract class EntityPanel<E> extends JPanel {
 	private static final long serialVersionUID = -2937775783589472191L;
@@ -59,9 +62,18 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( label );
 	}
 	
-	protected void addTextBox( String initialValue, int columns ) {
+	protected void addTextBox( String initialValue, int columns, EntityPanelCallback<String> callback ) {
 		JTextField textBox = new JTextField( initialValue );
 		textBox.setColumns( columns );
+		textBox.addFocusListener( new FocusListener() {
+			@Override public void focusGained( FocusEvent e ) { /* Nothing */ }
+
+			@Override
+			public void focusLost( FocusEvent e ) {
+				callback.doCallback( textBox.getText() );
+			}
+		});
+		
 		addComponent( textBox );
 	}
 	
@@ -71,9 +83,10 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( dropDown );
 	}
 
-	protected void addCheckBox( boolean checked ) {
+	protected void addCheckBox( boolean checked, EntityPanelCallback<Boolean> callback ) {
 		JCheckBox checkBox = new JCheckBox();
 		checkBox.setSelected( checked );
+		checkBox.addChangeListener( l -> callback.doCallback( checkBox.isSelected() ) );
 		addComponent( checkBox );
 	}
 	
