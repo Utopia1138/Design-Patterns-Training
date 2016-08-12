@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public abstract class EntityPanel<E> extends JPanel {
 	private static final long serialVersionUID = -2937775783589472191L;
@@ -54,6 +55,7 @@ public abstract class EntityPanel<E> extends JPanel {
 		}
 		
 		setLayout( new BorderLayout() );
+		setBorder( new EmptyBorder( 5, 8, 8, 8 ) );
 		add( mainPanel, BorderLayout.NORTH );
 	}
 	

@@ -1,6 +1,6 @@
 package org.axp.builder;
 
-import org.axp.builder.builder.EntityFrame;
+import org.axp.builder.builder.ResizingFrame;
 import org.axp.builder.builder.EntityPanel;
 import org.axp.builder.builder.EntityPanelBuilder;
 import org.axp.builder.model.Department;
@@ -48,7 +48,7 @@ public class EntityPanelBuilderTest {
 			panel.addEntity( e );
 		}
 		
-		EntityFrame<Employee> frame = new EntityFrame<Employee>( panel, Employee::new );
+		ResizingFrame frame = new ResizingFrame( panel, "Employees" );
 		
 		frame.setVisible( true );
 	}
