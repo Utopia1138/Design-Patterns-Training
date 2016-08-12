@@ -39,17 +39,14 @@ public class EntityPanelBuilderTest {
 				.addColumn( "Full name", e -> panel.addTextBox( e.getFullName(), 25, e::setFullName ) )
 				.addColumn( "Department", e -> panel.addDropDown( e.getDepartment(), Department.values(), e::setDepartment ) )
 				.addColumn( "Permanent?", e -> panel.addCheckBox( e.isPermanent(), e::setPermanent ) )
+				.setPrintFunction( System.out::println )
+				.setGenerateFunction( Employee::new )
 				.buildPanel();
-
-		panel.addPrintButton( System.out::println );
-		panel.addAddButton( Employee::new );
 		
 		for ( Employee e : new Employee[] { ALICE, BOB, CAROL, DAN } ) {
 			panel.addEntity( e );
 		}
 		
-		ResizingFrame frame = new ResizingFrame( panel, "Employees" );
-		
-		frame.setVisible( true );
+		new ResizingFrame( panel, "Employees" ).setVisible( true );
 	}
 }

@@ -33,7 +33,7 @@ public abstract class EntityPanel<E> extends JPanel {
 	// Data; TODO: could replace with an actual controller class
 	private ArrayList<E> entities = new ArrayList<>();
 	
-	public EntityPanel() {
+	public EntityPanel( Consumer<String> printFunction, Supplier<E> generateFunction ) {
 		super();
 		mainPanel = new JPanel();
 		gridbag = new GridBagLayout();
@@ -57,18 +57,18 @@ public abstract class EntityPanel<E> extends JPanel {
 		setLayout( new BorderLayout() );
 		setBorder( new EmptyBorder( 5, 8, 8, 8 ) );
 		add( mainPanel, BorderLayout.NORTH );
-	}
-	
-	public void addPrintButton( Consumer<String> printFunction ) {
-		JButton print = new JButton( "Print" );
-		print.addActionListener( l -> printFunction.accept( entitiesToString() ) );
-		add( print, BorderLayout.WEST );
-	}
-	
-	public void addAddButton( Supplier<E> generateFunction ) {
-		JButton add = new JButton( "Add" );
-		add.addActionListener( l -> addEntity( generateFunction.get() ) );
-		add( add, BorderLayout.EAST );
+		
+		if ( printFunction != null ) {
+			JButton print = new JButton( "Print" );
+			print.addActionListener( l -> printFunction.accept( entitiesToString() ) );
+			add( print, BorderLayout.WEST );
+		}
+		
+		if ( generateFunction != null ) {
+			JButton add = new JButton( "Add" );
+			add.addActionListener( l -> addEntity( generateFunction.get() ) );
+			add( add, BorderLayout.EAST );
+		}
 	}
 	
 	protected abstract String[] headings();
