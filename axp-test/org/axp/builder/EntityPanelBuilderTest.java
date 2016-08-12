@@ -39,6 +39,7 @@ public class EntityPanelBuilderTest {
 				.addColumn( "Full name", e -> panel.addTextBox( e.getFullName(), 25, e::setFullName ) )
 				.addColumn( "Department", e -> panel.addDropDown( e.getDepartment(), Department.values(), e::setDepartment ) )
 				.addColumn( "Permanent?", e -> panel.addCheckBox( e.isPermanent(), e::setPermanent ) )
+				.addColumn( "Delete", e -> panel.addDeleteButton( e ) )
 				.setPrintFunction( System.out::println )
 				.setGenerateFunction( Employee::new )
 				.buildPanel();

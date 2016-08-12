@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -21,6 +22,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * This is a generic panel that can deal with CRUD operations (TODO: implement delete) on a list of some
+ * entities.
+ *
+ * @param <E>
+ */
 public abstract class EntityPanel<E> extends JPanel {
 	private static final long serialVersionUID = -2937775783589472191L;
 	
@@ -33,6 +40,19 @@ public abstract class EntityPanel<E> extends JPanel {
 	// Data; TODO: could replace with an actual controller class
 	private ArrayList<E> entities = new ArrayList<>();
 	
+	protected static class Range {
+		public int start;
+		public int len;
+	}
+	
+	private HashMap<E,Range> entityPos = new HashMap<>();
+	
+	/**
+	 * Construct the panel, showing a list of entities, and optionally print and add buttons
+	 * 
+	 * @param printFunction what the "print" button will execute; e.g. System.out::println. If null, no button will appear.
+	 * @param generateFunction what the "add" button will fcall; e.g. MyEntity::new. If null, no button will appear.
+	 */
 	public EntityPanel( Consumer<String> printFunction, Supplier<E> generateFunction ) {
 		super();
 		mainPanel = new JPanel();
@@ -71,18 +91,32 @@ public abstract class EntityPanel<E> extends JPanel {
 		}
 	}
 	
+	/**
+	 * A list of headings as appropriate for this entity. Should match the number of components in
+	 * {@link #addRowForEntity(Object)}
+	 * 
+	 * @return a list of headings
+	 */
 	protected abstract String[] headings();
 	
 	protected void lastInRow() {
 		c.gridwidth = GridBagConstraints.REMAINDER;
 	}
 	
+	/**
+	 * Generically add a component to the layout
+	 * @param component some Swing component
+	 */
 	protected void addComponent( Component component ) {
 		gridbag.setConstraints( component, c );
 		mainPanel.add( component );
 		c.gridwidth = 1;
 	}
 	
+	/**
+	 * Add a heading component
+	 * @param text heading text
+	 */
 	protected void addHeading( String text ) {
 		JLabel label = new JLabel( text );
 		label.setFont( bold );
@@ -90,6 +124,12 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( label );
 	}
 	
+	/**
+	 * Add a text box to the layout
+	 * @param initialValue initial contents of the text box
+	 * @param columns width of the text box
+	 * @param callback function to call when the contents change, e.g. myEntity::setMyField
+	 */
 	public void addTextBox( String initialValue, int columns, Consumer<String> callback ) {
 		JTextField textBox = new JTextField( initialValue );
 		textBox.setColumns( columns );
@@ -105,6 +145,12 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( textBox );
 	}
 	
+	/**
+	 * Add a drop-down to the layout
+	 * @param value initially selected value
+	 * @param allValues full list of falues 
+	 * @param callback function to call when the selected item changes, e.g. myEntity::setMyField
+	 */
 	@SuppressWarnings("unchecked")
 	public <V> void addDropDown( V value, V[] allValues, Consumer<V> callback ) {
 		JComboBox<V> dropDown = new JComboBox<>( allValues );
@@ -113,6 +159,11 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( dropDown );
 	}
 
+	/**
+	 * Add a checkbox to the layout
+	 * @param checked whether it is initially checked
+	 * @param callback function to call when the checkbox is toggled, e.g. myEntity::setMyField
+	 */
 	public void addCheckBox( boolean checked, Consumer<Boolean> callback ) {
 		JCheckBox checkBox = new JCheckBox();
 		checkBox.setSelected( checked );
@@ -120,15 +171,62 @@ public abstract class EntityPanel<E> extends JPanel {
 		addComponent( checkBox );
 	}
 	
+	/**
+	 * Add a 'delete' button to the layout
+	 * @param entity specific entity that this delete button is linked to
+	 */
+	public void addDeleteButton( E entity ) {
+		JButton delete = new JButton( "X" );
+		delete.addActionListener( l -> removeEntity( entity ) );
+		addComponent( delete );
+	}
+	
+	/**
+	 * Load a new entity into the list and into the display
+	 * @param entity some entity to add
+	 */
 	public void addEntity( E entity ) {
 		entities.add( entity );
+		
+		Range componentSpan = new Range();
+		componentSpan.start = mainPanel.getComponentCount();
 		addRowForEntity( entity );
+		componentSpan.len = mainPanel.getComponentCount() - componentSpan.start;
+		entityPos.put( entity, componentSpan );
+		
 		revalidate();
 	}
 	
-	public String entitiesToString() {
+	/**
+	 * Remove an entity from the list and the display
+	 * @param entity some entity to remove
+	 */
+	public void removeEntity( E entity ) {
+		if ( entities.remove( entity ) ) {
+			Range componentSpan = entityPos.remove( entity );
+			
+			for ( int i = 0; i < componentSpan.len; i++ ) {
+				mainPanel.remove( componentSpan.start );
+			}
+			
+			revalidate();
+		}
+	}
+	
+	/**
+	 * Convert the entities into a single string to pass to the print function
+	 * @return the result of calling {@link Object#toString()} on each of the entities, separated by newlines 
+	 */
+	private String entitiesToString() {
 		return entities.stream().map( E::toString ).collect( Collectors.joining( "\n" ) ) + "\n";
 	}
 	
+	/**
+	 * This is the meat of the function, called whenever a new row is added to the display. It should be implemented
+	 * as a series of calls to {@link #addTextBox(String, int, Consumer)}, {@link #addCheckBox(boolean, Consumer)} etc,
+	 * as appropriate to the entity, and the number of components in the row should match the length of
+	 * {@link #headings()}
+	 * @param entity a specific entity that this row corresponds to
+	 */
 	protected abstract void addRowForEntity( E entity );
 }
