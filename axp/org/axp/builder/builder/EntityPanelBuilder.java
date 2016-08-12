@@ -30,7 +30,7 @@ public class EntityPanelBuilder<E> {
 			}
 
 			@Override
-			public void addRow(E entity) {
+			protected void addRowForEntity(E entity) {
 				for ( int i = 0; i < populateSteps.size(); i++ ) {
 					if ( i == populateSteps.size() - 1 ) {
 						lastInRow();

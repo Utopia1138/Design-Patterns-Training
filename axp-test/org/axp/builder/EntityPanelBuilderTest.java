@@ -40,12 +40,15 @@ public class EntityPanelBuilderTest {
 				.addColumn( "Department", e -> panel.addDropDown( e.getDepartment(), Department.values(), e::setDepartment ) )
 				.addColumn( "Permanent?", e -> panel.addCheckBox( e.isPermanent(), e::setPermanent ) )
 				.buildPanel();
-		
-		EntityFrame<Employee> frame = new EntityFrame<Employee>( panel, Employee::new );
+
+		panel.addPrintButton( System.out::println );
+		panel.addAddButton( Employee::new );
 		
 		for ( Employee e : new Employee[] { ALICE, BOB, CAROL, DAN } ) {
-			frame.addEntity( e );
+			panel.addEntity( e );
 		}
+		
+		EntityFrame<Employee> frame = new EntityFrame<Employee>( panel, Employee::new );
 		
 		frame.setVisible( true );
 	}
