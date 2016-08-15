@@ -82,14 +82,13 @@ public class EntityPanelBuilderTest {
 				.addColumn( "Project name", p -> projectPanel.addTextBox( p.getProjectName(), 20, p::setProjectName ) )
 				.addColumn( "Dev Lead", p -> projectPanel.addDropDown( p.getDevLead(), EMPLOYEES, Employee::getCommonName, p::setDevLead ) )
 				.addColumn( "Parent project", p -> projectPanel.addDropDown( p.getParent(), PROJECTS, Project::getProjectName, p::setParent ) )
+				.addColumn( "Start date", p -> projectPanel.addDatePicker( p.getStart(), p::setStart ) )
+				.addColumn( "End date", p -> projectPanel.addDatePicker( p.getEnd(), p::setEnd ) )
 				.addColumn( "Complete?", p -> projectPanel.addCheckBox( p.isComplete(), p::setComplete ) )
 				.addColumn( "Delete", p -> projectPanel.addDeleteButton( p ) )
 				.setPrintFunction( System.out::println )
 				.setGenerateFunction( Project::new )
 				.buildPanel();
-		
-		//private LocalDate start;
-		//private LocalDate end;
 		
 		for ( Project p : PROJECTS ) {
 			projectPanel.addEntity( p );

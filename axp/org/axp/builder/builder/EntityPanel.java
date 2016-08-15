@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -25,6 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+
 /**
  * This is a generic panel that can deal with CRUD operations (TODO: implement delete) on a list of some
  * entities.
@@ -39,6 +43,9 @@ public abstract class EntityPanel<E> extends JPanel {
 	private GridBagLayout gridbag;
 	private GridBagConstraints c;
 	private Font bold;
+	
+	// For date picker
+	private static final String DATE_FORMAT = "dd-MMM-yyyy";
 	
 	// Data; TODO: could replace with an actual controller class
 	private ArrayList<E> entities = new ArrayList<>();
@@ -65,6 +72,7 @@ public abstract class EntityPanel<E> extends JPanel {
 		c.insets = new Insets( 2, 3, 2, 3 );
 		bold = getFont().deriveFont( Font.BOLD );
 		mainPanel.setLayout( gridbag );
+		
 		
 		String[] headings = headings();
 		int last = headings.length - 1;
@@ -204,6 +212,20 @@ public abstract class EntityPanel<E> extends JPanel {
 		checkBox.setSelected( checked );
 		checkBox.addChangeListener( l -> callback.accept( checkBox.isSelected() ) );
 		addComponent( checkBox );
+	}
+	
+	/**
+	 * Add a date picker to the layout
+	 * @param date initial date
+	 * @param callback function to call when the date changes, e.g. myEntity::setMyDateField
+	 */
+	public void addDatePicker( LocalDate date, Consumer<LocalDate> callback ) {
+		DatePickerSettings dateSettings = new DatePickerSettings();
+		dateSettings.setFormatForDatesCommonEra( DATE_FORMAT );
+		DatePicker picker = new DatePicker( dateSettings );
+		picker.setDate( date );
+		picker.addDateChangeListener( l -> callback.accept( picker.getDate() ) );
+		addComponent( picker );
 	}
 	
 	/**
