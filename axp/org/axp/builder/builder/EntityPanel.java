@@ -11,6 +11,7 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -18,8 +19,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -148,12 +151,44 @@ public abstract class EntityPanel<E> extends JPanel {
 	/**
 	 * Add a drop-down to the layout
 	 * @param value initially selected value
-	 * @param allValues full list of falues 
+	 * @param allValues full list of values 
 	 * @param callback function to call when the selected item changes, e.g. myEntity::setMyField
 	 */
 	@SuppressWarnings("unchecked")
 	public <V> void addDropDown( V value, V[] allValues, Consumer<V> callback ) {
 		JComboBox<V> dropDown = new JComboBox<>( allValues );
+		dropDown.setSelectedItem( value );
+		dropDown.addActionListener( l -> callback.accept( (V) dropDown.getSelectedItem() ) );
+		addComponent( dropDown );
+	}
+	
+	/**
+	 * Add a drop-down to the layout, with a custom display function
+	 * @param value initially selected value
+	 * @param allValues full list of values
+	 * @param displayFunction string to display for the item, e.g. myEntity::getEntityName
+	 * @param callback function to call when the selected item changes, e.g. myEntity::setMyField
+	 */
+	@SuppressWarnings("unchecked")
+	public <V> void addDropDown( V value, V[] allValues, Function<V,String> displayFunction, Consumer<V> callback ) {
+		JComboBox<V> dropDown = new JComboBox<>( allValues );
+		dropDown.setRenderer( new ListCellRenderer<V>() {
+			JLabel label = new JLabel();
+			
+			@Override
+			public Component getListCellRendererComponent(
+					JList<? extends V> list, V val, int idx, boolean selected, boolean hasFocus ) {
+				
+				try {
+					label.setText( displayFunction.apply( val ) );
+				}
+				catch ( NullPointerException e ) {
+					label.setText( "{none}" );
+				}
+				
+				return label;
+			}} );
+		
 		dropDown.setSelectedItem( value );
 		dropDown.addActionListener( l -> callback.accept( (V) dropDown.getSelectedItem() ) );
 		addComponent( dropDown );

@@ -80,8 +80,8 @@ public class EntityPanelBuilderTest {
 	public static void projectFrame() {
 		projectPanel = new EntityPanelBuilder<Project>()
 				.addColumn( "Project name", p -> projectPanel.addTextBox( p.getProjectName(), 20, p::setProjectName ) )
-				.addColumn( "Dev Lead", p -> projectPanel.addDropDown( p.getDevLead(), EMPLOYEES, p::setDevLead ) )
-				.addColumn( "Parent project", p -> projectPanel.addDropDown( p.getParent(), PROJECTS, p::setParent ) )
+				.addColumn( "Dev Lead", p -> projectPanel.addDropDown( p.getDevLead(), EMPLOYEES, Employee::getCommonName, p::setDevLead ) )
+				.addColumn( "Parent project", p -> projectPanel.addDropDown( p.getParent(), PROJECTS, Project::getProjectName, p::setParent ) )
 				.addColumn( "Complete?", p -> projectPanel.addCheckBox( p.isComplete(), p::setComplete ) )
 				.addColumn( "Delete", p -> projectPanel.addDeleteButton( p ) )
 				.setPrintFunction( System.out::println )

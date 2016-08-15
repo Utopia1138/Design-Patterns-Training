@@ -66,9 +66,9 @@ public class Project {
 	
 	public String toString() {
 		return "{ " + projectName +
-				"; lead by " + devLead.getCommonName() +
+				"; lead by " + (( devLead == null ) ? "NONE" : devLead.getCommonName()) +
 				"; parent " + (( parent == null ) ? "NONE" : parent.getProjectName()) +
-				"; starts " + start +
+				"; starts " + (( start == null ) ? "UNKNOWN" : start) +
 				"; ends " + (( end == null ) ? "UNKNOWN" : end) +
 				"; " + ( complete ? "COMPLETE" : "ONGOING" ) + " }";
 	}
