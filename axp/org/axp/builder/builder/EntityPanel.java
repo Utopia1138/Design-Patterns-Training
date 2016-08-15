@@ -162,12 +162,8 @@ public abstract class EntityPanel<E> extends JPanel {
 	 * @param allValues full list of values 
 	 * @param callback function to call when the selected item changes, e.g. myEntity::setMyField
 	 */
-	@SuppressWarnings("unchecked")
 	public <V> void addDropDown( V value, V[] allValues, Consumer<V> callback ) {
-		JComboBox<V> dropDown = new JComboBox<>( allValues );
-		dropDown.setSelectedItem( value );
-		dropDown.addActionListener( l -> callback.accept( (V) dropDown.getSelectedItem() ) );
-		addComponent( dropDown );
+		addDropDown( value, allValues, null, callback );
 	}
 	
 	/**
@@ -180,22 +176,26 @@ public abstract class EntityPanel<E> extends JPanel {
 	@SuppressWarnings("unchecked")
 	public <V> void addDropDown( V value, V[] allValues, Function<V,String> displayFunction, Consumer<V> callback ) {
 		JComboBox<V> dropDown = new JComboBox<>( allValues );
-		dropDown.setRenderer( new ListCellRenderer<V>() {
-			JLabel label = new JLabel();
-			
-			@Override
-			public Component getListCellRendererComponent(
-					JList<? extends V> list, V val, int idx, boolean selected, boolean hasFocus ) {
+		
+		if ( displayFunction != null ) {
+			dropDown.setRenderer( new ListCellRenderer<V>() {
+				JLabel label = new JLabel();
 				
-				try {
-					label.setText( displayFunction.apply( val ) );
+				@Override
+				public Component getListCellRendererComponent(
+						JList<? extends V> list, V val, int idx, boolean selected, boolean hasFocus ) {
+					
+					try {
+						label.setText( displayFunction.apply( val ) );
+					}
+					catch ( NullPointerException e ) {
+						label.setText( "{none}" );
+					}
+					
+					return label;
 				}
-				catch ( NullPointerException e ) {
-					label.setText( "{none}" );
-				}
-				
-				return label;
-			}} );
+			} );
+		}
 		
 		dropDown.setSelectedItem( value );
 		dropDown.addActionListener( l -> callback.accept( (V) dropDown.getSelectedItem() ) );
