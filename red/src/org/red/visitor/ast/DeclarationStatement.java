@@ -1,8 +1,7 @@
 package org.red.visitor.ast;
 
 import org.red.visitor.ASTVisitor;
-import org.red.visitor.Context;
-import org.red.visitor.Context.Value;
+import org.red.visitor.interpreter.Context;
 
 public class DeclarationStatement implements Statement {
 
@@ -12,12 +11,6 @@ public class DeclarationStatement implements Statement {
 	public DeclarationStatement( Context.Type type, String ident ) {
 		this.type = type;
 		this.ident = ident;
-	}
-	
-	@Override
-	public Value execute( Context context ) {
-		context.push( ident, new Value( type ) );
-		return Value.VOID; 
 	}
 
 	@Override

@@ -1,9 +1,7 @@
 package org.red.visitor.ast;
 
 import org.red.visitor.ASTVisitor;
-import org.red.visitor.Context;
-import org.red.visitor.Context.Type;
-import org.red.visitor.Context.Value;
+import org.red.visitor.interpreter.Context.Type;
 
 public class LookupExpression implements Expression {
 	
@@ -13,11 +11,6 @@ public class LookupExpression implements Expression {
 	public LookupExpression( String ident, Type type ) {
 		this.ident = ident;
 		this.type = type;
-	}
-
-	@Override
-	public Value execute( Context context ) {
-		return context.value( ident );
 	}
 
 	@Override
@@ -32,6 +25,10 @@ public class LookupExpression implements Expression {
 
 	public String ident() {
 		return ident;
+	}
+
+	public void typeIs(Type type) {
+		this.type = type;
 	}
 	
 }

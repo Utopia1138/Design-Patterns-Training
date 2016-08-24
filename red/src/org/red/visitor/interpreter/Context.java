@@ -1,9 +1,11 @@
-package org.red.visitor;
+package org.red.visitor.interpreter;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import org.red.visitor.interpreter.Context.Type;
 
 /**
  * As this is just showing off the visitor pattern and avoiding
@@ -32,6 +34,10 @@ public class Context {
 			return token != null;
 		}
 
+		public String token() {
+			return token;
+		}
+
 		public static Optional<Type> fromToken( String token ) {
 			Optional<Type> opt = Arrays.stream( Type.values() )
 				.filter( Type::isDeclarable )
@@ -52,13 +58,25 @@ public class Context {
 			this.type = type;
 		}
 
-		public Value set( String value ) {
-			this.value = value;
+		public Value set( Object value ) {
+			this.value = value.toString();
 			return this;
 		}
 
 		public String get() {
 			return value;
+		}
+		
+		public int asInt() {
+			return Integer.parseInt(value);
+		}
+		
+		public double asFloat() {
+			return Double.parseDouble(value);
+		}
+
+		public boolean bool() {
+			return value.equals("true");
 		}
 
 		public Type type() {
@@ -67,6 +85,7 @@ public class Context {
 	}
 
 	private Map<String, Value> env = new HashMap<>();
+	private Value last = Value.VOID;
 	
 	public Context push( String label, Value var ) {
 		env.put( label, var );
@@ -75,6 +94,14 @@ public class Context {
 
 	public Value value( String ident ) {
 		return env.get( ident );
+	}
+
+	public void last( Value last ) {
+		this.last = last;
+	}
+
+	public Value last() {
+		return last;
 	}
 
 	@Override

@@ -3,9 +3,8 @@ package org.red.visitor.ast;
 import java.util.function.Function;
 
 import org.red.visitor.ASTVisitor;
-import org.red.visitor.Context;
-import org.red.visitor.Context.Type;
-import org.red.visitor.Context.Value;
+import org.red.visitor.interpreter.Context.Type;
+import org.red.visitor.interpreter.Context.Value;
 
 public class UnaryOperator implements Expression {
 	
@@ -20,11 +19,6 @@ public class UnaryOperator implements Expression {
 		this.in = in;
 		this.outType = outType;
 	}
-	
-	@Override
-	public Value execute( Context context ) {
-		return op.apply( in.execute( context ) );
-	}
 
 	@Override
 	public Type typeOf() {
@@ -34,11 +28,18 @@ public class UnaryOperator implements Expression {
 	@Override
 	public void accept( ASTVisitor visitor ) {
 		visitor.visit( this );
-		in.accept( visitor );
 	}
 	
 	public String ident() {
 		return ident;
+	}
+
+	public Expression input() {
+		return in;
+	}
+
+	public Function<Value, Value> op() {
+		return op;
 	}
 
 }

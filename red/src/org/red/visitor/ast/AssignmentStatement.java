@@ -1,8 +1,6 @@
 package org.red.visitor.ast;
 
 import org.red.visitor.ASTVisitor;
-import org.red.visitor.Context;
-import org.red.visitor.Context.Value;
 
 public class AssignmentStatement implements Statement {
 	
@@ -15,18 +13,8 @@ public class AssignmentStatement implements Statement {
 	}
 
 	@Override
-	public Value execute( Context context ) {
-		context.value( ident )
-			.set( expression.execute( context ).get() );
-
-		return Value.VOID;
-	}
-
-	@Override
 	public void accept( ASTVisitor visitor ) {
-		visitor.visitPre( this );
-		expression.accept( visitor );
-		visitor.visitPost( this );
+		visitor.visit( this );
 	}
 
 	public String ident() {

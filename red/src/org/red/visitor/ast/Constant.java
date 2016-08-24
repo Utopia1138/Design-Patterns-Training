@@ -1,9 +1,8 @@
 package org.red.visitor.ast;
 
 import org.red.visitor.ASTVisitor;
-import org.red.visitor.Context;
-import org.red.visitor.Context.Type;
-import org.red.visitor.Context.Value;
+import org.red.visitor.interpreter.Context.Type;
+import org.red.visitor.interpreter.Context.Value;
 
 public class Constant implements Expression {
 
@@ -11,11 +10,6 @@ public class Constant implements Expression {
 	
 	public Constant( Value value ) {
 		this.value = value;
-	}
-	
-	@Override
-	public Value execute( Context context ) {
-		return value;
 	}
 
 	@Override

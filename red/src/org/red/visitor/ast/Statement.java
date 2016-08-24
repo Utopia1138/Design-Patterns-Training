@@ -1,6 +1,6 @@
 package org.red.visitor.ast;
 
-import org.red.visitor.Context.Type;
+import org.red.visitor.interpreter.Context.Type;
 
 public interface Statement extends Expression {
 	@Override

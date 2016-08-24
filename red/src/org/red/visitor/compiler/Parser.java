@@ -1,19 +1,14 @@
-package org.red.visitor;
+package org.red.visitor.compiler;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 
-import org.red.visitor.Context.Type;
-import org.red.visitor.Context.Value;
-import org.red.visitor.Lexer.Token;
-import org.red.visitor.Lexer.TokenType;
 import org.red.visitor.ast.AssignmentStatement;
 import org.red.visitor.ast.Condition;
+import org.red.visitor.ast.ConditionalLoop;
 import org.red.visitor.ast.Constant;
 import org.red.visitor.ast.DeclarationStatement;
 import org.red.visitor.ast.Expression;
@@ -22,12 +17,21 @@ import org.red.visitor.ast.Sequence;
 import org.red.visitor.ast.Statement;
 import org.red.visitor.ast.Terminal;
 import org.red.visitor.ast.UnaryOperator;
+import org.red.visitor.ast.binop.AdditionOperator;
+import org.red.visitor.ast.binop.DivisionOperator;
+import org.red.visitor.ast.binop.GreaterThanOperator;
+import org.red.visitor.ast.binop.LessThanOperator;
+import org.red.visitor.ast.binop.MultiplicationOperator;
+import org.red.visitor.ast.binop.SubtractionOperator;
+import org.red.visitor.compiler.Lexer.Token;
+import org.red.visitor.compiler.Lexer.TokenType;
+import org.red.visitor.interpreter.Context.Type;
+import org.red.visitor.interpreter.Context.Value;
 
 public class Parser {
 	
 	private Map<String, Type> identifiers = new HashMap<>();
 	private Map<String, Function<Value, Value>> builtinConsumer = new HashMap<>();
-	private final BinaryOpBuilder binary = new BinaryOpBuilder();
 
 	private List<Token> tokens;
 	private int index = -1;
@@ -65,6 +69,22 @@ public class Parser {
 		
 		return tokens.get( index );
 	}
+
+	public Token nextAfterEos() {
+		while( peek().type() == TokenType.STMT_END ) {
+			next();
+		}
+		
+		return next();
+	}
+	
+	public Token peekSkipEos() {
+		while( peek().type() == TokenType.STMT_END ) {
+			next();
+		}
+		
+		return peek();
+	}
 	
 	public Sequence parse( List<Token> toks ) {
 		this.tokens = toks;
@@ -85,6 +105,8 @@ public class Parser {
 			case IF:
 				seq.append( parseIf() );
 				break;
+			case WHILE:
+				seq.append( parseWhile() );
 			case STMT_END:
 				break;
 			case BRACE_CLOSE:
@@ -105,7 +127,7 @@ public class Parser {
 	private Statement parseIf() {
 		Expression cond = parseExpression();
 		
-		Token next = next();
+		Token next = nextAfterEos();
 		
 		if ( next.type() != TokenType.BRACE_OPEN ) {
 			throw new RuntimeException( "Condition bodies must be within a block" );
@@ -114,9 +136,10 @@ public class Parser {
 		Sequence ifTrue = parseBlock( true );
 		
 		Sequence ifFalse = null;
-		if ( peek().type() == TokenType.ELSE ) {
+		if ( peekSkipEos().type() == TokenType.ELSE ) {
 			next();
-			next = next();
+			
+			next = nextAfterEos();
 
 			if ( next.type() != TokenType.BRACE_OPEN ) {
 				throw new RuntimeException( "Condition bodies must be within a block" );
@@ -126,6 +149,20 @@ public class Parser {
 		}
 		
 		return new Condition(cond, ifTrue, ifFalse);
+	}
+	
+	private Statement parseWhile() {
+		Expression cond = parseExpression();
+		
+		Token next = nextAfterEos();
+		
+		if ( next.type() != TokenType.BRACE_OPEN ) {
+			throw new RuntimeException( "Condition bodies must be within a block" );
+		}
+		
+		Sequence body = parseBlock( true );
+		
+		return new ConditionalLoop( cond, body );
 	}
 	
 	private Expression parseIdentifier( Token cur ) {
@@ -202,12 +239,25 @@ public class Parser {
 				lah = peek();
 			}
 			
-			lhs = binary.binaryOperatorFor( op, lhs, rhs );
+			lhs = binaryOperatorFor( op, lhs, rhs );
 		}
 		
 		return lhs;
 	}
 	
+	private Expression binaryOperatorFor(Token op, Expression lhs, Expression rhs) {
+		switch( op.type() ) {
+		case OPERATOR_ADD: return new AdditionOperator(lhs, rhs);
+		case OPERATOR_DIV: return new DivisionOperator(lhs, rhs);
+		case OPERATOR_GT: return new GreaterThanOperator(lhs, rhs);
+		case OPERATOR_LT: return new LessThanOperator(lhs, rhs);
+		case OPERATOR_MULT: return new MultiplicationOperator(lhs, rhs);
+		case OPERATOR_SUB: return new SubtractionOperator(lhs, rhs);
+		}
+		
+		throw new RuntimeException( "Token not an operator" );
+	}
+
 	public boolean isBinaryOp( Token op ) {
 		switch( op.type() ) {
 		case OPERATOR_ADD:

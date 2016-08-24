@@ -1,4 +1,4 @@
-package org.red.visitor;
+package org.red.visitor.compiler;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -26,12 +26,13 @@ public class Lexer {
 		STMT_END( "\n" ),
 		IF( "if" ),
 		ELSE( "else" ),
+		WHILE( "while" ),
 
 		STRING_LITERAL( Pattern.compile( "\"((?:\\\\\"|[^\\\"])*)\"" ) ),
 		INT_LITERAL( Pattern.compile( "(\\d+)" ) ),
 		FLOAT_LITERAL( Pattern.compile( "(\\d\\.\\d*)" ) ),
 		BOOL_LITERAL( Pattern.compile( "(true|false)" ) ),
-		IDENT( Pattern.compile( "(\\p{L}+)" ) ),
+		IDENT( Pattern.compile( "([\\p{L}_]+)" ) ),
 		EOF((String)null);
 		
 		private final Pattern pattern;

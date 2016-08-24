@@ -1,8 +1,6 @@
 package org.red.visitor.ast;
 
 import org.red.visitor.ASTVisitor;
-import org.red.visitor.Context;
-import org.red.visitor.Context.Value;
 
 public class Terminal implements Statement {
 
@@ -12,15 +10,12 @@ public class Terminal implements Statement {
 	}
 	
 	@Override
-	public Value execute( Context context ) {
-		expression.execute( context );
-		return Value.VOID;
+	public void accept( ASTVisitor visitor ) {
+		visitor.visit( this );
 	}
 
-	@Override
-	public void accept( ASTVisitor visitor ) {
-		expression.accept( visitor );
-		visitor.visit( this );
+	public Expression expr() {
+		return expression;
 	}
 
 }
