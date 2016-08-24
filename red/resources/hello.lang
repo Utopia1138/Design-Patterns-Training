@@ -1,0 +1,10 @@
+
+x : int = 5
+
+y := x * 5
+
+if x > y {
+	print "Impossible!"
+} else {
+	print "Hello, World!"
+}
