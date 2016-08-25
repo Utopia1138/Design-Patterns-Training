@@ -12,9 +12,7 @@ import org.axp.composite.Diet;
 import org.axp.composite.Organism;
 
 /**
- * A collector over a stream of organisms that records the numbers of herbivores, omnivores and carnivores
- * 
- * The stream in this case can be seen as a traverser, and the collector as a visitor
+ * A collector/visitor over a stream of organisms that records the numbers of herbivores, omnivores and carnivores 
  */
 public class OrganismDietCollector implements OrganismVisitorCollector<HashMap<Diet,Integer>, HashMap<Diet,Integer>> {
 
@@ -48,11 +46,13 @@ public class OrganismDietCollector implements OrganismVisitorCollector<HashMap<D
 		return crstcs;
 	}
 
+	/* Ignore categories; they don't have diets */
 	@Override
 	public void accept( Category category, HashMap<Diet,Integer> state ) {
 		/* Nothing to do here */
 	}
 
+	/* Increment the diet count for each organism */
 	@Override
 	public void accept( Organism organism, HashMap<Diet,Integer> map ) {
 		Integer count = map.get( organism.getDiet() );
