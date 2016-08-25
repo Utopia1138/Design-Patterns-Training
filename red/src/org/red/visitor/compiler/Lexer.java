@@ -28,11 +28,11 @@ public class Lexer {
 		ELSE( "else" ),
 		WHILE( "while" ),
 
-		STRING_LITERAL( Pattern.compile( "\"((?:\\\\\"|[^\\\"])*)\"" ) ),
-		INT_LITERAL( Pattern.compile( "(\\d+)" ) ),
-		FLOAT_LITERAL( Pattern.compile( "(\\d\\.\\d*)" ) ),
-		BOOL_LITERAL( Pattern.compile( "(true|false)" ) ),
-		IDENT( Pattern.compile( "([\\p{L}_]+)" ) ),
+		STRING_LITERAL( Pattern.compile( "^\"((?:\\\\\"|[^\\\"])*)\"$" ) ),
+		INT_LITERAL( Pattern.compile( "^(\\d+)$" ) ),
+		FLOAT_LITERAL( Pattern.compile( "^(\\d*\\.\\d+)$" ) ),
+		BOOL_LITERAL( Pattern.compile( "^(true|false)$" ) ),
+		IDENT( Pattern.compile( "^([\\p{L}_]+)$" ) ),
 		EOF((String)null);
 		
 		private final Pattern pattern;
@@ -139,6 +139,7 @@ public class Lexer {
 					}
 
 					String tok = token.toString();
+
 					for ( TokenType type : REGEX_TOKENS ) {
 						String group;
 						if ( (group = type.matchGroup( tok )) != null ) {

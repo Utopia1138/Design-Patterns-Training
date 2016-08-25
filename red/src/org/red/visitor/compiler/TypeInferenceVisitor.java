@@ -28,6 +28,11 @@ public class TypeInferenceVisitor implements DefaultASTVisitor {
 
 	@Override
 	public void visit( AssignmentStatement assign ) {
+		
+		if ( assign.assignmentExpr().typeOf() == Type.INFERRED ) {
+			return;
+		}
+
 		// Assignment to this value already made and types differ!
 		// In future this could do coercion checks to see if types are implicitly translatable
 		if ( assignments.containsKey( assign.ident() ) &&
