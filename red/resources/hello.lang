@@ -1,0 +1,18 @@
+
+message : string
+
+message = "Hello"
+message = message + ", World!"
+print message
+
+x := 1
+
+while x < 100 {
+	y := x * x
+	print y
+	x = x + 1
+}
+
+if x > 50 + 40 {
+	print "done"
+}
