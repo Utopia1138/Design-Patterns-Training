@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.axp.visitor.OrganismTreeVisitor;
+
 /**
  * This is the Composite part of the composite pattern.
  * 
@@ -67,5 +69,10 @@ public class Category extends OrganismTree {
 		}
 		
 		return s;
+	}
+
+	@Override
+	public <E> void visit( OrganismTreeVisitor<E> visitor, E state ) {
+		visitor.accept( this, state );
 	}
 }

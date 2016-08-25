@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.axp.visitor.OrganismTreeVisitable;
+
 /**
  * This is the Component part of the composite pattern; the common parent of {@link Organism} and {@link Category}.
  * 
  * All methods are coded to do something wherever possible, even if that means returning null or empty results.
  */
-public abstract class OrganismTree {
+public abstract class OrganismTree implements OrganismTreeVisitable {
 	protected final String name;
 	
 	/**

@@ -1,5 +1,7 @@
 package org.axp.composite;
 
+import org.axp.visitor.OrganismTreeVisitor;
+
 /**
  * This is the Leaf part of the composite pattern.
  * 
@@ -33,5 +35,10 @@ public class Organism extends OrganismTree {
 	public Organism setAvgWeight( Float avgWeight ) {
 		this.avgWeight = avgWeight;
 		return this;
+	}
+
+	@Override
+	public <E> void visit( OrganismTreeVisitor<E> visitor, E state ) {
+		visitor.accept( this, state );
 	}
 }
