@@ -12,6 +12,29 @@ import org.red.visitor.compiler.Parser;
 import org.red.visitor.compiler.TypeInferenceVisitor;
 import org.red.visitor.interpreter.SimpleASTInterpreter;
 
+/**
+ * Compiler for a simple strong statically typed programming language
+ * to show uses of the interpreter and specifically the visitor pattern.
+ * 
+ * There are plenty of edge cases that aren't well handled yet, though
+ * this should show the principles well enough.
+ * 
+ * hello.lang on the classpath is read through a lexer, the output is fed
+ * into a syntax parser, which generates an AST. The visitor pattern is used
+ * to add additional type-hierarchy wide behaviours to the AST dynamically.
+ * 
+ * The type inferring visitor attempts to re-read the AST to fill in types
+ * that have not been declared by examining the assignment points.
+ * 
+ * The AST interpreter visits the AST, executing the nodes with equivalent
+ * java code.
+ * 
+ * The AST printing visitor walks through the AST displaying it in a
+ * convenient way.
+ * 
+ * The pretty printer takes the parsed AST and attempts to transform it
+ * back into language syntax in a uniform way.
+ */
 public class Application {
 	public static void main( String[] args ) throws IOException {
 	
